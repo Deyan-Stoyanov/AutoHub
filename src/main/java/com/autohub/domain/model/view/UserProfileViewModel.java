@@ -1,11 +1,9 @@
-package com.autohub.domain.model.service;
+package com.autohub.domain.model.view;
 
 import com.autohub.domain.enums.Gender;
 import com.autohub.domain.enums.Role;
 
-import java.util.List;
-
-public class UserServiceModel {
+public class UserProfileViewModel {
     private String id;
     private String username;
     private String password;
@@ -15,10 +13,8 @@ public class UserServiceModel {
     private Gender gender;
     private Integer age;
     private Role role;
-    private List<CarAdvertisementServiceModel> carAdvertisements;
-    private List<PartAdvertisementServiceModel> partAdvertisements;
 
-    public UserServiceModel() {
+    public UserProfileViewModel() {
     }
 
     public String getId() {
@@ -91,21 +87,5 @@ public class UserServiceModel {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public List<CarAdvertisementServiceModel> getCarAdvertisements() {
-        return carAdvertisements;
-    }
-
-    public void setCarAdvertisements(List<CarAdvertisementServiceModel> carAdvertisements) {
-        this.carAdvertisements = carAdvertisements;
-    }
-
-    public List<PartAdvertisementServiceModel> getPartAdvertisements() {
-        return partAdvertisements;
-    }
-
-    public void setPartAdvertisements(List<PartAdvertisementServiceModel> partAdvertisements) {
-        this.partAdvertisements = partAdvertisements;
     }
 }

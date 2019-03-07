@@ -7,18 +7,18 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "part_advertisements")
-public class PartAdvertisment extends Advertisement {
+public class PartAdvertisement extends Advertisement {
     private Part part;
 
-    public PartAdvertisment() {
+    public PartAdvertisement() {
     }
 
-    public PartAdvertisment(BigDecimal price, String description, Address address, Part part) {
-        super(price, description, address);
+    public PartAdvertisement(BigDecimal price, String description, Address address, User user, Part part) {
+        super(price, description, address, user);
         this.part = part;
     }
 
-    @OneToOne(mappedBy = "id", targetEntity = Part.class)
+    @OneToOne(targetEntity = Part.class)
     public Part getPart() {
         return part;
     }

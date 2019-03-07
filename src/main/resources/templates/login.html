@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <h2>Log In</h2>
+        <div class="site-main">
+            <form method="post" th:action="@{/login}">
+                <fieldset>
+                    <label for="username">Enter your username:</label>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Username..." name="username" id="username" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="password">Enter your password:</label>
+                    <div class="input-field">
+                        <i class="fas fa-unlock-alt"></i>
+                        <input type="password" placeholder="Password..." name="password" id="password" required>
+                    </div>
+                </fieldset>
+                <button type="submit" class="button">Submit</button>
+            </form>
+        </div>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

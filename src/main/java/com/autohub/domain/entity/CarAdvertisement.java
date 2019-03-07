@@ -13,12 +13,12 @@ public class CarAdvertisement extends Advertisement {
     public CarAdvertisement() {
     }
 
-    public CarAdvertisement(BigDecimal price, String description, Address address, Car car) {
-        super(price, description, address);
+    public CarAdvertisement(BigDecimal price, String description, Address address, User user, Car car) {
+        super(price, description, address, user);
         this.car = car;
     }
 
-    @OneToOne(targetEntity = Car.class, mappedBy = "id")
+    @OneToOne(targetEntity = Car.class)
     public Car getCar() {
         return car;
     }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <div class="site-main">
+            <article class="index-login-register">
+                <p>Already registered? Click here to <a th:href="@{/login}" class="index-anchor">Log In</a>!</p>
+                <p>You don't have an account yet? You can now <a th:href="@{/register}" class="index-anchor">Register</a> for
+                    free!</p>
+            </article>
+        </div>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "table")
-public class Car {
+@Table(name = "car")
+public class Car extends BaseEntity{
     private String make;
     private String model;
     private CarType type;

@@ -1,0 +1,27 @@
+<header class="site-header" xmlns:th="http://www.thymeleaf.org">
+    <input type="checkbox" id="nav-checkbox" name="nav-checkbox">
+    <h1><a th:href="@{/}">AutoHub</a></h1>
+    <h3>Everything you need to know about cars. In one single page.</h3>
+    <label for="nav-checkbox" id="toggle"><i class="fas fa-bars"></i></label>
+    <nav class="navigation" id="navigation">
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li th:if="${session.username != null}">
+                <a href="#">Blog</a>
+                <ul>
+                    <li><a th:href="@{/articles/news}">News</a></li>
+                    <li><a th:href="@{/articles/sport}">Sports</a></li>
+                    <li><a th:href="@{/articles/tipsandtricks}">Tips &amp; Tricks</a></li>
+                </ul>
+            </li>
+            <li th:if="${session.username != null}"><a th:href="@{/gallery}">Gallery</a></li>
+            <li th:if="${session.username != null}"><a th:href="@{/marketplace}">Marketplace</a></li>
+            <li th:if="${session.username != null}"><a th:href="@{/profile/{id}(id=${session.userId})}">My Profile</a></li>
+            <li><a th:href="@{/about}">About us</a></li>
+            <li th:if="${session.username == null}"><a th:href="@{/login}">Log In</a></li>
+            <li th:if="${session.username == null}"><a th:href="@{/register}">Register</a></li>
+            <li th:if="${session.username != null}"><a th:href="@{/logout}">Logout</a></li>
+            <!--<li><a th:href="@{/contacts}">Contacts</a></li>-->
+        </ul>
+    </nav>
+</header>

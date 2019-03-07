@@ -32,7 +32,7 @@ public class Article extends BaseEntity {
         this.title = title;
     }
 
-    @Column(name = "title", nullable = false, columnDefinition = "text")
+    @Column(name = "content", nullable = false, columnDefinition = "text")
     public String getContent() {
         return content;
     }
@@ -41,7 +41,7 @@ public class Article extends BaseEntity {
         this.content = content;
     }
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     public ArticleType getType() {
         return type;
@@ -51,7 +51,7 @@ public class Article extends BaseEntity {
         this.type = type;
     }
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "is_approved", nullable = false)
     @ColumnDefault("false")
     public boolean isApproved() {
         return isApproved;

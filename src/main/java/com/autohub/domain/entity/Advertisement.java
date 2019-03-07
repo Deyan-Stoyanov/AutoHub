@@ -5,18 +5,19 @@ import java.math.BigDecimal;
 
 @MappedSuperclass
 public abstract class Advertisement extends BaseEntity {
-    private Car car;
     private BigDecimal price;
     private String description;
     private Address address;
+    private User user;
 
     public Advertisement() {
     }
 
-    public Advertisement(BigDecimal price, String description, Address address) {
+    public Advertisement(BigDecimal price, String description, Address address, User user) {
         this.price = price;
         this.description = description;
         this.address = address;
+        this.user = user;
     }
 
     @Column(name = "price", nullable = false)
@@ -44,5 +45,14 @@ public abstract class Advertisement extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @ManyToOne(targetEntity = User.class)
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -2,14 +2,14 @@ package com.autohub.domain.entity;
 
 import com.autohub.domain.enums.Gender;
 import com.autohub.domain.enums.Role;
+import com.autohub.repository.CarAdvertismentRepository;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
-public class User {
+@Entity
+@Table(name = "users")
+public class User extends BaseEntity {
     private String username;
     private String password;
     private String firstName;
@@ -18,12 +18,13 @@ public class User {
     private Gender gender;
     private Integer age;
     private Role role;
-    private List<Advertisement> advertisements;
+    private List<CarAdvertisement> carAdvertisements;
+    private List<PartAdvertisement> partAdvertisements;
 
     public User() {
     }
 
-    public User(String username, String password, String firstName, String lastName, String email, Gender gender, Integer age, Role role, List<Advertisement> advertisements) {
+    public User(String username, String password, String firstName, String lastName, String email, Gender gender, Integer age, Role role, List<CarAdvertisement> carAdvertisements, List<PartAdvertisement> partAdvertisements) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -32,7 +33,8 @@ public class User {
         this.gender = gender;
         this.age = age;
         this.role = role;
-        this.advertisements = advertisements;
+        this.carAdvertisements = carAdvertisements;
+        this.partAdvertisements = partAdvertisements;
     }
 
     @Column(name = "username", nullable = false, unique = true)
@@ -99,15 +101,6 @@ public class User {
         this.age = age;
     }
 
-    @OneToMany(targetEntity = Advertisement.class, mappedBy = "id")
-    public List<Advertisement> getAdvertisements() {
-        return advertisements;
-    }
-
-    public void setAdvertisements(List<Advertisement> advertisements) {
-        this.advertisements = advertisements;
-    }
-
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     public Role getRole() {
@@ -116,5 +109,23 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @OneToMany(targetEntity = CarAdvertisement.class, mappedBy = "id")
+    public List<CarAdvertisement> getCarAdvertisements() {
+        return carAdvertisements;
+    }
+
+    public void setCarAdvertisements(List<CarAdvertisement> carAdvertisements) {
+        this.carAdvertisements = carAdvertisements;
+    }
+
+    @OneToMany(targetEntity = PartAdvertisement.class, mappedBy = "id")
+    public List<PartAdvertisement> getPartAdvertisements() {
+        return partAdvertisements;
+    }
+
+    public void setPartAdvertisements(List<PartAdvertisement> partAdvertisements) {
+        this.partAdvertisements = partAdvertisements;
     }
 }

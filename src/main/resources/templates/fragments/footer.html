@@ -1,0 +1,34 @@
+<footer class="site-footer" xmlns:th="http://www.thymeleaf.org">
+    <div class="site-footer-main">
+        <section class="links">
+            <p>Site Links</p>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/news}">News</a></li>
+                <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/sport}">Sports</a></li>
+                <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/tipsandtricks}">Tips &amp; Tricks</a></li>
+                <li th:if="${session.username != null}"><a th:href="@{/gallery}">Gallery</a></li>
+                <li th:if="${session.username != null}"><a th:href="@{/marketplace}">Marketplace</a></li>
+                <li><a th:href="@{/about}">About us</a></li>
+                <li th:if="${session.username == null}"><a th:href="@{/login}">Login</a></li>
+                <li th:if="${session.username == null}"><a th:href="@{/register}">Register</a></li>
+                <!--<li><a th:href="@{/contacts}">Contacts</a></li>-->
+            </ul>
+        </section>
+        <section class="social">
+            <p>Find us on: </p>
+            <ul>
+                <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="https://www.pinterest.com/" target="_blank"><i class="fab fa-pinterest-p"></i></a></li>
+                <li><a href="https://www.twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a></li>
+                <li><a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                <li><a href="https://plus.google.com/" target="_blank"><i class="fab fa-google-plus-g"></i></a></li>
+            </ul>
+        </section>
+    </div>
+    <div class="site-footer-footer">
+        <p><a th:href="@{/}">&copy; 2018 Autohub</a></p>
+    </div>
+</footer>

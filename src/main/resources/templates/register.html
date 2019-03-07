@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <h2>Register</h2>
+        <div class="site-main">
+            <form method="post" th:action="@{/register}">
+                <fieldset>
+                    <label for="username">Choose your username*:</label>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Username..." name="username" id="username" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="password">Choose your password*:</label>
+                    <div class="input-field">
+                        <i class="fas fa-unlock-alt"></i>
+                        <input type="password" placeholder="Password..." name="password" id="password" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="confirmPassword">Confirm your password*:</label>
+                    <div class="input-field">
+                        <i class="fas fa-unlock-alt"></i>
+                        <input type="password" placeholder="Confirm Password..." name="confirmPassword"
+                               id="confirmPassword" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="email">Enter your email*:</label>
+                    <div class="input-field">
+                        <i class="fas fa-at"></i>
+                        <input type="email" placeholder="Email..." name="email" id="email" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="firstName">Enter your first name:</label>
+                    <div class="input-field">
+                        <i class="fas fa-users"></i>
+                        <input type="text" placeholder="First Name..." name="firstName" id="firstName" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="lastName">Enter your last name:</label>
+                    <div class="input-field">
+                        <i class="fas fa-users"></i>
+                        <input type="text" placeholder="Last Name..." name="lastName" id="lastName" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="age">Enter your age:</label>
+                    <div class="input-field">
+                        <i class="fas fa-sort-numeric-up"></i>
+                        <input type="text" placeholder="Age..." name="age" id="age" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="gender">Enter your gender:</label>
+                    <div class="input-field">
+                        <i class="fas fa-male"></i>
+                        <i class="fas fa-female"></i>
+                        <select id="gender" name="gender">
+                            <option selected disabled>Gender...</option>
+                            <option th:value="MALE">Male</option>
+                            <option th:value="FEMALE">Female</option>
+                        </select>
+                    </div>
+                </fieldset>
+                <button type="submit" class="button">Submit</button>
+            </form>
+        </div>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

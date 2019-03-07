@@ -5,6 +5,7 @@ import com.autohub.domain.enums.Gender;
 public class UserRegisterBindingModel {
     private String username;
     private String password;
+    private String confirmPassword;
     private String firstName;
     private String lastName;
     private String email;
@@ -68,5 +69,13 @@ public class UserRegisterBindingModel {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

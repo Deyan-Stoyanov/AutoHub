@@ -1,0 +1,89 @@
+.site-content {
+    background-color: #fff9d3
+}
+
+.site-content .site-main .index-articles .articles-buttons, .site-content .site-main > article {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center
+}
+
+.site-content .site-main > article {
+    height: 55vh;
+    max-height: 100vh;
+    width: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column
+}
+
+.site-content .site-main > article.index-login-register p{
+   margin-bottom: 2rem;
+}
+
+.site-content .site-main > article p {
+    margin-bottom: 6rem;
+    text-align: center;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, .85);
+    border-radius: 25px
+}
+
+.site-content .site-main .index-articles {
+    background: linear-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2)), url('../images/home-articles.jpg') bottom no-repeat;
+    background-size: cover
+}
+
+.site-content .site-main .index-articles .articles-buttons {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.site-content .site-main .index-gallery {
+    background: linear-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2)), url('../images/home-gallery.jpg') center no-repeat;
+    background-size: cover
+}
+
+.site-content .site-main .index-marketplace {
+    background: linear-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2)), url('../images/home-marketplace.jpg') center no-repeat;
+    background-size: cover
+}
+
+.site-content .site-main .index-contacts-about {
+    background: linear-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2)), url('../images/home-contacts.jpg') no-repeat center right;
+    background-size: cover
+}
+
+.site-content .site-main .index-login-register {
+    background: linear-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2)), url('../images/index-background.jpeg') center right no-repeat;
+    background-size: cover
+}
+
+
+a.index-anchor{
+    color: #f02c2c;
+}
+
+a.index-anchor:hover {
+    color: #1c64ff;
+    border-bottom: 1px dashed #a30606;
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out
+}
+
+@media screen and (max-width: 780px) {
+    .site-content .site-main > article {
+        height: 70vh
+    }
+
+    .site-content .site-main > article p {
+        margin: 1rem 1rem 2rem
+    }
+}
