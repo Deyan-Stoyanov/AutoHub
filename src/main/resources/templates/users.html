@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <div th:each="user : ${users}" class="users d-flex justify-content-center flex-wrap">
+            <div class="card w-75 my-3">
+                <div class="card-header">
+                    <a th:text="${user.getUsername()}" th:href="@{/profile/{id}(id=${user.getId()})}"></a>
+                    <div class="user-buttons buttons-container">
+                        <form th:action="@{/profile/switch/{id}(id=${user.getId()})}" method="post">
+                            <button class="btn btn-success" th:if="${user.getRole().name() == 'USER'}" th:onclick="">
+                                Promote
+                            </button>
+                            <button class="btn btn-info" th:if="${user.getRole().name() == 'ADMIN'}" th:onclick="">
+                                Downgrade
+                            </button>
+                        </form>
+                        <a class="btn btn-danger" th:href="@{/profile/delete/{id}(id=${user.getId()})}">Delete</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="user-info"
+                         th:text="${user.getFirstName()} + ' ' +${user.getLastName()} + ', ' + ${user.getAge()}"></span>
+                    <div class="user-email" th:text="${user.getEmail()}"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

@@ -9,6 +9,7 @@ public class UserProfileViewModel {
     private String password;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private String email;
     private Gender gender;
     private Integer age;
@@ -87,5 +88,13 @@ public class UserProfileViewModel {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

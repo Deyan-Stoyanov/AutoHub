@@ -2,7 +2,6 @@ package com.autohub.domain.entity;
 
 import com.autohub.domain.enums.Gender;
 import com.autohub.domain.enums.Role;
-import com.autohub.repository.CarAdvertismentRepository;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +14,7 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private String email;
+    private String phoneNumber;
     private Gender gender;
     private Integer age;
     private Role role;
@@ -24,12 +24,13 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(String username, String password, String firstName, String lastName, String email, Gender gender, Integer age, Role role, List<CarAdvertisement> carAdvertisements, List<PartAdvertisement> partAdvertisements) {
+    public User(String username, String password, String firstName, String lastName, String email, String phoneNumber, Gender gender, Integer age, Role role, List<CarAdvertisement> carAdvertisements, List<PartAdvertisement> partAdvertisements) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.age = age;
         this.role = role;
@@ -127,5 +128,14 @@ public class User extends BaseEntity {
 
     public void setPartAdvertisements(List<PartAdvertisement> partAdvertisements) {
         this.partAdvertisements = partAdvertisements;
+    }
+
+    @Column(name = "phone_number")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

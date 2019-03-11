@@ -1,15 +1,15 @@
 ul.listing.posts {
-    margin-top: 2rem
+    margin-top: 2rem;
 }
 
 ul.listing.posts > li {
     padding: 2rem 0;
-    text-align: center
+    text-align: center;
 }
 
 ul.listing.posts > li h3, ul.listing.posts > li span.date {
     display: block;
-    padding: 1rem
+    padding: 1rem;
 }
 
 ul.listing.posts > li > div {
@@ -25,24 +25,24 @@ ul.listing.posts > li > div {
     align-items: center;
     justify-content: space-around;
     -ms-flex-wrap: wrap;
-    flex-wrap: wrap
+    flex-wrap: wrap;
 }
 
 ul.listing.posts > li > div img {
     max-width: 45%;
     height: auto;
     margin: 1rem;
-    border: 2px solid rgba(0, 0, 0, .5)
+    border: 2px solid rgba(0, 0, 0, .5);
 }
 
 ul.listing.posts > li > div div {
     max-width: 40%;
     margin: 1rem 1rem 1rem 2rem;
-    text-align: left
+    text-align: left;
 }
 
 ul.listing.posts > li > div div p {
-    padding-bottom: 1rem
+    padding-bottom: 1rem;
 }
 
 ul.listing.posts > li:not(:last-child):after {
@@ -53,7 +53,7 @@ ul.listing.posts > li:not(:last-child):after {
     width: 30rem;
     max-width: 105%;
     margin-top: 1rem;
-    background-color: #000
+    background-color: #000;
 }
 
 ul.listing.posts:before {
@@ -64,21 +64,21 @@ ul.listing.posts:before {
     width: 30rem;
     max-width: 100%;
     margin-top: -1rem;
-    background-color: #000
+    background-color: #000;
 }
 
 @media screen and (max-width: 640px) {
     ul.listing.posts > li > div div, ul.listing.posts > li > div img {
-        max-width: 80%
+        max-width: 80%;
     }
 
     ul.listing.posts > li:not(:last-child):after {
         left: 10vw;
-        width: 80vw
+        width: 80vw;
     }
 
     ul.listing.posts:before {
         left: 0;
-        width: 100%
+        width: 100%;
     }
 }

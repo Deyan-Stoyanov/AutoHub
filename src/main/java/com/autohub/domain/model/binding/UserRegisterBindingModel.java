@@ -8,6 +8,7 @@ public class UserRegisterBindingModel {
     private String confirmPassword;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private String email;
     private Gender gender;
     private Integer age;
@@ -77,5 +78,13 @@ public class UserRegisterBindingModel {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

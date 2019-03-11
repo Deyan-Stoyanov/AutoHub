@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <div class="about">
+            <h2>About us</h2>
+            <p>We started this platform in May 2015 as a universal place for car enthusiasts. It is one of the few of
+                its kind on the Internet as it does not only include the latest news and images, but also a marketplace.
+                This way we blend several sites in a single web platform for a better user experience. Started only as a
+                hobby, it quickly developed to the multifunctional platform it is today.</p>
+            <div class="team">
+                <h3>Our team</h3>
+                <p>We are a team of passionate and hard-working young professionals. We are happy to introduce ourselves
+                    to you.</p>
+                <div class="team-container">
+                    <div class="person">
+                        <img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Jaso, Front-End Developer">
+                        <p class="name">Jason</p>
+                        <p class="occupation">Front-End Developer</p>
+                    </div>
+                    <div class="person">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Ashley, Graphic Designer">
+                        <p class="name">Ashley</p>
+                        <p class="occupation">Graphic Designer</p>
+                    </div>
+                    <div class="person">
+                        <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Nick, Back-End Developer">
+                        <p class="name">Nick</p>
+                        <p class="occupation">Back-End Developer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

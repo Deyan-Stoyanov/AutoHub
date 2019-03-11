@@ -12,16 +12,18 @@
                     <li><a th:href="@{/articles/news}">News</a></li>
                     <li><a th:href="@{/articles/sport}">Sports</a></li>
                     <li><a th:href="@{/articles/tipsandtricks}">Tips &amp; Tricks</a></li>
+                    <li th:if="${session.isAdmin == true}"><a th:href="@{/admin/articles/create}"><i class="fas fa-plus"></i>Add new article</a></li>
                 </ul>
             </li>
             <li th:if="${session.username != null}"><a th:href="@{/gallery}">Gallery</a></li>
             <li th:if="${session.username != null}"><a th:href="@{/marketplace}">Marketplace</a></li>
             <li th:if="${session.username != null}"><a th:href="@{/profile/{id}(id=${session.userId})}">My Profile</a></li>
             <li><a th:href="@{/about}">About us</a></li>
+            <li><a th:href="@{/contacts}">Contact us</a></li>
+            <li th:if="${session.isAdmin == true}"><a th:href="@{/admin/users}">Users</a></li>
             <li th:if="${session.username == null}"><a th:href="@{/login}">Log In</a></li>
             <li th:if="${session.username == null}"><a th:href="@{/register}">Register</a></li>
             <li th:if="${session.username != null}"><a th:href="@{/logout}">Logout</a></li>
-            <!--<li><a th:href="@{/contacts}">Contacts</a></li>-->
         </ul>
     </nav>
 </header>

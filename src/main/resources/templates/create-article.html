@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <h2>Create Article</h2>
+        <div class="site-main">
+            <form method="post" th:action="@{/admin/articles/create}">
+                <fieldset>
+                    <label for="title">Choose title*:</label>
+                    <div class="input-field">
+                        <input type="text" placeholder="Title..." name="title" id="title" required>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="password">Choose your password*:</label>
+                    <div class="input-field">
+                        <i class="fas fa-unlock-alt"></i>
+                        <textarea rows="40" cols="10" type="text" placeholder="Password..." name="password"
+                                  id="password" required></textarea>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="type">Enter your gender:</label>
+                    <div class="input-field">
+                        <i class="fas fa-male"></i>
+                        <i class="fas fa-female"></i>
+                        <select id="type" name="type" required>
+                            <option selected disabled>Type...</option>
+                            <option th:value="NEWS">News</option>
+                            <option th:value="SPORTS">Sports</option>
+                            <option th:value="TIPS_AND_TRICKS">Tips &amp; Tricks</option>
+                        </select>
+                    </div>
+                </fieldset>
+                <button type="submit" class="button">Submit</button>
+            </form>
+        </div>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

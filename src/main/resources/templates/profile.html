@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <div class="profile">
+            <img th:src="@{/images/male.png}" alt="profile picture" th:if="${user.getGender().name() == 'MALE'}"/>
+            <img th:src="@{/images/female.png}" alt="profile picture" th:if="${user.getGender().name() == 'FEMALE'}"/>
+            <h3 class="full-name" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h3>
+            <h4 class="username" th:text="${user.getUsername()}"></h4>
+            <p class="username" th:text="${user.getEmail()}"></p>
+            <p class="username" th:text="${user.getPhoneNumber()}"></p>
+            <p class="username" th:text="${user.getAge()}"></p>
+            <div class="buttons-container" th:if="${user.getUsername() == session.username}">
+                <a th:href="@{/profile/edit/{id}(id=${user.getId()})}" class="button">Edit profile</a>
+                <a th:href="@{/profile/delete/{id}(id=${user.getId()})}" class="button button-danger">Delete profile</a>
+            </div>
+        </div>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

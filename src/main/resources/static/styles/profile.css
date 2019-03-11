@@ -1,0 +1,15 @@
+div.profile {
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.profile p,
+div.profile h3,
+div.profile h4,
+div.profile img{
+    text-align: center;
+    margin: 1rem;
+}

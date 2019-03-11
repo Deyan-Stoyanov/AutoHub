@@ -2,10 +2,22 @@ package com.autohub.service.interfaces;
 
 import com.autohub.domain.model.service.UserServiceModel;
 
-public interface UserService {
-    boolean register(UserServiceModel map);
+import java.util.List;
 
-    boolean login(UserServiceModel userServiceModel);
+public interface UserService {
+    UserServiceModel register(UserServiceModel map);
+
+    UserServiceModel login(UserServiceModel userServiceModel);
+
+    List<UserServiceModel> findAll();
 
     UserServiceModel findById(String id);
+
+    UserServiceModel findByUsername(String username);
+
+    UserServiceModel update(UserServiceModel userServiceModel);
+
+    UserServiceModel deleteById(String id);
+
+    UserServiceModel switchRoleById(String id);
 }

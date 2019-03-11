@@ -10,9 +10,10 @@
                 <li th:if="${session.username != null}"><a th:href="@{/gallery}">Gallery</a></li>
                 <li th:if="${session.username != null}"><a th:href="@{/marketplace}">Marketplace</a></li>
                 <li><a th:href="@{/about}">About us</a></li>
+                <li th:if="${session.username != null}"><a th:href="@{/profile/{id}(id=${session.userId})}">My Profile</a></li>
                 <li th:if="${session.username == null}"><a th:href="@{/login}">Login</a></li>
                 <li th:if="${session.username == null}"><a th:href="@{/register}">Register</a></li>
-                <!--<li><a th:href="@{/contacts}">Contacts</a></li>-->
+                <li><a th:href="@{/contacts}">Contacts</a></li>
             </ul>
         </section>
         <section class="social">

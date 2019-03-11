@@ -5,41 +5,41 @@
     background-size: cover;
     padding-bottom: 2rem;
     overflow: hidden;
-    text-align: center
+    text-align: center;
 }
 
 .contacts h2 {
-    padding-top: 4rem
+    padding-top: 4rem;
 }
 
 .contacts > p {
-    padding: 2rem 0
+    padding: 2rem 0;
 }
 
 .contacts i {
     color: rgba(0, 0, 0, .6);
-    font-size: 1.2rem
+    font-size: 1.2rem;
 }
 
 .contacts-container div p {
-    display: inline
+    display: inline;
 }
 
 .contacts-container div {
     padding: 1rem;
-    font-size: 120%
+    font-size: 120%;
 }
 
 .contacts-container div i {
-    padding-right: 2rem
+    padding-right: 2rem;
 }
 
 @media screen and (max-width: 640px) {
     .contacts-container div {
-        padding-left: 0
+        padding-left: 0;
     }
 
     .contacts-container div i {
-        padding-right: .5rem
+        padding-right: .5rem;
     }
 }

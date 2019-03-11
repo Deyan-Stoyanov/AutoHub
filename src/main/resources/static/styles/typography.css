@@ -48,6 +48,10 @@ html input, html textarea {
     font-weight: lighter
 }
 
+p.danger {
+    color: #f02c2c;
+}
+
 @media screen and (min-width: 480px) {
     html {
         font-size: 13px;

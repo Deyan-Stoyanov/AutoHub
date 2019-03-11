@@ -89,6 +89,11 @@
     animation-delay: 1.2s
 }
 
+.site-header .navigation ul li:nth-child(8) {
+    -webkit-animation-delay: 1.4s;
+    animation-delay: 1.4s
+}
+
 .site-header .navigation ul li:active > a, .site-header .navigation ul li:hover > a {
     color: #a30606;
     border-top: 1px solid #a30606;

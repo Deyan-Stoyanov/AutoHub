@@ -11,6 +11,7 @@ public class UserServiceModel {
     private String password;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private String email;
     private Gender gender;
     private Integer age;
@@ -107,5 +108,13 @@ public class UserServiceModel {
 
     public void setPartAdvertisements(List<PartAdvertisementServiceModel> partAdvertisements) {
         this.partAdvertisements = partAdvertisements;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
