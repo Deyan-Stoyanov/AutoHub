@@ -1,16 +1,16 @@
-package com.autohub.domain.model.binding;
+package com.autohub.domain.model.view;
 
-import com.autohub.domain.enums.ArticleType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class ArticleCreateBindingModel {
+public class ArticleViewModel {
+    private String id;
     private String title;
     private String content;
-    private ArticleType type;
     private Date creationDate;
 
-    public ArticleCreateBindingModel() {
+    public ArticleViewModel() {
     }
 
     public String getTitle() {
@@ -29,19 +29,20 @@ public class ArticleCreateBindingModel {
         this.content = content;
     }
 
-    public ArticleType getType() {
-        return type;
+    public String getId() {
+        return id;
     }
 
-    public void setType(ArticleType type) {
-        this.type = type;
+    public void setId(String id) {
+        this.id = id;
     }
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate() {
-        this.creationDate = new Date();
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

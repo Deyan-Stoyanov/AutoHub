@@ -81,7 +81,7 @@ form textarea {
     background-color: #ffeabe;
     padding: 2rem 2rem 2rem 4rem;
     margin-bottom: 2rem;
-    max-width: 60%
+    width: 100%
 }
 
 form .input-field {
@@ -94,7 +94,6 @@ form label {
 
 @media screen and (max-width: 780px) {
     form textarea {
-        max-width: 70%;
         width: 70vw;
         margin: 1rem 0;
         position: relative

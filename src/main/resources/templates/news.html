@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
 <body>
-
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <h2>News</h2>
+        <ul class="listing posts" th:each="article : ${articles}">
+            <li>
+                <h3 class="title" th:text="${article.getTitle()}"></h3>
+                <span class="date" th:text="${#dates.format(article.getCreationDate(), 'dd-MMM-yyyy')}"></span>
+                <div th:text="${article.getContent()}"></div>
+            </li>
+        </ul>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
 </body>
 </html>

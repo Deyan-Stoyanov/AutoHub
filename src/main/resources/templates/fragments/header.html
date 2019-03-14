@@ -10,8 +10,8 @@
                 <a href="#">Blog</a>
                 <ul>
                     <li><a th:href="@{/articles/news}">News</a></li>
-                    <li><a th:href="@{/articles/sport}">Sports</a></li>
-                    <li><a th:href="@{/articles/tipsandtricks}">Tips &amp; Tricks</a></li>
+                    <li><a th:href="@{/articles/sports}">Sports</a></li>
+                    <li><a th:href="@{/articles/tips-and-tricks}">Tips &amp; Tricks</a></li>
                     <li th:if="${session.isAdmin == true}"><a th:href="@{/admin/articles/create}"><i class="fas fa-plus"></i>Add new article</a></li>
                 </ul>
             </li>

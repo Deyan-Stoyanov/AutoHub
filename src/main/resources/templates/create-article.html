@@ -16,22 +16,22 @@
                 <fieldset>
                     <label for="title">Choose title*:</label>
                     <div class="input-field">
+                        <i class="far fa-newspaper"></i>
                         <input type="text" placeholder="Title..." name="title" id="title" required>
                     </div>
                 </fieldset>
                 <fieldset>
-                    <label for="password">Choose your password*:</label>
+                    <label for="content">Enter article content:</label>
                     <div class="input-field">
-                        <i class="fas fa-unlock-alt"></i>
-                        <textarea rows="40" cols="10" type="text" placeholder="Password..." name="password"
-                                  id="password" required></textarea>
+                        <i class="far fa-newspaper"></i>
+                        <textarea rows="12" cols="60" type="text" placeholder="Content..." name="content"
+                                  id="content" required></textarea>
                     </div>
                 </fieldset>
                 <fieldset>
-                    <label for="type">Enter your gender:</label>
+                    <label for="type">Enter article type:</label>
                     <div class="input-field">
-                        <i class="fas fa-male"></i>
-                        <i class="fas fa-female"></i>
+                        <i class="far fa-newspaper"></i>
                         <select id="type" name="type" required>
                             <option selected disabled>Type...</option>
                             <option th:value="NEWS">News</option>
@@ -40,7 +40,7 @@
                         </select>
                     </div>
                 </fieldset>
-                <button type="submit" class="button">Submit</button>
+                <button type="submit" class="button">Create</button>
             </form>
         </div>
     </main>

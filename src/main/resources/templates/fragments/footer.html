@@ -5,8 +5,8 @@
             <ul>
                 <li><a th:href="@{/}">Home</a></li>
                 <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/news}">News</a></li>
-                <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/sport}">Sports</a></li>
-                <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/tipsandtricks}">Tips &amp; Tricks</a></li>
+                <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/sports}">Sports</a></li>
+                <li class="footer-articles-li" th:if="${session.username != null}"><a th:href="@{/articles/tips-and-tricks}">Tips &amp; Tricks</a></li>
                 <li th:if="${session.username != null}"><a th:href="@{/gallery}">Gallery</a></li>
                 <li th:if="${session.username != null}"><a th:href="@{/marketplace}">Marketplace</a></li>
                 <li><a th:href="@{/about}">About us</a></li>

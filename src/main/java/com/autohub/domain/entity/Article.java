@@ -1,9 +1,10 @@
 package com.autohub.domain.entity;
 
 import com.autohub.domain.enums.ArticleType;
-import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "articles")
@@ -11,16 +12,16 @@ public class Article extends BaseEntity {
     private String title;
     private String content;
     private ArticleType type;
-    private boolean isApproved;
+    private Date creationDate;
 
     public Article() {
     }
 
-    public Article(String title, String content, ArticleType type, boolean isApproved) {
+    public Article(String title, String content, ArticleType type, Date creationDate) {
         this.title = title;
         this.content = content;
         this.type = type;
-        this.isApproved = isApproved;
+        this.creationDate = creationDate;
     }
 
     @Column(name = "title", nullable = false)
@@ -51,13 +52,12 @@ public class Article extends BaseEntity {
         this.type = type;
     }
 
-    @Column(name = "is_approved", nullable = false)
-    @ColumnDefault("false")
-    public boolean isApproved() {
-        return isApproved;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setApproved(boolean approved) {
-        isApproved = approved;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }
