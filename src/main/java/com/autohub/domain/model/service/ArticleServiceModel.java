@@ -5,22 +5,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class ArticleServiceModel {
-    private String id;
+public class ArticleServiceModel extends BaseServiceModel{
     private String title;
     private String content;
     private ArticleType type;
     private Date creationDate;
 
     public ArticleServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {

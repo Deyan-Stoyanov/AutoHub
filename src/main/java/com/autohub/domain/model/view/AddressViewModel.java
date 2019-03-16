@@ -1,11 +1,11 @@
-package com.autohub.domain.model.service;
+package com.autohub.domain.model.view;
 
-public class AddressServiceModel extends BaseServiceModel{
+public class AddressViewModel {
     private String country;
     private String province;
     private String city;
 
-    public AddressServiceModel() {
+    public AddressViewModel() {
     }
 
     public String getCountry() {

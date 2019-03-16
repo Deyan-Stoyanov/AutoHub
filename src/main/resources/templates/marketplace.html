@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
 <body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <div class="site-main">
+            <h2>Marketplace</h2>
+            <div class="buttons-container">
+                <a th:href="@{/marketplace/advertisements/publish}" class="button">Publish</a>
+                <a th:href="@{/marketplace/advertisements/{id}(id=${session.username})}" class="button">Publish</a>
+                <a th:href="@{/marketplace/advertisements/pending}" class="button">Pending</a>
+            </div>
+            <div class="marketplace">
+                <ul class="listing marketplace" id="list-cars" th:each="ad : ${carAds}">
+                    <li>
+                        <h4 class="title" th:text="${ad.getCar().getMake() + ' ' + ad.getCar().getModel()}"></h4>
+                        <div class="car-info">
+                            <p th:text="${ad.getCar().getEngine().getVolume() + '' + ad.getCar().getEngine().getModification() + ', ' + ad.getCar().getEngine().getHorsepower() +'HP'}"></p>
+                            <p th:text="${ad.getPrice() + ' $'}"></p>
+                        </div>
+                        <a class="button" th:href="@{/marketplace/advertisements/details/{id}(id=${ad.getId()})}"></a>
+                    </li>
+                </ul>
+                <ul class="listing marketplace" id="list-parts" th:each="ad : ${partAds}" style="display:none">
+                    <li>
+                        <h4 class="title" th:text="${ad.getPart().getName()}"></h4>
+                        <div class="car-info">
+                            <p th:text="${ad.getPart().getManufacturer()}"></p>
+                            <p th:text="${ad.getPrice() + ' $'}"></p>
+                        </div>
+                        <a class="button" th:href="@{/marketplace/advertisements/details/{id}(id=${ad.getId()})}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
 </body>
 </html>

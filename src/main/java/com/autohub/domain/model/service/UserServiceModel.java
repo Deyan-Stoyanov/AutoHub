@@ -5,8 +5,7 @@ import com.autohub.domain.enums.Role;
 
 import java.util.List;
 
-public class UserServiceModel {
-    private String id;
+public class UserServiceModel extends BaseServiceModel{
     private String username;
     private String password;
     private String firstName;
@@ -20,14 +19,6 @@ public class UserServiceModel {
     private List<PartAdvertisementServiceModel> partAdvertisements;
 
     public UserServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {

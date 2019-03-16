@@ -1,16 +1,16 @@
-package com.autohub.domain.model.service;
+package com.autohub.domain.model.view;
 
 import com.autohub.domain.enums.FuelType;
 
 import java.math.BigDecimal;
 
-public class EngineServiceModel extends BaseServiceModel{
+public class EngineViewModel {
     private BigDecimal volume;
     private Long horsepower;
     private FuelType fuelType;
     private String modification;
 
-    public EngineServiceModel() {
+    public EngineViewModel() {
     }
 
     public BigDecimal getVolume() {

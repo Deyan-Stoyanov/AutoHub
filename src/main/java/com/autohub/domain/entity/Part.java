@@ -8,13 +8,15 @@ import javax.persistence.Table;
 @Table(name = "parts")
 public class Part extends BaseEntity {
     private String name;
+    private String manufacturer;
     private String carSuitableFor;
 
     public Part() {
     }
 
-    public Part(String name, String carSuitableFor) {
+    public Part(String name, String producer, String carSuitableFor) {
         this.name = name;
+        this.manufacturer = producer;
         this.carSuitableFor = carSuitableFor;
     }
 
@@ -34,5 +36,14 @@ public class Part extends BaseEntity {
 
     public void setCarSuitableFor(String carSuitableFor) {
         this.carSuitableFor = carSuitableFor;
+    }
+
+    @Column(name = "manufacturer")
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 }

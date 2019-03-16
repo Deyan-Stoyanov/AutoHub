@@ -1,19 +1,19 @@
-package com.autohub.domain.model.service;
+package com.autohub.domain.model.view;
 
 import com.autohub.domain.enums.CarType;
 
 import java.util.Date;
 
-public class CarServiceModel extends BaseServiceModel{
+public class CarViewModel {
     private String make;
     private String model;
     private CarType type;
-    private EngineServiceModel engine;
+    private EngineViewModel engine;
     private Date productionDate;
     private Long mileage;
     private String color;
 
-    public CarServiceModel() {
+    public CarViewModel() {
     }
 
     public String getMake() {
@@ -40,11 +40,11 @@ public class CarServiceModel extends BaseServiceModel{
         this.type = type;
     }
 
-    public EngineServiceModel getEngine() {
+    public EngineViewModel getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineServiceModel engine) {
+    public void setEngine(EngineViewModel engine) {
         this.engine = engine;
     }
 

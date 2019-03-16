@@ -1,11 +1,11 @@
-package com.autohub.domain.model.service;
+package com.autohub.domain.model.view;
 
-public class PartServiceModel extends BaseServiceModel {
+public class PartViewModel {
     private String name;
     private String manufacturer;
     private String carSuitableFor;
 
-    public PartServiceModel() {
+    public PartViewModel() {
     }
 
     public String getName() {
@@ -32,3 +32,4 @@ public class PartServiceModel extends BaseServiceModel {
         this.carSuitableFor = carSuitableFor;
     }
 }
+
