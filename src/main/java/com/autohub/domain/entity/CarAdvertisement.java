@@ -1,8 +1,6 @@
 package com.autohub.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -18,7 +16,7 @@ public class CarAdvertisement extends Advertisement {
         this.car = car;
     }
 
-    @OneToOne(targetEntity = Car.class)
+    @OneToOne(targetEntity = Car.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     public Car getCar() {
         return car;
     }

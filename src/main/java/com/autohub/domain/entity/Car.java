@@ -57,7 +57,7 @@ public class Car extends BaseEntity{
         this.type = type;
     }
 
-    @ManyToOne(targetEntity = Engine.class)
+    @ManyToOne(targetEntity = Engine.class, cascade = CascadeType.MERGE)
     public Engine getEngine() {
         return engine;
     }

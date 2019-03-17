@@ -13,9 +13,21 @@
         <div class="site-main">
             <h2>Marketplace</h2>
             <div class="buttons-container">
-                <a th:href="@{/marketplace/advertisements/publish}" class="button">Publish</a>
-                <a th:href="@{/marketplace/advertisements/{id}(id=${session.username})}" class="button">Publish</a>
+                <a th:href="@{/marketplace/advertisements/publish/car}" class="button">Add Car Advertisement</a>
+                <a th:href="@{/marketplace/advertisements/publish/part}" class="button">Add Part Advertisement</a>
+                <a th:href="@{/marketplace/advertisements/{id}(id=${session.username})}" class="button">My
+                    Advertisements</a>
                 <a th:href="@{/marketplace/advertisements/pending}" class="button">Pending</a>
+            </div>
+            <div class="radio-choice flex-row justify-content-center">
+                <fieldset class="flex-column">
+                    <label for="chooseCars">View all Cars</label>
+                    <input type="radio" name="choose-category" id="chooseCars">
+                </fieldset>
+                <fieldset class="flex-column">
+                    <label for="chooseParts">View all Parts</label>
+                    <input type="radio" name="choose-category" id="chooseParts">
+                </fieldset>
             </div>
             <div class="marketplace">
                 <ul class="listing marketplace" id="list-cars" th:each="ad : ${carAds}">
@@ -35,7 +47,7 @@
                             <p th:text="${ad.getPart().getManufacturer()}"></p>
                             <p th:text="${ad.getPrice() + ' $'}"></p>
                         </div>
-                        <a class="button" th:href="@{/marketplace/advertisements/details/{id}(id=${ad.getId()})}"></a>
+                        <a class="button" th:href="@{/marketplace/advertisements/details/{id}(id=${ad.getId()})}">Details</a>
                     </li>
                 </ul>
             </div>

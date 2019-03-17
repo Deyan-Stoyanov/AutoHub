@@ -1,5 +1,7 @@
 package com.autohub.domain.entity;
 
+import com.autohub.domain.enums.AdvertisementStatus;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -9,8 +11,10 @@ public abstract class Advertisement extends BaseEntity {
     private String description;
     private Address address;
     private User user;
+    private AdvertisementStatus status;
 
     public Advertisement() {
+        this.setStatus(AdvertisementStatus.PENDING);
     }
 
     public Advertisement(BigDecimal price, String description, Address address, User user) {
@@ -18,6 +22,7 @@ public abstract class Advertisement extends BaseEntity {
         this.description = description;
         this.address = address;
         this.user = user;
+        this.setStatus(AdvertisementStatus.PENDING);
     }
 
     @Column(name = "price", nullable = false)
@@ -29,7 +34,7 @@ public abstract class Advertisement extends BaseEntity {
         this.price = price;
     }
 
-    @ManyToOne(targetEntity = Address.class)
+    @ManyToOne(targetEntity = Address.class, cascade = CascadeType.MERGE)
     public Address getAddress() {
         return address;
     }
@@ -47,12 +52,22 @@ public abstract class Advertisement extends BaseEntity {
         this.description = description;
     }
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.MERGE)
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    public AdvertisementStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AdvertisementStatus status) {
+        this.status = status;
     }
 }

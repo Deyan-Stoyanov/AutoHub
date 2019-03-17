@@ -112,7 +112,7 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
-    @OneToMany(targetEntity = CarAdvertisement.class, mappedBy = "id")
+    @OneToMany(targetEntity = CarAdvertisement.class, mappedBy = "user", cascade = CascadeType.MERGE)
     public List<CarAdvertisement> getCarAdvertisements() {
         return carAdvertisements;
     }
@@ -121,7 +121,7 @@ public class User extends BaseEntity {
         this.carAdvertisements = carAdvertisements;
     }
 
-    @OneToMany(targetEntity = PartAdvertisement.class, mappedBy = "id")
+    @OneToMany(targetEntity = PartAdvertisement.class, mappedBy = "user", cascade = CascadeType.MERGE)
     public List<PartAdvertisement> getPartAdvertisements() {
         return partAdvertisements;
     }

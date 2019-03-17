@@ -1,5 +1,7 @@
 package com.autohub.domain.model.view;
 
+import com.autohub.domain.enums.AdvertisementStatus;
+
 import java.math.BigDecimal;
 
 public class CarAdvertisementViewModel {
@@ -9,6 +11,7 @@ public class CarAdvertisementViewModel {
     private AddressViewModel address;
     private UserProfileViewModel user;
     private CarViewModel car;
+    private AdvertisementStatus status;
 
     public CarAdvertisementViewModel() {
     }
@@ -59,5 +62,13 @@ public class CarAdvertisementViewModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public AdvertisementStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AdvertisementStatus status) {
+        this.status = status;
     }
 }

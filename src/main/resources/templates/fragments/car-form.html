@@ -1,0 +1,122 @@
+<div class="car-form" xmlns:th="http://www.thymeleaf.org" lang="en">
+    <p>Car Info</p>
+    <fieldset>
+        <label for="make">Make*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="text" placeholder="Make..." name="make" id="make" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="model">Model*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="text" placeholder="Model..." name="model" id="model" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="carType">Car Type</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <select id="carType" name="carType" required>
+                <option selected disabled>Select Type...</option>
+                <th:block th:each="carType: ${carTypes}">
+                    <option th:text="${carType}"></option>
+                </th:block>
+            </select>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="volume">Engine volume*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="number" step="0.01" placeholder="Engine volume..." name="volume" id="volume" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="horsepower">Engine horsepower*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="number" step="1" placeholder="Engine horsepower..." name="horsepower" id="horsepower" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="fuelType">Fuel Type</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <select id="fuelType" name="fuelType" required>
+                <option selected disabled>Select Fuel Type...</option>
+                <th:block th:each="carType: ${fuelTypes}">
+                    <option th:text="${carType}"></option>
+                </th:block>
+            </select>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="modification">Engine modification*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="text" placeholder="Engine modification..." name="modification" id="modification" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="productionDate">Production date*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="date" placeholder="Engine Production Date..." name="productionDate" id="productionDate"
+                   required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="mileage">Mileage*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="number" step="1" placeholder="Engine Mileage..." name="mileage" id="mileage" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="color">Color*:</label>
+        <div class="input-field">
+            <i class="fas fa-car"></i>
+            <input type="text" placeholder="Color..." name="color" id="color" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="price">Price*:</label>
+        <div class="input-field">
+            <i class="fas fa-dollar-sign"></i>
+            <input type="number" step="0.01" placeholder="Price..." name="price" id="price" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="description">Description*:</label>
+        <div class="input-field">
+            <i class="far fa-file-alt"></i>
+            <textarea rows="12" cols="60" placeholder="Description..." name="description"
+                      id="description" required></textarea>
+        </div>
+    </fieldset>
+    <p>Address</p>
+    <fieldset>
+        <label for="country">Country*:</label>
+        <div class="input-field">
+            <i class="fas fa-map-marked-alt"></i>
+            <input type="text" placeholder="Country..." name="country" id="country" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="province">Province*:</label>
+        <div class="input-field">
+            <i class="fas fa-map-marked-alt"></i>
+            <input type="text" placeholder="Province..." name="province" id="province" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="city">City*:</label>
+        <div class="input-field">
+            <i class="fas fa-map-marked-alt"></i>
+            <input type="text" placeholder="City..." name="city" id="city" required>
+        </div>
+    </fieldset>
+    <button type="submit" class="button">Create Advertisement</button>
+</div>
