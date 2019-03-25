@@ -31,11 +31,7 @@ public class ArticleController {
 
     @GetMapping("/admin/articles/create")
     public ModelAndView createArticle(ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("username") == null || !((boolean) session.getAttribute("isAdmin"))) {
-            modelAndView.setViewName("redirect:/home");
-        } else {
-            modelAndView.setViewName("create-article");
-        }
+        modelAndView.setViewName("create-article");
         return modelAndView;
     }
 
@@ -66,16 +62,11 @@ public class ArticleController {
     }
 
     private void initArticles(ModelAndView modelAndView, HttpSession session, String viewName, ArticleType type) {
-        if (session.getAttribute("username") == null) {
-            modelAndView.setViewName("redirect:/home");
-        } else {
-            modelAndView.setViewName(viewName);
-            List<ArticleViewModel> articles = this.articleService.findAllByType(type)
-                    .stream()
-                    .map(a -> this.modelMapper.map(a, ArticleViewModel.class))
-                    .collect(Collectors.toList());
-            modelAndView.addObject("articles", articles);
-        }
+        modelAndView.setViewName(viewName);
+        List<ArticleViewModel> articles = this.articleService.findAllByType(type)
+                .stream()
+                .map(a -> this.modelMapper.map(a, ArticleViewModel.class))
+                .collect(Collectors.toList());
+        modelAndView.addObject("articles", articles);
     }
-
 }

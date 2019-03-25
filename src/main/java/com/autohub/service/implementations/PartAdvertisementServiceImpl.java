@@ -1,5 +1,7 @@
 package com.autohub.service.implementations;
 
+import com.autohub.domain.entity.Address;
+import com.autohub.domain.entity.Part;
 import com.autohub.domain.entity.PartAdvertisement;
 import com.autohub.domain.enums.AdvertisementStatus;
 import com.autohub.domain.model.service.PartAdvertisementServiceModel;
@@ -32,7 +34,11 @@ public class PartAdvertisementServiceImpl implements PartAdvertisementService {
     @Override
     public PartAdvertisementServiceModel save(PartAdvertisementServiceModel partAdvertisementServiceModel) {
         try {
+            Part part = this.partRepository.save(this.modelMapper.map(partAdvertisementServiceModel.getPart(), Part.class));
+            Address address = this.addressRepository.save(this.modelMapper.map(partAdvertisementServiceModel.getAddress(), Address.class));
             PartAdvertisement partAdvertisement = this.modelMapper.map(partAdvertisementServiceModel, PartAdvertisement.class);
+            partAdvertisement.setPart(part);
+            partAdvertisement.setAddress(address);
             partAdvertisement.setStatus(AdvertisementStatus.PENDING);
             this.partAdvertisementRepository.save(partAdvertisement);
             return this.modelMapper.map(partAdvertisement, PartAdvertisementServiceModel.class);

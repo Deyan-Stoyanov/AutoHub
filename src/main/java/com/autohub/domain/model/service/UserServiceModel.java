@@ -4,6 +4,7 @@ import com.autohub.domain.enums.Gender;
 import com.autohub.domain.enums.Role;
 
 import java.util.List;
+import java.util.Set;
 
 public class UserServiceModel extends BaseServiceModel{
     private String username;
@@ -14,7 +15,7 @@ public class UserServiceModel extends BaseServiceModel{
     private String email;
     private Gender gender;
     private Integer age;
-    private Role role;
+    private Set<UserRoleServiceModel> authorities;
     private List<CarAdvertisementServiceModel> carAdvertisements;
     private List<PartAdvertisementServiceModel> partAdvertisements;
 
@@ -77,12 +78,12 @@ public class UserServiceModel extends BaseServiceModel{
         this.age = age;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<UserRoleServiceModel> getAuthorities() {
+        return authorities;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setAuthorities(Set<UserRoleServiceModel> authorities) {
+        this.authorities = authorities;
     }
 
     public List<CarAdvertisementServiceModel> getCarAdvertisements() {

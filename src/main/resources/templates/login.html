@@ -27,6 +27,7 @@
                         <input type="password" placeholder="Password..." name="password" id="password" required>
                     </div>
                 </fieldset>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <button type="submit" class="button">Submit</button>
             </form>
         </div>

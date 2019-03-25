@@ -2,13 +2,16 @@ package com.autohub.domain.entity;
 
 import com.autohub.domain.enums.Gender;
 import com.autohub.domain.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
     private String username;
     private String password;
     private String firstName;
@@ -17,25 +20,48 @@ public class User extends BaseEntity {
     private String phoneNumber;
     private Gender gender;
     private Integer age;
-    private Role role;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
+    private Collection<? extends UserRole> authorities;
     private List<CarAdvertisement> carAdvertisements;
     private List<PartAdvertisement> partAdvertisements;
 
     public User() {
     }
 
-    public User(String username, String password, String firstName, String lastName, String email, String phoneNumber, Gender gender, Integer age, Role role, List<CarAdvertisement> carAdvertisements, List<PartAdvertisement> partAdvertisements) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.age = age;
-        this.role = role;
-        this.carAdvertisements = carAdvertisements;
-        this.partAdvertisements = partAdvertisements;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    @ManyToMany(targetEntity = UserRole.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+    public void setAuthorities(Collection<? extends UserRole> authorities) {
+        this.authorities = authorities;
     }
 
     @Column(name = "username", nullable = false, unique = true)
@@ -102,15 +128,6 @@ public class User extends BaseEntity {
         this.age = age;
     }
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @OneToMany(targetEntity = CarAdvertisement.class, mappedBy = "user", cascade = CascadeType.MERGE)
     public List<CarAdvertisement> getCarAdvertisements() {
@@ -137,5 +154,21 @@ public class User extends BaseEntity {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = true;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = true;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = true;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = true;
     }
 }

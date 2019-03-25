@@ -1,5 +1,6 @@
 package com.autohub.web.controllers;
 
+import com.autohub.domain.entity.User;
 import com.autohub.domain.enums.AdvertisementStatus;
 import com.autohub.domain.enums.CarType;
 import com.autohub.domain.enums.FuelType;
@@ -14,14 +15,14 @@ import com.autohub.service.interfaces.PartAdvertisementService;
 import com.autohub.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,29 +41,40 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/marketplace")
-    public ModelAndView marketplace(ModelAndView modelAndView, HttpSession session) {
-        modelAndView.addObject("carAds", carAdvertisementService.findAll()
+    public ModelAndView marketplace(ModelAndView modelAndView) {
+        return initData(modelAndView, "marketplace");
+    }
+
+    @GetMapping(value = "/fetch/cars", produces = "application/json")
+    @ResponseBody
+    public Object fetchCars() {
+        List<CarAdvertisementViewModel> list =  carAdvertisementService.findAll()
                 .stream()
                 .map(advert -> this.modelMapper.map(advert, CarAdvertisementViewModel.class))
-                .collect(Collectors.toList()));
-        modelAndView.addObject("partAds", partAdvertisementService.findAll()
+                .collect(Collectors.toList());
+        return list;
+    }
+
+    @GetMapping(value = "/fetch/parts", produces = "application/json")
+    @ResponseBody
+    public Object fetchParts() {
+        return partAdvertisementService.findAll()
                 .stream()
                 .map(advert -> this.modelMapper.map(advert, PartAdvertisementViewModel.class))
-                .collect(Collectors.toList()));
-        return initData(modelAndView, session, "marketplace");
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/marketplace/advertisements/publish/car")
-    public ModelAndView addCar(ModelAndView modelAndView, HttpSession session) {
+    public ModelAndView addCar(ModelAndView modelAndView) {
         modelAndView.addObject("carTypes", CarType.values());
         modelAndView.addObject("fuelTypes", FuelType.values());
-        return initData(modelAndView, session, "add-car");
+        return initData(modelAndView, "add-car");
     }
 
     @PostMapping("/marketplace/advertisements/publish/car")
     public ModelAndView confirmAddCar(@ModelAttribute(name = "model") CarAdvertisementBindingModel model,
-                                      ModelAndView modelAndView, HttpSession session) {
-        model.setUser((String) session.getAttribute("username"));
+                                      ModelAndView modelAndView, Authentication authentication) {
+        model.setUser(((User) authentication.getPrincipal()).getUsername());
         CarServiceModel carServiceModel = initCarServiceModel(model);
         AddressServiceModel addressServiceModel = initAddressServiceModel(model);
         CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(model, carServiceModel, addressServiceModel);
@@ -71,13 +83,13 @@ public class AdvertisementsController {
             modelAndView.setViewName("redirect:/marketplace/advertisements/publish/car");
             return modelAndView;
         }
-        return initData(modelAndView, session, "marketplace");
+        return initData(modelAndView, "marketplace");
     }
 
     @PostMapping("/marketplace/advertisements/publish/part")
     public ModelAndView confirmAddPart(@ModelAttribute(name = "model") PartAdvertisementBindingModel model,
-                                       ModelAndView modelAndView, HttpSession session) {
-        model.setUser((String) session.getAttribute("username"));
+                                       ModelAndView modelAndView, Authentication authentication) {
+        model.setUser(((User) authentication.getPrincipal()).getUsername());
         PartServiceModel partServiceModel = initPartServiceModel(model);
         AddressServiceModel addressServiceModel = initAddressServiceModel(model);
         PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(model, partServiceModel, addressServiceModel);
@@ -86,19 +98,19 @@ public class AdvertisementsController {
             modelAndView.setViewName("redirect:/marketplace/advertisements/publish/part");
             return modelAndView;
         }
-        return initData(modelAndView, session, "marketplace");
+        return initData(modelAndView, "marketplace");
     }
 
     @GetMapping("/marketplace/advertisements/publish/part")
-    public ModelAndView addPart(ModelAndView modelAndView, HttpSession session) {
+    public ModelAndView addPart(ModelAndView modelAndView) {
         modelAndView.addObject("carTypes", CarType.values());
         modelAndView.addObject("fuelTypes", FuelType.values());
-        return initData(modelAndView, session, "add-part");
+        return initData(modelAndView, "add-part");
     }
 
     @GetMapping("/marketplace/advertisements/{id}")
-    public ModelAndView myAdvertisement(@PathVariable("id") String id, ModelAndView modelAndView, HttpSession session) {
-        initData(modelAndView, session, "my-advertisements");
+    public ModelAndView myAdvertisement(@PathVariable("id") String id, ModelAndView modelAndView) {
+        initData(modelAndView, "my-advertisements");
         modelAndView.addObject("cars", this.carAdvertisementService.findAllByUserId(id)
                 .stream()
                 .map(advert -> this.modelMapper.map(advert, CarAdvertisementViewModel.class))
@@ -111,8 +123,8 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/marketplace/pending")
-    public ModelAndView pending(ModelAndView modelAndView, HttpSession session) {
-        initData(modelAndView, session, "pending");
+    public ModelAndView pending(ModelAndView modelAndView) {
+        initData(modelAndView, "pending");
         modelAndView.addObject("cars", this.carAdvertisementService.findAll()
                 .stream()
                 .filter(advert -> advert.getStatus().equals(AdvertisementStatus.PENDING))
@@ -126,12 +138,8 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
-    private ModelAndView initData(ModelAndView modelAndView, HttpSession session, String viewName) {
-        if (session.getAttribute("username") == null) {
-            modelAndView.setViewName("redirect:/");
-        } else {
-            modelAndView.setViewName(viewName);
-        }
+    private ModelAndView initData(ModelAndView modelAndView, String viewName) {
+        modelAndView.setViewName(viewName);
         return modelAndView;
     }
 

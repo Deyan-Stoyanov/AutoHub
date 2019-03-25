@@ -1,52 +1,61 @@
 package com.autohub.service.implementations;
 
 import com.autohub.domain.entity.User;
+import com.autohub.domain.entity.UserRole;
 import com.autohub.domain.enums.Role;
+import com.autohub.domain.model.service.UserRoleServiceModel;
 import com.autohub.domain.model.service.UserServiceModel;
 import com.autohub.repository.UserRepository;
+import com.autohub.service.interfaces.UserRoleService;
 import com.autohub.service.interfaces.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
+    private final UserRoleService userRoleService;
     private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleService userRoleService, ModelMapper modelMapper, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.userRoleService = userRoleService;
         this.modelMapper = modelMapper;
+        this.encoder = encoder;
     }
 
     @Override
-    public UserServiceModel register(UserServiceModel userServiceModel) {
-        userServiceModel.setPassword(DigestUtils.sha256Hex(userServiceModel.getPassword()));
-        if (this.userRepository.findAll().isEmpty()) {
-            userServiceModel.setRole(Role.ADMIN);
-        } else {
-            userServiceModel.setRole(Role.USER);
-        }
+    public UserServiceModel save(UserServiceModel userServiceModel) {
         try {
-            this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
-            return userServiceModel;
+            User user = this.modelMapper.map(userServiceModel, User.class);
+            user.setAuthorities(userServiceModel.getAuthorities()
+                    .stream()
+                    .map(userRoleServiceModel -> this.modelMapper.map(userRoleServiceModel, UserRole.class))
+                    .collect(Collectors.toSet()));
+            User saved = this.userRepository.save(user);
+            return this.modelMapper.map(saved, UserServiceModel.class);
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public UserServiceModel login(UserServiceModel userServiceModel) {
-        UserServiceModel user = this.modelMapper.map(this.findByUsername(userServiceModel.getUsername()), UserServiceModel.class);
-        if (user != null && user.getPassword().equals(DigestUtils.sha256Hex(userServiceModel.getPassword()))) {
-            return user;
-        }
-        return null;
+    public UserServiceModel register(UserServiceModel userServiceModel) {
+        userServiceModel.setPassword(encoder.encode(userServiceModel.getPassword()));
+        userServiceModel.setAuthorities(this.generateUserRole());
+        return this.save(userServiceModel);
     }
 
     @Override
@@ -65,14 +74,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel findByUsername(String username) {
-        User user = this.userRepository.findByUsername(username);
+        User user = this.userRepository.findByUsername(username).orElse(null);
         return user == null ? null : this.modelMapper.map(user, UserServiceModel.class);
     }
 
     @Override
-    public UserServiceModel update(UserServiceModel userServiceModel) {
-        this.userRepository.save(this.modelMapper.map(userServiceModel, User.class));
-        return userServiceModel;
+    public UserServiceModel update(String id, UserServiceModel model) {
+        UserServiceModel user = this.modelMapper.map(this.userRepository.findById(id).get(), UserServiceModel.class);
+        user.setPassword(encoder.encode(model.getPassword()));
+        user.setAge(model.getAge());
+        user.setEmail(model.getEmail());
+        user.setPhoneNumber(model.getPhoneNumber());
+        user.setFirstName(model.getFirstName());
+        user.setLastName(model.getLastName());
+        user.setGender(model.getGender());
+        this.userRepository.save(this.modelMapper.map(user, User.class));
+        return user;
     }
 
     @Override
@@ -83,14 +100,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserServiceModel switchRoleById(String id) {
-        UserServiceModel userServiceModel = this.findById(id);
-        if (userServiceModel.getRole().equals(Role.ADMIN)) {
-            userServiceModel.setRole(Role.USER);
-        } else {
-            userServiceModel.setRole(Role.ADMIN);
+    public UserServiceModel switchRoleById(String id, UserRoleServiceModel userRoleServiceModel) {
+        UserServiceModel model = this.modelMapper.map(this.userRepository.findById(id).get(), UserServiceModel.class);
+        if (model.getAuthorities().stream().anyMatch(x -> x.getRole().equals(Role.ROLE_ROOT))) {
+            return null;
         }
-        this.update(userServiceModel);
-        return userServiceModel;
+        model.setAuthorities(new HashSet<>() {{
+            add(userRoleService.findByRole(userRoleServiceModel.getRole()));
+        }});
+        this.save(model);
+        return model;
+    }
+
+    private Set<UserRoleServiceModel> generateUserRole() {
+        Set<UserRoleServiceModel> roles = new HashSet<>();
+        if (this.userRepository.count() == 0) {
+            roles.add(this.modelMapper
+                    .map(this.userRoleService.findByRole(Role.ROLE_ROOT), UserRoleServiceModel.class));
+        } else {
+            roles.add(this.modelMapper
+                    .map(this.userRoleService.findByRole(Role.ROLE_USER), UserRoleServiceModel.class));
+        }
+
+        return roles;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found."));
     }
 }

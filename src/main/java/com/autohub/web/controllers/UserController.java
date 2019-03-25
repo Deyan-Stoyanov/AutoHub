@@ -1,22 +1,24 @@
 package com.autohub.web.controllers;
 
+import com.autohub.domain.entity.User;
 import com.autohub.domain.enums.Role;
-import com.autohub.domain.model.binding.UserLoginBindingModel;
 import com.autohub.domain.model.binding.UserRegisterBindingModel;
+import com.autohub.domain.model.service.UserRoleServiceModel;
 import com.autohub.domain.model.service.UserServiceModel;
 import com.autohub.domain.model.view.UserProfileViewModel;
 import com.autohub.service.interfaces.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,92 +33,56 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/register")
-    public ModelAndView register(ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("username") != null) {
-            modelAndView.setViewName("redirect:/home");
-        } else {
-            modelAndView.setViewName("register");
-        }
+    @GetMapping("/login")
+    public ModelAndView login(ModelAndView modelAndView) {
+        modelAndView.setViewName("login");
         return modelAndView;
     }
 
-    @GetMapping("/login")
-    public ModelAndView login(ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("username") != null) {
-            modelAndView.setViewName("redirect:/home");
-        } else {
-            modelAndView.setViewName("login");
-        }
+    @GetMapping("/register")
+    public ModelAndView register(ModelAndView modelAndView) {
+        modelAndView.setViewName("register");
         return modelAndView;
     }
 
     @PostMapping("/register")
-    public ModelAndView confirmRegister(@ModelAttribute(name = "model") UserRegisterBindingModel model, ModelAndView modelAndView) {
-        if (!model.getConfirmPassword().equals(model.getPassword()) ||
-                this.userService.register(this.modelMapper.map(model, UserServiceModel.class)) == null) {
+    public ModelAndView confirmRegister(@RequestParam("file") MultipartFile file,
+                                        @ModelAttribute(name = "model") UserRegisterBindingModel model,
+                                        ModelAndView modelAndView, HttpServletRequest request) throws IOException {
+        if (model.getConfirmPassword().equals(model.getPassword())) {
+            UserServiceModel registeredModel = this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
+            String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\user_images";
+            String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            File f1 = new File(filePath + "\\" + registeredModel.getId() + extension);
+            file.transferTo(f1);
+            modelAndView.setViewName("redirect:/login");
+        } else {
             modelAndView.setViewName("redirect:/register");
-        } else {
-            modelAndView.setViewName("redirect:/login");
         }
-        return modelAndView;
-    }
-
-    @PostMapping("/login")
-    public ModelAndView confirmLogin(@ModelAttribute(name = "model") UserLoginBindingModel model,
-                                     ModelAndView modelAndView, HttpSession session) {
-        UserServiceModel userServiceModel = this.userService.login(this.modelMapper.map(model, UserServiceModel.class));
-        if (userServiceModel == null) {
-            modelAndView.setViewName("redirect:/login");
-        } else {
-            session.setAttribute("userId", userServiceModel.getId());
-            session.setAttribute("username", userServiceModel.getUsername());
-            session.setAttribute("isAdmin", userServiceModel.getRole().equals(Role.ADMIN));
-            modelAndView.setViewName("redirect:/home");
-        }
-        return modelAndView;
-    }
-
-    @GetMapping("/logout")
-    public ModelAndView logout(ModelAndView modelAndView, HttpSession session) {
-        session.invalidate();
-        modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
 
     @GetMapping("/profile/{id}")
-    public ModelAndView profile(@PathVariable("id") String id, ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("username") == null) {
-            modelAndView.setViewName("redirect:/");
-        } else {
-            UserProfileViewModel user = this.findUser(id);
-            modelAndView.setViewName("profile");
-            modelAndView.addObject("user", user);
-        }
+    public ModelAndView profile(@PathVariable("id") String id, ModelAndView modelAndView) {
+        UserProfileViewModel user = this.findUser(id);
+        modelAndView.setViewName("profile");
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 
     @GetMapping("/profile/edit/{id}")
-    public ModelAndView editProfile(@PathVariable("id") String id, ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("username") == null) {
-            modelAndView.setViewName("redirect:/");
-        } else {
-            UserProfileViewModel user = this.findUser(id);
-            modelAndView.setViewName("edit-profile");
-            modelAndView.addObject("user", user);
-        }
+    public ModelAndView editProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
+        UserProfileViewModel user = this.findUser(id);
+        modelAndView.setViewName("edit-profile");
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 
     @GetMapping("/profile/delete/{id}")
-    public ModelAndView deleteProfile(@PathVariable("id") String id, ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("username") == null) {
-            modelAndView.setViewName("redirect:/");
-        } else {
-            UserProfileViewModel user = this.findUser(id);
-            modelAndView.setViewName("delete-profile");
-            modelAndView.addObject("user", user);
-        }
+    public ModelAndView deleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
+        UserProfileViewModel user = this.findUser(id);
+        modelAndView.setViewName("delete-profile");
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 
@@ -124,53 +90,49 @@ public class UserController {
     public ModelAndView confirmEditProfile(@PathVariable("id") String id,
                                            @ModelAttribute(name = "model") UserRegisterBindingModel model,
                                            ModelAndView modelAndView) {
-        UserServiceModel userServiceModel = this.userService.findById(id);
-        if (model.getPassword() != null && model.getPassword().equals(model.getConfirmPassword())) {
-            userServiceModel.setPassword(DigestUtils.sha256Hex(model.getPassword()));
-        }
-        userServiceModel.setAge(model.getAge());
-        userServiceModel.setEmail(model.getEmail());
-        userServiceModel.setPhoneNumber(model.getPhoneNumber());
-        userServiceModel.setFirstName(model.getFirstName());
-        userServiceModel.setLastName(model.getLastName());
-        userServiceModel.setGender(model.getGender());
-        this.userService.update(userServiceModel);
-        modelAndView.setViewName("redirect:/profile/" + userServiceModel.getId());
+        this.userService.update(id, this.modelMapper.map(model, UserServiceModel.class));
+        modelAndView.setViewName("redirect:/profile/" + id);
         return modelAndView;
     }
 
     @PostMapping("/profile/delete/{id}")
-    public ModelAndView confirmDeleteProfile(@PathVariable("id") String id, ModelAndView modelAndView, HttpSession session) {
+    public ModelAndView confirmDeleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.userService.deleteById(id);
-        if (session.getAttribute("userId").equals(id)) {
-            session.invalidate();
-        }
         modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
 
-    @PostMapping("/profile/switch/{id}")
-    public ModelAndView switchRole(@PathVariable("id") String id, ModelAndView modelAndView, HttpSession session) {
-        this.userService.switchRoleById(id);
+    @GetMapping("/admin/users/switch/to-admin/{id}")
+    public ModelAndView makeAdmin(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
+        return changeRoleOfUser(modelAndView, id, Role.ROLE_ADMIN);
+    }
+
+    @GetMapping("/admin/users/switch/to-user/{id}")
+    public ModelAndView makeUser(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
+        return changeRoleOfUser(modelAndView, id, Role.ROLE_USER);
+    }
+
+    @GetMapping("/admin/users")
+    public ModelAndView users(ModelAndView modelAndView, Authentication authentication) {
+        modelAndView.setViewName("users");
+        String id = ((User) authentication.getPrincipal()).getId();
+        modelAndView.addObject("users", mapUserViewModels(id));
+        addUserRoles(modelAndView);
+        return modelAndView;
+    }
+
+    private ModelAndView changeRoleOfUser(ModelAndView modelAndView, String id, Role role) {
+        this.userService.switchRoleById(id, new UserRoleServiceModel() {{
+            setRole(role);
+        }});
         modelAndView.setViewName("redirect:/admin/users");
         return modelAndView;
     }
 
-    @GetMapping("/admin/users")
-    public ModelAndView users(ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("isAdmin") != null && (boolean) session.getAttribute("isAdmin")) {
-            String currentUsername = (String) session.getAttribute("username");
-            List<UserProfileViewModel> users = this.userService.findAll()
-                    .stream()
-                    .filter(user -> !user.getUsername().equals(currentUsername))
-                    .map(user -> this.modelMapper.map(user, UserProfileViewModel.class))
-                    .collect(Collectors.toList());
-            modelAndView.setViewName("users");
-            modelAndView.addObject("users", users);
-        } else {
-            modelAndView.setViewName("redirect:/home");
-        }
-        return modelAndView;
+    private void addUserRoles(ModelAndView modelAndView) {
+        modelAndView.addObject("rootrole", Role.ROLE_ROOT);
+        modelAndView.addObject("adminrole", Role.ROLE_ADMIN);
+        modelAndView.addObject("userrole", Role.ROLE_USER);
     }
 
     private UserProfileViewModel findUser(String id) {
@@ -179,5 +141,22 @@ public class UserController {
             throw new IllegalArgumentException("User not found");
         }
         return this.modelMapper.map(userServiceModel, UserProfileViewModel.class);
+    }
+
+    private List<UserProfileViewModel> mapUserViewModels(String id) {
+        List<UserServiceModel> allUsers = this.userService.findAll();
+        return allUsers.stream()
+                .filter(user -> user.getAuthorities().stream().noneMatch(a -> a.getRole().equals(Role.ROLE_ROOT))
+                        && !user.getId().equals(id))
+                .map(user -> {
+                    UserProfileViewModel model = this.modelMapper.map(user, UserProfileViewModel.class);
+                    List<Role> roles = user.getAuthorities()
+                            .stream()
+                            .map(UserRoleServiceModel::getRole)
+                            .collect(Collectors.toList());
+                    model.setAuthorities(roles);
+                    return model;
+                })
+                .collect(Collectors.toList());
     }
 }

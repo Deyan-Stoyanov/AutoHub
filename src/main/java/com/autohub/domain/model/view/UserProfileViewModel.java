@@ -3,17 +3,18 @@ package com.autohub.domain.model.view;
 import com.autohub.domain.enums.Gender;
 import com.autohub.domain.enums.Role;
 
+import java.util.List;
+
 public class UserProfileViewModel {
     private String id;
     private String username;
-    private String password;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
     private Gender gender;
     private Integer age;
-    private Role role;
+    private List<Role> authorities;
 
     public UserProfileViewModel() {
     }
@@ -32,14 +33,6 @@ public class UserProfileViewModel {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -82,19 +75,19 @@ public class UserProfileViewModel {
         this.age = age;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<Role> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Role> authorities) {
+        this.authorities = authorities;
     }
 }

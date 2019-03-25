@@ -11,21 +11,13 @@ import javax.servlet.http.HttpSession;
 public class HomeController {
     @GetMapping("/")
     public ModelAndView home(ModelAndView modelAndView, HttpSession session) {
-        if (session.getAttribute("username") == null) {
-            modelAndView.setViewName("index");
-        } else {
-            modelAndView.setViewName("redirect:/home");
-        }
+        modelAndView.setViewName("index");
         return modelAndView;
     }
 
     @GetMapping("/home")
     public ModelAndView homeLoggedIn(ModelAndView modelAndView, HttpSession session, RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("username") == null) {
-            modelAndView.setViewName("redirect:/");
-        } else {
-            modelAndView.setViewName("home");
-        }
+        modelAndView.setViewName("home");
         return modelAndView;
     }
 }
