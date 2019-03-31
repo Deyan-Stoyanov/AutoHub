@@ -2,6 +2,7 @@ package com.autohub.web.controllers;
 
 import com.autohub.domain.entity.User;
 import com.autohub.domain.enums.Role;
+import com.autohub.domain.model.binding.UserEditBindingModel;
 import com.autohub.domain.model.binding.UserRegisterBindingModel;
 import com.autohub.domain.model.service.UserRoleServiceModel;
 import com.autohub.domain.model.service.UserServiceModel;
@@ -18,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,15 +46,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView confirmRegister(@RequestParam("file") MultipartFile file,
+    public ModelAndView confirmRegister(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @ModelAttribute(name = "model") UserRegisterBindingModel model,
-                                        ModelAndView modelAndView, HttpServletRequest request) throws IOException {
+                                        ModelAndView modelAndView) throws IOException {
         if (model.getConfirmPassword().equals(model.getPassword())) {
             UserServiceModel registeredModel = this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
-            String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\user_images";
-            String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            File f1 = new File(filePath + "\\" + registeredModel.getId() + extension);
-            file.transferTo(f1);
+            if (registeredModel != null && file != null) {
+                String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\user_images";
+                File f1 = new File(filePath + "\\" + registeredModel.getId() + ".jpg");
+                file.transferTo(f1);
+            }
             modelAndView.setViewName("redirect:/login");
         } else {
             modelAndView.setViewName("redirect:/register");
@@ -88,10 +89,17 @@ public class UserController {
 
     @PostMapping("/profile/edit/{id}")
     public ModelAndView confirmEditProfile(@PathVariable("id") String id,
-                                           @ModelAttribute(name = "model") UserRegisterBindingModel model,
+                                           @ModelAttribute(name = "model") UserEditBindingModel model,
                                            ModelAndView modelAndView) {
-        this.userService.update(id, this.modelMapper.map(model, UserServiceModel.class));
-        modelAndView.setViewName("redirect:/profile/" + id);
+        if (model.getOldPassword() == null || !model.getPassword().equals(model.getConfirmPassword())) {
+            modelAndView.setViewName("redirect:/profile/edit/" + id);
+        } else {
+
+            UserServiceModel userServiceModel =  this.modelMapper.map(model, UserServiceModel.class);
+            userServiceModel.setId(id);
+            this.userService.update(userServiceModel);
+            modelAndView.setViewName("redirect:/profile/" + id);
+        }
         return modelAndView;
     }
 

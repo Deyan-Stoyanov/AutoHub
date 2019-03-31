@@ -11,13 +11,7 @@
     </th:block>
     <main class="site-content">
         <h2>News</h2>
-        <ul class="listing posts" th:each="article : ${articles}">
-            <li>
-                <h3 class="title" th:text="${article.getTitle()}"></h3>
-                <span class="date" th:text="${#dates.format(article.getCreationDate(), 'dd-MMM-yyyy')}"></span>
-                <div th:text="${article.getContent()}"></div>
-            </li>
-        </ul>
+        <div th:replace="fragments/blog-articles.html :: div"></div>
     </main>
     <th:block>
         <div th:replace="fragments/footer.html :: footer"></div>

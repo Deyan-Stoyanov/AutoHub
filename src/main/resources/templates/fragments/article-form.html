@@ -1,0 +1,36 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <fieldset>
+        <label for="title">Choose title*:</label>
+        <div class="input-field">
+            <i class="far fa-newspaper"></i>
+            <input type="text" placeholder="Title..." name="title" id="title" required>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="content">Enter article content:</label>
+        <div class="input-field">
+            <i class="far fa-newspaper"></i>
+            <textarea rows="12" cols="60" type="text" placeholder="Content..." name="content"
+                      id="content" required></textarea>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="type">Enter article carType:</label>
+        <div class="input-field">
+            <i class="far fa-newspaper"></i>
+            <select id="type" name="type" required>
+                <option selected disabled>Type...</option>
+                <option th:value="NEWS">News</option>
+                <option th:value="SPORTS">Sports</option>
+                <option th:value="TIPS_AND_TRICKS">Tips &amp; Tricks</option>
+            </select>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="file">Choose article photo:</label>
+        <div class="input-field">
+            <input type="file" id="file" name="file" accept="image/*">
+        </div>
+    </fieldset>
+    <button type="submit" class="button">Create</button>
+</div>

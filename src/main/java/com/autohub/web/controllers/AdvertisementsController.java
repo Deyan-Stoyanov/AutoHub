@@ -18,9 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,11 +51,11 @@ public class AdvertisementsController {
     @GetMapping(value = "/fetch/cars", produces = "application/json")
     @ResponseBody
     public Object fetchCars() {
-        List<CarAdvertisementViewModel> list =  carAdvertisementService.findAll()
+        return carAdvertisementService.findAll()
                 .stream()
+                .filter(advert -> advert.getStatus().equals(AdvertisementStatus.APPROVED))
                 .map(advert -> this.modelMapper.map(advert, CarAdvertisementViewModel.class))
                 .collect(Collectors.toList());
-        return list;
     }
 
     @GetMapping(value = "/fetch/parts", produces = "application/json")
@@ -60,6 +63,7 @@ public class AdvertisementsController {
     public Object fetchParts() {
         return partAdvertisementService.findAll()
                 .stream()
+                .filter(advert -> advert.getStatus().equals(AdvertisementStatus.APPROVED))
                 .map(advert -> this.modelMapper.map(advert, PartAdvertisementViewModel.class))
                 .collect(Collectors.toList());
     }
@@ -72,8 +76,9 @@ public class AdvertisementsController {
     }
 
     @PostMapping("/marketplace/advertisements/publish/car")
-    public ModelAndView confirmAddCar(@ModelAttribute(name = "model") CarAdvertisementBindingModel model,
-                                      ModelAndView modelAndView, Authentication authentication) {
+    public ModelAndView confirmAddCar(@RequestParam(value = "file", required = false) MultipartFile file,
+                                      @ModelAttribute(name = "model") CarAdvertisementBindingModel model,
+                                      ModelAndView modelAndView, Authentication authentication) throws IOException {
         model.setUser(((User) authentication.getPrincipal()).getUsername());
         CarServiceModel carServiceModel = initCarServiceModel(model);
         AddressServiceModel addressServiceModel = initAddressServiceModel(model);
@@ -82,21 +87,10 @@ public class AdvertisementsController {
         if (savedModel == null) {
             modelAndView.setViewName("redirect:/marketplace/advertisements/publish/car");
             return modelAndView;
-        }
-        return initData(modelAndView, "marketplace");
-    }
-
-    @PostMapping("/marketplace/advertisements/publish/part")
-    public ModelAndView confirmAddPart(@ModelAttribute(name = "model") PartAdvertisementBindingModel model,
-                                       ModelAndView modelAndView, Authentication authentication) {
-        model.setUser(((User) authentication.getPrincipal()).getUsername());
-        PartServiceModel partServiceModel = initPartServiceModel(model);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
-        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(model, partServiceModel, addressServiceModel);
-        PartAdvertisementServiceModel savedModel = this.partAdvertisementService.save(partAdvertisementServiceModel);
-        if (savedModel == null) {
-            modelAndView.setViewName("redirect:/marketplace/advertisements/publish/part");
-            return modelAndView;
+        } else if (file != null) {
+            String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\car_images";
+            File f1 = new File(filePath + "\\" + savedModel.getId() + ".jpg");
+            file.transferTo(f1);
         }
         return initData(modelAndView, "marketplace");
     }
@@ -106,6 +100,26 @@ public class AdvertisementsController {
         modelAndView.addObject("carTypes", CarType.values());
         modelAndView.addObject("fuelTypes", FuelType.values());
         return initData(modelAndView, "add-part");
+    }
+
+    @PostMapping("/marketplace/advertisements/publish/part")
+    public ModelAndView confirmAddPart(@RequestParam(value = "file", required = false) MultipartFile file,
+                                       @ModelAttribute(name = "model") PartAdvertisementBindingModel model,
+                                       ModelAndView modelAndView, Authentication authentication) throws IOException {
+        model.setUser(((User) authentication.getPrincipal()).getUsername());
+        PartServiceModel partServiceModel = initPartServiceModel(model);
+        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
+        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(model, partServiceModel, addressServiceModel);
+        PartAdvertisementServiceModel savedModel = this.partAdvertisementService.save(partAdvertisementServiceModel);
+        if (savedModel == null) {
+            modelAndView.setViewName("redirect:/marketplace/advertisements/publish/part");
+            return modelAndView;
+        } else if (file != null) {
+            String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\part_images";
+            File f1 = new File(filePath + "\\" + savedModel.getId() + "jpg");
+            file.transferTo(f1);
+        }
+        return initData(modelAndView, "marketplace");
     }
 
     @GetMapping("/marketplace/advertisements/{id}")
@@ -135,6 +149,76 @@ public class AdvertisementsController {
                 .filter(advert -> advert.getStatus().equals(AdvertisementStatus.PENDING))
                 .map(advert -> this.modelMapper.map(advert, PartAdvertisementViewModel.class))
                 .collect(Collectors.toList()));
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/cars/approve/{id}")
+    public ModelAndView approveCar(@PathVariable("id") String id, ModelAndView modelAndView) {
+        this.carAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.APPROVED);
+        modelAndView.setViewName("redirect:/marketplace/pending");
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/cars/decline/{id}")
+    public ModelAndView declineCar(@PathVariable("id") String id, ModelAndView modelAndView) {
+        this.carAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.DECLINED);
+        modelAndView.setViewName("redirect:/marketplace/pending");
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/parts/approve/{id}")
+    public ModelAndView approvePart(@PathVariable("id") String id, ModelAndView modelAndView) {
+        this.partAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.APPROVED);
+        modelAndView.setViewName("redirect:/marketplace/pending");
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/parts/decline/{id}")
+    public ModelAndView declinePart(@PathVariable("id") String id, ModelAndView modelAndView) {
+        this.partAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.DECLINED);
+        modelAndView.setViewName("redirect:/marketplace/pending");
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/cars/details/{id}")
+    public ModelAndView detailsCars(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("car-advertisement-details");
+        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/parts/details/{id}")
+    public ModelAndView detailsParts(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("part-advertisement-details");
+        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/cars/details/{id}")
+    public ModelAndView editCar(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("edit-car");
+        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/parts/details/{id}")
+    public ModelAndView editPart(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("part-advertisement-details");
+        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/cars/details/{id}")
+    public ModelAndView deleteCar(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("edit-car");
+        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+        return modelAndView;
+    }
+
+    @GetMapping("/marketplace/advertisements/parts/details/{id}")
+    public ModelAndView deletePart(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("part-advertisement-details");
+        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
         return modelAndView;
     }
 

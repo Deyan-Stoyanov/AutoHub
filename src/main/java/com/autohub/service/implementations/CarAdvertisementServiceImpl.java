@@ -71,4 +71,19 @@ public class CarAdvertisementServiceImpl implements CarAdvertisementService {
                 .map(advert -> this.modelMapper.map(advert, CarAdvertisementServiceModel.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public CarAdvertisementServiceModel findById(String id){
+        CarAdvertisement carAdvertisement = this.carAdvertisementRepository.findById(id).orElse(null);
+        return carAdvertisement == null ? null : this.modelMapper.map(carAdvertisement, CarAdvertisementServiceModel.class);
+    }
+
+    @Override
+    public void changeAdvertisementStatus(String id, AdvertisementStatus status) {
+        CarAdvertisement carAdvertisement = this.carAdvertisementRepository.findById(id).orElse(null);
+        if(carAdvertisement != null){
+            carAdvertisement.setStatus(status);
+            this.carAdvertisementRepository.save(carAdvertisement);
+        }
+    }
 }

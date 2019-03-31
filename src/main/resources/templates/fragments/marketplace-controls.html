@@ -1,0 +1,8 @@
+<div class="buttons-container" xmlns:th="http://www.thymeleaf.org">
+    <a th:href="@{/marketplace/advertisements/publish/car}" class="button">Add Car Advertisement</a>
+    <a th:href="@{/marketplace/advertisements/publish/part}" class="button">Add Part Advertisement</a>
+    <a th:href="@{/marketplace/advertisements/{id}(id=${#authentication.getPrincipal().getId()})}"
+       class="button">My
+        Advertisements</a>
+    <a th:href="@{/marketplace/advertisements/pending}" class="button">Pending</a>
+</div>

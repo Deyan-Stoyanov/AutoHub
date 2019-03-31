@@ -79,17 +79,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserServiceModel update(String id, UserServiceModel model) {
-        UserServiceModel user = this.modelMapper.map(this.userRepository.findById(id).get(), UserServiceModel.class);
-        user.setPassword(encoder.encode(model.getPassword()));
-        user.setAge(model.getAge());
-        user.setEmail(model.getEmail());
-        user.setPhoneNumber(model.getPhoneNumber());
-        user.setFirstName(model.getFirstName());
-        user.setLastName(model.getLastName());
-        user.setGender(model.getGender());
-        this.userRepository.save(this.modelMapper.map(user, User.class));
-        return user;
+    public UserServiceModel update(UserServiceModel userServiceModel) {
+        UserServiceModel oldModel = this.findById(userServiceModel.getId());
+        if (encoder.matches(oldModel.getPassword(), userServiceModel.getPassword())) return null;
+        if (userServiceModel.getPassword() != null) {
+            userServiceModel.setPassword(this.encoder.encode(userServiceModel.getPassword()));
+        } else {
+            userServiceModel.setPassword(oldModel.getPassword());
+        }
+        userServiceModel.setAuthorities(oldModel.getAuthorities());
+        User savedUser = this.userRepository.save(this.modelMapper.map(userServiceModel, User.class));
+        return this.modelMapper.map(savedUser, UserServiceModel.class);
     }
 
     @Override
@@ -121,7 +121,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             roles.add(this.modelMapper
                     .map(this.userRoleService.findByRole(Role.ROLE_USER), UserRoleServiceModel.class));
         }
-
         return roles;
     }
 

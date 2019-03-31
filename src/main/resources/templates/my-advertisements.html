@@ -1,10 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
 <body>
+<div class="site">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="site-content">
+        <div class="site-main">
+            <h2>Pending</h2>
+            <th:block>
+                <div th:replace="fragments/marketplace-controls.html :: div"></div>
+            </th:block>
+            <h3>Cars</h3>
+            <table class="table mb-0">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Car</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Actions</th>
+                    <th scope="col">Delete Advertisement</th>
+                </tr>
+                </thead>
+                <tbody th:each="car, index : ${cars}">
+                <tr>
+                    <th scope="row" th:text="${index.count}"></th>
+                    <td><span th:text="${car.getCar().getMake() + ' ' + car.getCar().getModel()}"></span></td>
+                    <td>
+                        <span class="text-danger" th:if="car.getStatus() == 'DECLINED'"
+                              th:text="car.getStatus()"></span>
+                        <span class="text-success" th:if="car.getStatus() == 'APPROVED'"
+                              th:text="car.getStatus()"></span>
+                        <span class="text-info" th:if="car.getStatus() == 'PENDING'" th:text="car.getStatus()"></span>
+                    </td>
+                    <td>
+                        <a class="btn btn-info"
+                           th:href="@{/marketplace/advertisements/cars/details/{id}(id=${car.getId()})}">Details</a>
+                    </td>
+                    <td>
+                        <a th:if="car.getStatus() == 'APPROVED'" class="btn btn-info"
+                           th:href="@{/marketplace/advertisements/cars/edit/{id}(id=${car.getId()})}">Edit</a></td>
+                    <td>
+                        <a class="btn btn-danger"
+                           th:href="@{/marketplace/advertisements/cars/delete/{id}(id=${car.getId()})}">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Parts</h3>
+            <table class="table mb-0">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Car</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Actions</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody th:each="part, index : ${parts}">
+                <tr>
+                    <th scope="row" th:text="${index.count}"></th>
+                    <td><span th:text="${part.getPart().getName()}"></span></td>
+                    <td>
+                        <span class="text-danger" th:if="car.getStatus() == 'DECLINED'"
+                              th:text="car.getStatus()"></span>
+                        <span class="text-success" th:if="car.getStatus() == 'APPROVED'"
+                              th:text="car.getStatus()"></span>
+                        <span class="text-info" th:if="car.getStatus() == 'PENDING'" th:text="car.getStatus()"></span>
+                    </td>
+                    <td><a class="btn btn-info"
+                           th:href="@{/marketplace/advertisements/parts/details/{id}(id=${part.getId()})}">Details</a>
+                    </td>
+                    <td>
+                        <a th:if="part.getStatus() == 'APPROVED'" class="btn btn-info"
+                           th:href="@{/marketplace/advertisements/parts/edit/{id}(id=${part.getId()})}">Edit</a></td>
+                    <td><a class="btn btn-danger"
+                           th:href="@{/marketplace/advertisements/parts/delete/{id}(id=${part.getId()})}">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
 </body>
 </html>

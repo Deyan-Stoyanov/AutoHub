@@ -16,7 +16,7 @@ public interface UserService {
 
     UserServiceModel findByUsername(String username);
 
-    UserServiceModel update(String id, UserServiceModel userServiceModel);
+    UserServiceModel update(UserServiceModel userServiceModel);
 
     UserServiceModel deleteById(String id);
 

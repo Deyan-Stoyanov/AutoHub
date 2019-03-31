@@ -62,4 +62,19 @@ public class PartAdvertisementServiceImpl implements PartAdvertisementService {
                 .map(advert -> this.modelMapper.map(advert, PartAdvertisementServiceModel.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public PartAdvertisementServiceModel findById(String id) {
+        PartAdvertisement partAdvertisement = this.partAdvertisementRepository.findById(id).orElse(null);
+        return partAdvertisement == null ? null : this.modelMapper.map(partAdvertisement, PartAdvertisementServiceModel.class);
+    }
+
+    @Override
+    public void changeAdvertisementStatus(String id, AdvertisementStatus status) {
+        PartAdvertisement partAdvertisement = this.partAdvertisementRepository.findById(id).orElse(null);
+        if (partAdvertisement != null) {
+            partAdvertisement.setStatus(status);
+            this.partAdvertisementRepository.save(partAdvertisement);
+        }
+    }
 }
