@@ -49,6 +49,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleServiceModel findById(String id) {
-        return null;
+        Article article = this.articleRepository.findById(id).orElse(null);
+        return article == null ? null : this.modelMapper.map(article, ArticleServiceModel.class);
+    }
+
+    @Override
+    public ArticleServiceModel update(ArticleServiceModel articleServiceModel) {
+        Article article = this.modelMapper.map(articleServiceModel, Article.class);
+        article = this.articleRepository.save(article);
+        return article == null ? null : this.modelMapper.map(article, ArticleServiceModel.class);
     }
 }

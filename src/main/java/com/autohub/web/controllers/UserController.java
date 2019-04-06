@@ -79,14 +79,6 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping("/profile/delete/{id}")
-    public ModelAndView deleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
-        UserProfileViewModel user = this.findUser(id);
-        modelAndView.setViewName("delete-profile");
-        modelAndView.addObject("user", user);
-        return modelAndView;
-    }
-
     @PostMapping("/profile/edit/{id}")
     public ModelAndView confirmEditProfile(@PathVariable("id") String id,
                                            @ModelAttribute(name = "model") UserEditBindingModel model,
@@ -100,6 +92,14 @@ public class UserController {
             this.userService.update(userServiceModel);
             modelAndView.setViewName("redirect:/profile/" + id);
         }
+        return modelAndView;
+    }
+
+    @GetMapping("/profile/delete/{id}")
+    public ModelAndView deleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
+        UserProfileViewModel user = this.findUser(id);
+        modelAndView.setViewName("delete-profile");
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 

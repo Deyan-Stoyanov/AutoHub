@@ -17,4 +17,6 @@ public interface CarAdvertisementService {
     void changeAdvertisementStatus(String id, AdvertisementStatus declined);
 
     void deleteById(String id);
+
+    CarAdvertisementServiceModel update(CarAdvertisementServiceModel carAdvertisementServiceModel);
 }

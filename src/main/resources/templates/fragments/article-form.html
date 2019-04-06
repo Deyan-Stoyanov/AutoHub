@@ -3,7 +3,13 @@
         <label for="title">Choose title*:</label>
         <div class="input-field">
             <i class="far fa-newspaper"></i>
-            <input type="text" placeholder="Title..." name="title" id="title" required>
+            <input type="text" placeholder="Title..." name="title" id="title" th:field="*{title}"
+                   th:styleappend="${#fields.hasErrors('title')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('title')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
@@ -11,7 +17,14 @@
         <div class="input-field">
             <i class="far fa-newspaper"></i>
             <textarea rows="12" cols="60" type="text" placeholder="Content..." name="content"
-                      id="content" required></textarea>
+                      id="content" th:field="*{content}"
+                      th:styleappend="${#fields.hasErrors('content')} ? 'border-color: red'"  required>
+            </textarea>
+            <ul class="text-danger" th:each="error : ${#fields.errors('content')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>

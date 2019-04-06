@@ -91,4 +91,11 @@ public class CarAdvertisementServiceImpl implements CarAdvertisementService {
     public void deleteById(String id) {
         this.carAdvertisementRepository.deleteById(id);
     }
+
+    @Override
+    public CarAdvertisementServiceModel update(CarAdvertisementServiceModel carAdvertisementServiceModel) {
+        CarAdvertisement savedCarAdvertisement =
+                this.carAdvertisementRepository.save(this.modelMapper.map(carAdvertisementServiceModel, CarAdvertisement.class));
+        return savedCarAdvertisement == null ? null : this.modelMapper.map(savedCarAdvertisement, CarAdvertisementServiceModel.class);
+    }
 }

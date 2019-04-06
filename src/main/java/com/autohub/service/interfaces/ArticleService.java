@@ -13,4 +13,6 @@ public interface ArticleService {
     void deleteById(String id);
 
     ArticleServiceModel findById(String id);
+
+    ArticleServiceModel update(ArticleServiceModel articleServiceModel);
 }

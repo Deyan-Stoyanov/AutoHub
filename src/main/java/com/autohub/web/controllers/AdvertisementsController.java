@@ -196,9 +196,16 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/cars/edit/{id}")
-    public ModelAndView editCar(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("edit-car");
-        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+    public ModelAndView editCar(@PathVariable("id") String id,
+                                @ModelAttribute(name = "model") CarAdvertisementBindingModel model,
+                                ModelAndView modelAndView, Authentication authentication) {
+        model.setUser(((User) authentication.getPrincipal()).getUsername());
+        CarServiceModel carServiceModel = initCarServiceModel(model);
+        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
+        CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(model, carServiceModel, addressServiceModel);
+        carAdvertisementServiceModel.setId(id);
+        this.carAdvertisementService.update(carAdvertisementServiceModel);
+        modelAndView.setViewName("redirect:/cars/details/" + id);
         return modelAndView;
     }
 
@@ -210,9 +217,14 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/parts/edit/{id}")
-    public ModelAndView editPart(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("part-advertisement-details");
-        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
+    public ModelAndView editPart(@PathVariable("id") String id,
+                                 @ModelAttribute(name = "model") PartAdvertisementBindingModel model,
+                                 ModelAndView modelAndView) {
+        PartServiceModel partServiceModel = initPartServiceModel(model);
+        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
+        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(model, partServiceModel, addressServiceModel);
+        partAdvertisementServiceModel.setId(id);
+        modelAndView.setViewName("redirect:/parts/details/" + id);
         return modelAndView;
     }
 

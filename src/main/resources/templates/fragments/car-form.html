@@ -4,14 +4,26 @@
         <label for="make">Make*:</label>
         <div class="input-field">
             <i class="fas fa-car"></i>
-            <input type="text" placeholder="Make..." name="make" id="make" required>
+            <input type="text" placeholder="Make..." name="make" id="make" th:field="*{make}"
+                   th:styleappend="${#fields.hasErrors('make')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('make')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
         <label for="model">Model*:</label>
         <div class="input-field">
             <i class="fas fa-car"></i>
-            <input type="text" placeholder="Model..." name="model" id="model" required>
+            <input type="text" placeholder="Model..." name="model" id="model" th:field="*{model}"
+                   th:styleappend="${#fields.hasErrors('model')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('model')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
@@ -30,14 +42,26 @@
         <label for="volume">Engine volume*:</label>
         <div class="input-field">
             <i class="fas fa-car"></i>
-            <input type="number" step="0.01" placeholder="Engine volume..." name="volume" id="volume" required>
+            <input type="number" step="0.01" placeholder="Engine volume..." name="volume" id="volume" th:field="*{volume}"
+                   th:styleappend="${#fields.hasErrors('volume')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('volume')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
         <label for="horsepower">Engine horsepower*:</label>
         <div class="input-field">
             <i class="fas fa-car"></i>
-            <input type="number" step="1" placeholder="Engine horsepower..." name="horsepower" id="horsepower" required>
+            <input type="number" step="1" placeholder="Engine horsepower..." name="horsepower" id="horsepower" th:field="*{horsepower}"
+                   th:styleappend="${#fields.hasErrors('horsepower')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('horsepower')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
@@ -56,7 +80,13 @@
         <label for="modification">Engine modification*:</label>
         <div class="input-field">
             <i class="fas fa-car"></i>
-            <input type="text" placeholder="Engine modification..." name="modification" id="modification" required>
+            <input type="text" placeholder="Engine modification..." name="modification" id="modification" th:field="*{modification}"
+                   th:styleappend="${#fields.hasErrors('modification')} ? 'border-color: red'">
+            <ul class="text-danger" th:each="error : ${#fields.errors('modification')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
@@ -64,28 +94,46 @@
         <div class="input-field">
             <i class="fas fa-car"></i>
             <input type="date" placeholder="Engine Production Date..." name="productionDate" id="productionDate"
-                   required>
+                   th:field="*{productionDate}"
+                   th:styleappend="${#fields.hasErrors('productionDate')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('productionDate')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
         <label for="mileage">Mileage*:</label>
         <div class="input-field">
             <i class="fas fa-car"></i>
-            <input type="number" step="1" placeholder="Engine Mileage..." name="mileage" id="mileage" required>
+            <input type="number" step="1" placeholder="Engine Mileage..." name="mileage" id="mileage" th:field="*{mileage}"
+                   th:styleappend="${#fields.hasErrors('mileage')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('mileage')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
         <label for="color">Color*:</label>
         <div class="input-field">
             <i class="fas fa-car"></i>
-            <input type="text" placeholder="Color..." name="color" id="color" required>
+            <input type="text" placeholder="Color..." name="color" id="color" th:field="*{color}"
+                   th:styleappend="${#fields.hasErrors('color')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('color')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
         <label for="price">Price*:</label>
         <div class="input-field">
             <i class="fas fa-dollar-sign"></i>
-            <input type="number" step="0.01" placeholder="Price..." name="price" id="price" required>
+            <input type="number" step="0.01" placeholder="Price..." name="price" id="price"
         </div>
     </fieldset>
     <fieldset>
@@ -93,7 +141,14 @@
         <div class="input-field">
             <i class="far fa-file-alt"></i>
             <textarea rows="12" cols="60" placeholder="Description..." name="description"
-                      id="description" required></textarea>
+                      id="description"  th:field="*{description}"
+                      th:styleappend="${#fields.hasErrors('description')} ? 'border-color: red'" required>
+            </textarea>
+            <ul class="text-danger" th:each="error : ${#fields.errors('description')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <p>Address</p>
@@ -101,21 +156,39 @@
         <label for="country">Country*:</label>
         <div class="input-field">
             <i class="fas fa-map-marked-alt"></i>
-            <input type="text" placeholder="Country..." name="country" id="country" required>
+            <input type="text" placeholder="Country..." name="country" id="country"  th:field="*{country}"
+                   th:styleappend="${#fields.hasErrors('country')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('country')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
         <label for="province">Province*:</label>
         <div class="input-field">
             <i class="fas fa-map-marked-alt"></i>
-            <input type="text" placeholder="Province..." name="province" id="province" required>
+            <input type="text" placeholder="Province..." name="province" id="province" th:field="*{province}"
+                   th:styleappend="${#fields.hasErrors('province')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('province')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>
         <label for="city">City*:</label>
         <div class="input-field">
             <i class="fas fa-map-marked-alt"></i>
-            <input type="text" placeholder="City..." name="city" id="city" required>
+            <input type="text" placeholder="City..." name="city" id="city" th:field="*{city}"
+                   th:styleappend="${#fields.hasErrors('city')} ? 'border-color: red'" required>
+            <ul class="text-danger" th:each="error : ${#fields.errors('city')}">
+                <li>
+                    <small th:text="${error}"></small>
+                </li>
+            </ul>
         </div>
     </fieldset>
     <fieldset>

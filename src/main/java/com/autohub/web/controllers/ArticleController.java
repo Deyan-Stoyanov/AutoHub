@@ -70,13 +70,19 @@ public class ArticleController {
 
     @GetMapping("/admin/articles/edit/{id}")
     public ModelAndView createArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.addObject("article", this.articleService.findById(id));
         modelAndView.setViewName("edit-article");
         return modelAndView;
     }
 
     @PostMapping("/admin/articles/edit/{id}")
-    public ModelAndView confirmCreateArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("edit-article");
+    public ModelAndView confirmCreateArticle(@PathVariable("id") String id,
+                                             @ModelAttribute(name = "model") ArticleCreateBindingModel model,
+                                             ModelAndView modelAndView) {
+        ArticleServiceModel articleServiceModel = this.modelMapper.map(model, ArticleServiceModel.class);
+        articleServiceModel.setId(id);
+        this.articleService.update(articleServiceModel);
+        modelAndView.setViewName("redirect:/home");
         return modelAndView;
     }
 
@@ -90,7 +96,7 @@ public class ArticleController {
     @PostMapping("/admin/articles/delete/{id}")
     public ModelAndView confirmDeleteArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.articleService.deleteById(id);
-        modelAndView.setViewName("edit-article");
+        modelAndView.setViewName("redirect:/home");
         return modelAndView;
     }
 
