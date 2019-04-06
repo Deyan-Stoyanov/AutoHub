@@ -15,4 +15,6 @@ public interface PartAdvertisementService {
     PartAdvertisementServiceModel findById(String id);
 
     void changeAdvertisementStatus(String id, AdvertisementStatus declined);
+
+    void deleteById(String id);
 }

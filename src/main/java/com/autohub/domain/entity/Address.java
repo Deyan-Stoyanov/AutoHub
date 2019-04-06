@@ -2,6 +2,8 @@ package com.autohub.domain.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "addresses")
@@ -19,6 +21,8 @@ public class Address extends BaseEntity{
         this.city = city;
     }
 
+    @NotNull
+    @Size(min = 3, max = 50)
     public String getCountry() {
         return country;
     }
@@ -27,6 +31,8 @@ public class Address extends BaseEntity{
         this.country = country;
     }
 
+    @NotNull
+    @Size(min = 3, max = 50)
     public String getProvince() {
         return province;
     }
@@ -35,6 +41,8 @@ public class Address extends BaseEntity{
         this.province = province;
     }
 
+    @NotNull
+    @Size(min = 3, max = 50)
     public String getCity() {
         return city;
     }

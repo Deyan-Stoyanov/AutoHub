@@ -6,6 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,6 +68,7 @@ public class User extends BaseEntity implements UserDetails {
         this.authorities = authorities;
     }
 
+    @Size(min = 3, max = 20)
     @Column(name = "username", nullable = false, unique = true)
     public String getUsername() {
         return username;
@@ -73,6 +78,7 @@ public class User extends BaseEntity implements UserDetails {
         this.username = username;
     }
 
+    @Size(min = 6, max = 20)
     @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;
@@ -82,6 +88,7 @@ public class User extends BaseEntity implements UserDetails {
         this.password = password;
     }
 
+    @Size(min = 2, max = 40)
     @Column(name = "first_name", nullable = false)
     public String getFirstName() {
         return firstName;
@@ -91,6 +98,7 @@ public class User extends BaseEntity implements UserDetails {
         this.firstName = firstName;
     }
 
+    @Size(min = 2, max = 40)
     @Column(name = "last_name", nullable = false)
     public String getLastName() {
         return lastName;
@@ -100,6 +108,8 @@ public class User extends BaseEntity implements UserDetails {
         this.lastName = lastName;
     }
 
+    @Size(min = 2, max = 40)
+    @Email
     @Column(name = "email", nullable = false, unique = true)
     public String getEmail() {
         return email;
@@ -109,6 +119,7 @@ public class User extends BaseEntity implements UserDetails {
         this.email = email;
     }
 
+    @NotNull
     @Column(name = "gender")
     @Enumerated(value = EnumType.STRING)
     public Gender getGender() {
@@ -119,6 +130,7 @@ public class User extends BaseEntity implements UserDetails {
         this.gender = gender;
     }
 
+    @Min(0)
     @Column(name = "age")
     public Integer getAge() {
         return age;
@@ -147,6 +159,7 @@ public class User extends BaseEntity implements UserDetails {
         this.partAdvertisements = partAdvertisements;
     }
 
+    @Size(min = 4, max = 20)
     @Column(name = "phone_number")
     public String getPhoneNumber() {
         return phoneNumber;

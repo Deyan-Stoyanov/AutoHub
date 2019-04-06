@@ -1,9 +1,11 @@
 package com.autohub.domain.model.binding;
 
+import com.autohub.domain.annotations.BeforeToday;
 import com.autohub.domain.enums.CarType;
 import com.autohub.domain.enums.FuelType;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,6 +25,8 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
     public CarAdvertisementBindingModel() {
     }
 
+    @NotEmpty
+    @Size(min = 2, max = 30, message = "Model should be between 2 and 30 characters long")
     public String getMake() {
         return make;
     }
@@ -31,6 +35,8 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.make = make;
     }
 
+    @NotEmpty
+    @Size(min = 2, max = 30, message = "Model should be between 2 and 30 characters long")
     public String getModel() {
         return model;
     }
@@ -39,6 +45,7 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.model = model;
     }
 
+    @NotNull(message = "Car type should not be empty")
     public CarType getCarType() {
         return carType;
     }
@@ -47,6 +54,8 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.carType = carType;
     }
 
+    @NotNull(message = "Date should not be empty")
+    @BeforeToday
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date getProductionDate() {
         return productionDate;
@@ -56,6 +65,7 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.productionDate = productionDate;
     }
 
+    @Min(value = 0, message = "Mileage should be between non-negative")
     public Long getMileage() {
         return mileage;
     }
@@ -64,6 +74,8 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.mileage = mileage;
     }
 
+    @NotEmpty
+    @Size(min = 2, max = 30, message = "Color should be between 2 and 30 characters long")
     public String getColor() {
         return color;
     }
@@ -80,6 +92,7 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.modification = modification;
     }
 
+    @NotNull(message = "Fuel type should not be empty")
     public FuelType getFuelType() {
         return fuelType;
     }
@@ -88,6 +101,7 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.fuelType = fuelType;
     }
 
+    @Min(value = 1, message = "Horsepower should be a positive number")
     public Long getHorsepower() {
         return horsepower;
     }
@@ -96,6 +110,7 @@ public class CarAdvertisementBindingModel extends AdvertisementBindingModel {
         this.horsepower = horsepower;
     }
 
+    @DecimalMin(value = "0.1", message = "Engine Volume should not be negative")
     public BigDecimal getVolume() {
         return volume;
     }

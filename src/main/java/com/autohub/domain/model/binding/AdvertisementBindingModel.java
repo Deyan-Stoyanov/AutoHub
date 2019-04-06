@@ -1,5 +1,9 @@
 package com.autohub.domain.model.binding;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public abstract class AdvertisementBindingModel {
@@ -13,6 +17,8 @@ public abstract class AdvertisementBindingModel {
     public AdvertisementBindingModel() {
     }
 
+    @NotEmpty
+    @DecimalMin(value = "0.01", message = "Price should be a positive decimal number")
     public BigDecimal getPrice() {
         return price;
     }
@@ -21,6 +27,8 @@ public abstract class AdvertisementBindingModel {
         this.price = price;
     }
 
+    @NotEmpty
+    @Size(min = 3, message = "Description should be at least 3 symbols long")
     public String getDescription() {
         return description;
     }
@@ -29,6 +37,8 @@ public abstract class AdvertisementBindingModel {
         this.description = description;
     }
 
+    @NotEmpty
+    @Size(min = 3, max = 50, message = "Country should be between 3 and 50 characters long")
     public String getCountry() {
         return country;
     }
@@ -37,6 +47,8 @@ public abstract class AdvertisementBindingModel {
         this.country = country;
     }
 
+    @NotEmpty
+    @Size(min = 3, max = 50, message = "Province should be between 3 and 50 characters long")
     public String getProvince() {
         return province;
     }
@@ -45,6 +57,8 @@ public abstract class AdvertisementBindingModel {
         this.province = province;
     }
 
+    @NotEmpty
+    @Size(min = 3, max = 50, message = "City should be between 3 and 50 characters long")
     public String getCity() {
         return city;
     }
@@ -53,6 +67,7 @@ public abstract class AdvertisementBindingModel {
         this.city = city;
     }
 
+    @NotNull
     public String getUser() {
         return user;
     }

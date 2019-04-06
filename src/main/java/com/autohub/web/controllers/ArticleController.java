@@ -9,10 +9,7 @@ import com.autohub.service.interfaces.ArticleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -68,6 +65,32 @@ public class ArticleController {
     @GetMapping("/articles/tips-and-tricks")
     public ModelAndView tipsAndTricks(ModelAndView modelAndView) {
         initArticles(modelAndView, "tips-and-tricks", ArticleType.TIPS_AND_TRICKS);
+        return modelAndView;
+    }
+
+    @GetMapping("/admin/articles/edit/{id}")
+    public ModelAndView createArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("edit-article");
+        return modelAndView;
+    }
+
+    @PostMapping("/admin/articles/edit/{id}")
+    public ModelAndView confirmCreateArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.setViewName("edit-article");
+        return modelAndView;
+    }
+
+    @GetMapping("/admin/articles/delete/{id}")
+    public ModelAndView deleteArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
+        modelAndView.addObject("article", this.articleService.findById(id));
+        modelAndView.setViewName("delete-article");
+        return modelAndView;
+    }
+
+    @PostMapping("/admin/articles/delete/{id}")
+    public ModelAndView confirmDeleteArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
+        this.articleService.deleteById(id);
+        modelAndView.setViewName("edit-article");
         return modelAndView;
     }
 

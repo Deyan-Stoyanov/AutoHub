@@ -4,6 +4,8 @@ import com.autohub.domain.enums.ArticleType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -24,6 +26,8 @@ public class Article extends BaseEntity {
         this.creationDate = creationDate;
     }
 
+    @NotNull
+    @Size(min = 3, max = 50)
     @Column(name = "title", nullable = false)
     public String getTitle() {
         return title;
@@ -33,6 +37,8 @@ public class Article extends BaseEntity {
         this.title = title;
     }
 
+    @NotNull
+    @Size(min = 3)
     @Column(name = "content", nullable = false, columnDefinition = "text")
     public String getContent() {
         return content;

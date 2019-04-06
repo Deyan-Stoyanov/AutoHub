@@ -3,6 +3,8 @@ package com.autohub.domain.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "parts")
@@ -20,6 +22,8 @@ public class Part extends BaseEntity {
         this.carSuitableFor = carSuitableFor;
     }
 
+    @Size(min = 3, max = 50)
+    @NotNull
     @Column(name = "name")
     public String getName() {
         return name;
@@ -38,6 +42,7 @@ public class Part extends BaseEntity {
         this.carSuitableFor = carSuitableFor;
     }
 
+    @NotNull
     @Column(name = "manufacturer")
     public String getManufacturer() {
         return manufacturer;

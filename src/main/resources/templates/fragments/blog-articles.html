@@ -6,6 +6,10 @@
             <h3 class="title" th:text="${article.getTitle()}"></h3>
             <span class="date" th:text="${#dates.format(article.getCreationDate(), 'dd-MMM-yyyy')}"></span>
             <div th:text="${article.getContent()}"></div>
+            <div class="buttons-container">
+                <a th:href="@{/admin/articles/edit/{id}(id=${advertisement.getId()})}" class="btn btn-info">Edit</a>
+                <a th:href="@{/admin/articles/delete/{id}(id=${advertisement.getId()})}" class="btn btn-danger">Delete</a>
+            </div>
         </li>
     </ul>
 </div>

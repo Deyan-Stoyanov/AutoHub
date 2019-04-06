@@ -77,4 +77,9 @@ public class PartAdvertisementServiceImpl implements PartAdvertisementService {
             this.partAdvertisementRepository.save(partAdvertisement);
         }
     }
+
+    @Override
+    public void deleteById(String id) {
+        this.partAdvertisementRepository.deleteById(id);
+    }
 }

@@ -3,6 +3,7 @@ package com.autohub.domain.entity;
 import com.autohub.domain.enums.AdvertisementStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 
 @MappedSuperclass
@@ -26,6 +27,7 @@ public abstract class Advertisement extends BaseEntity {
     }
 
     @Column(name = "price", nullable = false)
+    @DecimalMin("0.00")
     public BigDecimal getPrice() {
         return price;
     }

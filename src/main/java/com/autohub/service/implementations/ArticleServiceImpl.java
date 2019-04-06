@@ -41,4 +41,14 @@ public class ArticleServiceImpl implements ArticleService {
                 .map(article -> this.modelMapper.map(article, ArticleServiceModel.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteById(String id) {
+        this.articleRepository.deleteById(id);
+    }
+
+    @Override
+    public ArticleServiceModel findById(String id) {
+        return null;
+    }
 }

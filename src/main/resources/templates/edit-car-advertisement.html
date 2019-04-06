@@ -10,16 +10,13 @@
         <div th:replace="fragments/header.html :: header"></div>
     </th:block>
     <main class="site-content">
-        <h2>Register</h2>
+        <h2>Edit Car Advertisement</h2>
         <div class="site-main">
-            <form th:method="post" th:action="@{/register}" enctype="multipart/form-data">
-                <div th:replace="fragments/user-register-form.html :: div"></div>
+            <form method="post" th:action="@{/marketplace/advertisements/car/edit}" enctype="multipart/form-data">
+                <div th:replace="fragments/car-form.html :: div"></div>
             </form>
         </div>
     </main>
-    <script>
-        $("#oldPasswordInput").css("display", "none")
-    </script>
     <th:block>
         <div th:replace="fragments/footer.html :: footer"></div>
     </th:block>

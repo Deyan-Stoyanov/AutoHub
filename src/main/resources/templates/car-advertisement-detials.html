@@ -17,10 +17,9 @@
             <h4 class="username" th:text="${user.getUsername()}"></h4>
             <p class="username" th:text="${user.getEmail()}"></p>
             <p class="username" th:text="${user.getPhoneNumber()}"></p>
-            <p class="username" th:text="${user.getAge()}"></p>
             <div class="buttons-container" th:if="${user.getUsername() == session.username}">
-                <a th:href="@{/profile/edit/{id}(id=${user.getId()})}" class="button">Edit profile</a>
-                <a th:href="@{/profile/delete/{id}(id=${user.getId()})}" class="button button-danger">Delete profile</a>
+                <a th:href="@{/profile/edit/{id}(id=${advert.getId()})}" class="button">Edit advertisement</a>
+                <a th:href="@{/profile/delete/{id}(id=${advert.getId()})}" class="button button-danger">Delete advertisement</a>
             </div>
         </div>
     </main>

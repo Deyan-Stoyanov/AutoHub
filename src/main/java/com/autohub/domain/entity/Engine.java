@@ -3,6 +3,10 @@ package com.autohub.domain.entity;
 import com.autohub.domain.enums.FuelType;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -24,6 +28,8 @@ public class Engine extends BaseEntity{
     }
 
     @Column(name = "volume", nullable = false)
+    @DecimalMin("0.1")
+    @DecimalMax("20.0")
     public BigDecimal getVolume() {
         return volume;
     }
@@ -32,6 +38,7 @@ public class Engine extends BaseEntity{
         this.volume = volume;
     }
 
+    @Min(1)
     @Column(name = "horsepower", nullable = false)
     public Long getHorsepower() {
         return horsepower;
@@ -41,6 +48,7 @@ public class Engine extends BaseEntity{
         this.horsepower = horsepower;
     }
 
+    @NotNull
     @Column(name = "fuel_type", nullable = false)
     @Enumerated(EnumType.STRING)
     public FuelType getFuelType() {

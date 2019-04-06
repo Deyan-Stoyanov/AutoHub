@@ -73,7 +73,7 @@ public class CarAdvertisementServiceImpl implements CarAdvertisementService {
     }
 
     @Override
-    public CarAdvertisementServiceModel findById(String id){
+    public CarAdvertisementServiceModel findById(String id) {
         CarAdvertisement carAdvertisement = this.carAdvertisementRepository.findById(id).orElse(null);
         return carAdvertisement == null ? null : this.modelMapper.map(carAdvertisement, CarAdvertisementServiceModel.class);
     }
@@ -81,9 +81,14 @@ public class CarAdvertisementServiceImpl implements CarAdvertisementService {
     @Override
     public void changeAdvertisementStatus(String id, AdvertisementStatus status) {
         CarAdvertisement carAdvertisement = this.carAdvertisementRepository.findById(id).orElse(null);
-        if(carAdvertisement != null){
+        if (carAdvertisement != null) {
             carAdvertisement.setStatus(status);
             this.carAdvertisementRepository.save(carAdvertisement);
         }
+    }
+
+    @Override
+    public void deleteById(String id) {
+        this.carAdvertisementRepository.deleteById(id);
     }
 }

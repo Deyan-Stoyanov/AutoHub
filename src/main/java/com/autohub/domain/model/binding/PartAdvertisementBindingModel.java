@@ -1,6 +1,7 @@
 package com.autohub.domain.model.binding;
 
-import java.math.BigDecimal;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class PartAdvertisementBindingModel extends AdvertisementBindingModel {
     private String name;
@@ -10,6 +11,8 @@ public class PartAdvertisementBindingModel extends AdvertisementBindingModel {
     public PartAdvertisementBindingModel() {
     }
 
+    @NotEmpty
+    @Size(min = 2, max = 50)
     public String getName() {
         return name;
     }
@@ -18,6 +21,8 @@ public class PartAdvertisementBindingModel extends AdvertisementBindingModel {
         this.name = name;
     }
 
+    @NotEmpty
+    @Size(min = 3, max = 30)
     public String getManufacturer() {
         return manufacturer;
     }
