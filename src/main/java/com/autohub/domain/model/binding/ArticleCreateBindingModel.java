@@ -14,6 +14,7 @@ public class ArticleCreateBindingModel {
     private Date creationDate;
 
     public ArticleCreateBindingModel() {
+        this.setCreationDate();
     }
 
     @NotEmpty

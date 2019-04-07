@@ -8,12 +8,15 @@ import com.autohub.domain.model.view.ArticleViewModel;
 import com.autohub.service.interfaces.ArticleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -31,16 +34,20 @@ public class ArticleController {
     }
 
     @GetMapping("/admin/articles/create")
-    public ModelAndView createArticle(ModelAndView modelAndView) {
+    public ModelAndView createArticle(@ModelAttribute(name = "article") ArticleCreateBindingModel model, ModelAndView modelAndView) {
         modelAndView.setViewName("create-article");
         return modelAndView;
     }
 
     @PostMapping("/admin/articles/create")
     public ModelAndView confirmCreateArticle(@RequestParam(value = "file", required = false) MultipartFile file,
-                                             @ModelAttribute(name = "model") ArticleCreateBindingModel model,
-                                             ModelAndView modelAndView) throws IOException {
-        ArticleServiceModel registeredArticle = this.articleService.save(this.modelMapper.map(model, ArticleServiceModel.class));
+                                             @Valid @ModelAttribute(name = "article") ArticleCreateBindingModel article,
+                                             BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("create-article");
+            return modelAndView;
+        }
+        ArticleServiceModel registeredArticle = this.articleService.save(this.modelMapper.map(article, ArticleServiceModel.class));
         if (file != null) {
             String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\blog_images";
             File f1 = new File(filePath + "\\" + registeredArticle.getId() + ".jpg");
@@ -69,17 +76,24 @@ public class ArticleController {
     }
 
     @GetMapping("/admin/articles/edit/{id}")
-    public ModelAndView createArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
+    public ModelAndView editArticle(@PathVariable("id") String id,
+                                    @ModelAttribute(name = "article") ArticleCreateBindingModel article,
+                                    ModelAndView modelAndView) {
         modelAndView.addObject("article", this.articleService.findById(id));
         modelAndView.setViewName("edit-article");
         return modelAndView;
     }
 
     @PostMapping("/admin/articles/edit/{id}")
-    public ModelAndView confirmCreateArticle(@PathVariable("id") String id,
-                                             @ModelAttribute(name = "model") ArticleCreateBindingModel model,
-                                             ModelAndView modelAndView) {
-        ArticleServiceModel articleServiceModel = this.modelMapper.map(model, ArticleServiceModel.class);
+    public ModelAndView confirmEditArticle(@PathVariable("id") String id,
+                                           @Valid @ModelAttribute(name = "article") ArticleCreateBindingModel article,
+                                           BindingResult bindingResult, ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("edit-article");
+            modelAndView.addObject("article", this.articleService.findById(id));
+            return modelAndView;
+        }
+        ArticleServiceModel articleServiceModel = this.modelMapper.map(article, ArticleServiceModel.class);
         articleServiceModel.setId(id);
         this.articleService.update(articleServiceModel);
         modelAndView.setViewName("redirect:/home");

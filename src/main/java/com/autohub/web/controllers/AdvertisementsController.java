@@ -17,11 +17,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
@@ -70,7 +72,8 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/publish/car")
-    public ModelAndView addCar(ModelAndView modelAndView) {
+    public ModelAndView addCar(@ModelAttribute(name = "advert") CarAdvertisementBindingModel model,
+                               ModelAndView modelAndView) {
         modelAndView.addObject("carTypes", CarType.values());
         modelAndView.addObject("fuelTypes", FuelType.values());
         return initData(modelAndView, "add-car");
@@ -78,12 +81,16 @@ public class AdvertisementsController {
 
     @PostMapping("/publish/car")
     public ModelAndView confirmAddCar(@RequestParam(value = "file", required = false) MultipartFile file,
-                                      @ModelAttribute(name = "model") CarAdvertisementBindingModel model,
-                                      ModelAndView modelAndView, Authentication authentication) throws IOException {
-        model.setUser(((User) authentication.getPrincipal()).getUsername());
-        CarServiceModel carServiceModel = initCarServiceModel(model);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
-        CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(model, carServiceModel, addressServiceModel);
+                                      @Valid @ModelAttribute(name = "advert") CarAdvertisementBindingModel advert,
+                                      BindingResult bindingResult, ModelAndView modelAndView, Authentication authentication) throws IOException {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("add-car");
+            return modelAndView;
+        }
+        advert.setUser(((User) authentication.getPrincipal()).getUsername());
+        CarServiceModel carServiceModel = initCarServiceModel(advert);
+        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
+        CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel);
         CarAdvertisementServiceModel savedModel = this.carAdvertisementService.save(carAdvertisementServiceModel);
         if (savedModel == null) {
             modelAndView.setViewName("redirect:/marketplace/advertisements/publish/car");
@@ -97,7 +104,7 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/publish/part")
-    public ModelAndView addPart(ModelAndView modelAndView) {
+    public ModelAndView addPart(@ModelAttribute(name = "advert") PartAdvertisementBindingModel model, ModelAndView modelAndView) {
         modelAndView.addObject("carTypes", CarType.values());
         modelAndView.addObject("fuelTypes", FuelType.values());
         return initData(modelAndView, "add-part");
@@ -105,12 +112,16 @@ public class AdvertisementsController {
 
     @PostMapping("/publish/part")
     public ModelAndView confirmAddPart(@RequestParam(value = "file", required = false) MultipartFile file,
-                                       @ModelAttribute(name = "model") PartAdvertisementBindingModel model,
-                                       ModelAndView modelAndView, Authentication authentication) throws IOException {
-        model.setUser(((User) authentication.getPrincipal()).getUsername());
-        PartServiceModel partServiceModel = initPartServiceModel(model);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
-        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(model, partServiceModel, addressServiceModel);
+                                       @Valid @ModelAttribute(name = "advert") PartAdvertisementBindingModel advert,
+                                       BindingResult bindingResult, ModelAndView modelAndView, Authentication authentication) throws IOException {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("add-part");
+            return modelAndView;
+        }
+        advert.setUser(((User) authentication.getPrincipal()).getUsername());
+        PartServiceModel partServiceModel = initPartServiceModel(advert);
+        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
+        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel);
         PartAdvertisementServiceModel savedModel = this.partAdvertisementService.save(partAdvertisementServiceModel);
         if (savedModel == null) {
             modelAndView.setViewName("redirect:/marketplace/advertisements/publish/part");
@@ -182,14 +193,14 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/cars/details/{id}")
-    public ModelAndView detailsCars(@PathVariable("id") String id, ModelAndView modelAndView) {
+    public ModelAndView detailsCar(@PathVariable("id") String id, ModelAndView modelAndView) {
         modelAndView.setViewName("car-advertisement-details");
         modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
         return modelAndView;
     }
 
     @GetMapping("/parts/details/{id}")
-    public ModelAndView detailsParts(@PathVariable("id") String id, ModelAndView modelAndView) {
+    public ModelAndView detailsPart(@PathVariable("id") String id, ModelAndView modelAndView) {
         modelAndView.setViewName("part-advertisement-details");
         modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
         return modelAndView;
@@ -197,47 +208,63 @@ public class AdvertisementsController {
 
     @GetMapping("/cars/edit/{id}")
     public ModelAndView editCar(@PathVariable("id") String id,
-                                @ModelAttribute(name = "model") CarAdvertisementBindingModel model,
-                                ModelAndView modelAndView, Authentication authentication) {
-        model.setUser(((User) authentication.getPrincipal()).getUsername());
-        CarServiceModel carServiceModel = initCarServiceModel(model);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
-        CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(model, carServiceModel, addressServiceModel);
+                                @ModelAttribute(name = "advert") CarAdvertisementBindingModel model,
+                                ModelAndView modelAndView) {
+        modelAndView.setViewName("edit-car-advertisement");
+        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+        return modelAndView;
+    }
+
+    @PostMapping("/cars/edit/{id}")
+    public ModelAndView confirmEditCar(@PathVariable("id") String id,
+                                       @Valid @ModelAttribute(name = "advert") CarAdvertisementBindingModel advert,
+                                       BindingResult bindingResult, ModelAndView modelAndView, Authentication authentication) {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("edit-car-advertisement");
+            modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+            return modelAndView;
+        }
+        advert.setUser(((User) authentication.getPrincipal()).getUsername());
+        CarServiceModel carServiceModel = initCarServiceModel(advert);
+        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
+        CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel);
         carAdvertisementServiceModel.setId(id);
         this.carAdvertisementService.update(carAdvertisementServiceModel);
         modelAndView.setViewName("redirect:/cars/details/" + id);
         return modelAndView;
     }
 
-    @PostMapping("/cars/edit/{id}")
-    public ModelAndView confirmEditCar(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("edit-car");
-        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+
+    @GetMapping("/parts/edit/{id}")
+    public ModelAndView confirmEditPart(@PathVariable("id") String id,
+                                        @ModelAttribute(name = "advert") PartAdvertisementBindingModel model,
+                                        ModelAndView modelAndView) {
+        modelAndView.setViewName("edit-part-advertisement");
+        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
         return modelAndView;
     }
 
-    @GetMapping("/parts/edit/{id}")
+    @PostMapping("/parts/edit/{id}")
     public ModelAndView editPart(@PathVariable("id") String id,
-                                 @ModelAttribute(name = "model") PartAdvertisementBindingModel model,
-                                 ModelAndView modelAndView) {
-        PartServiceModel partServiceModel = initPartServiceModel(model);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(model);
-        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(model, partServiceModel, addressServiceModel);
+                                 @Valid @ModelAttribute(name = "advert") PartAdvertisementBindingModel advert,
+                                 BindingResult bindingResult, ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("edit-part-advertisement" + id);
+            modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
+            return modelAndView;
+        }
+        PartServiceModel partServiceModel = initPartServiceModel(advert);
+        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
+        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel);
         partAdvertisementServiceModel.setId(id);
         modelAndView.setViewName("redirect:/parts/details/" + id);
         return modelAndView;
     }
 
-    @PostMapping("/parts/edit/{id}")
-    public ModelAndView confirmEditPart(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("part-advertisement-details");
-        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
-        return modelAndView;
-    }
 
     @GetMapping("/cars/delete/{id}")
     public ModelAndView deleteCar(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("delete-car");
+        modelAndView.setViewName("delete-car-advertisement");
         modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
         return modelAndView;
     }
@@ -251,7 +278,7 @@ public class AdvertisementsController {
 
     @GetMapping("/parts/delete/{id}")
     public ModelAndView deletePart(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("delete-part");
+        modelAndView.setViewName("delete-part-advertisement");
         modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
         return modelAndView;
     }

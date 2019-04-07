@@ -12,11 +12,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -40,17 +42,18 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public ModelAndView register(ModelAndView modelAndView) {
+    public ModelAndView register(@ModelAttribute(name = "user") UserRegisterBindingModel model,
+                                 ModelAndView modelAndView) {
         modelAndView.setViewName("register");
         return modelAndView;
     }
 
     @PostMapping("/register")
     public ModelAndView confirmRegister(@RequestParam(value = "file", required = false) MultipartFile file,
-                                        @ModelAttribute(name = "model") UserRegisterBindingModel model,
-                                        ModelAndView modelAndView) throws IOException {
-        if (model.getConfirmPassword().equals(model.getPassword())) {
-            UserServiceModel registeredModel = this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
+                                        @Valid @ModelAttribute(name = "user") UserRegisterBindingModel user,
+                                        BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
+        if (user.getConfirmPassword().equals(user.getPassword()) && !bindingResult.hasErrors()) {
+            UserServiceModel registeredModel = this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
             if (registeredModel != null && file != null) {
                 String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\user_images";
                 File f1 = new File(filePath + "\\" + registeredModel.getId() + ".jpg");
@@ -58,7 +61,7 @@ public class UserController {
             }
             modelAndView.setViewName("redirect:/login");
         } else {
-            modelAndView.setViewName("redirect:/register");
+            modelAndView.setViewName("register");
         }
         return modelAndView;
     }
@@ -72,22 +75,25 @@ public class UserController {
     }
 
     @GetMapping("/profile/edit/{id}")
-    public ModelAndView editProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
-        UserProfileViewModel user = this.findUser(id);
+    public ModelAndView editProfile(@PathVariable("id") String id,
+                                    @ModelAttribute(name = "user") UserEditBindingModel user,
+                                    ModelAndView modelAndView) {
+        UserProfileViewModel userProfileViewModel = this.findUser(id);
         modelAndView.setViewName("edit-profile");
-        modelAndView.addObject("user", user);
+        modelAndView.addObject("user", userProfileViewModel);
         return modelAndView;
     }
 
     @PostMapping("/profile/edit/{id}")
     public ModelAndView confirmEditProfile(@PathVariable("id") String id,
-                                           @ModelAttribute(name = "model") UserEditBindingModel model,
-                                           ModelAndView modelAndView) {
-        if (model.getOldPassword() == null || !model.getPassword().equals(model.getConfirmPassword())) {
+                                           @Valid @ModelAttribute(name = "user") UserEditBindingModel user,
+                                           BindingResult bindingResult, ModelAndView modelAndView) {
+        if (user.getOldPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             modelAndView.setViewName("redirect:/profile/edit/" + id);
+        } else if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("edit-profile");
         } else {
-
-            UserServiceModel userServiceModel =  this.modelMapper.map(model, UserServiceModel.class);
+            UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
             userServiceModel.setId(id);
             this.userService.update(userServiceModel);
             modelAndView.setViewName("redirect:/profile/" + id);

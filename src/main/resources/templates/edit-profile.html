@@ -12,7 +12,7 @@
     <main class="site-content">
         <h2>Register</h2>
         <div class="site-main">
-            <form method="post" th:action="@{/profile/edit/{id}(id=${user.getId()})}">
+            <form method="post" th:action="@{/profile/edit/{id}(id=${user.getId()})}" th:object="${user}">
                 <fieldset>
                     <label for="username">Choose your username*:</label>
                     <div class="input-field">
