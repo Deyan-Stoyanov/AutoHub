@@ -11,6 +11,7 @@ import com.autohub.repository.PartRepository;
 import com.autohub.service.interfaces.PartAdvertisementService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class PartAdvertisementServiceImpl implements PartAdvertisementService {
 
     @Override
     public List<PartAdvertisementServiceModel> findAll() {
-        return this.partAdvertisementRepository.findAll()
+        return this.partAdvertisementRepository.findAll(PageRequest.of(0, 2))
                 .stream()
                 .map(advert -> this.modelMapper.map(advert, PartAdvertisementServiceModel.class))
                 .collect(Collectors.toList());
