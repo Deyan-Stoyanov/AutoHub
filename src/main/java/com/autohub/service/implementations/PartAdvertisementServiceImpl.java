@@ -50,7 +50,7 @@ public class PartAdvertisementServiceImpl implements PartAdvertisementService {
 
     @Override
     public List<PartAdvertisementServiceModel> findAll() {
-        return this.partAdvertisementRepository.findAll(PageRequest.of(0, 2))
+        return this.partAdvertisementRepository.findAll()
                 .stream()
                 .map(advert -> this.modelMapper.map(advert, PartAdvertisementServiceModel.class))
                 .collect(Collectors.toList());

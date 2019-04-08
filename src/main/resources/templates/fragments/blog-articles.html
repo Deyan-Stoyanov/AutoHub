@@ -7,8 +7,8 @@
             <span class="date" th:text="${#dates.format(article.getCreationDate(), 'dd-MMM-yyyy')}"></span>
             <div th:text="${article.getContent()}"></div>
             <div class="buttons-container">
-                <a th:href="@{/admin/articles/edit/{id}(id=${advertisement.getId()})}" class="btn btn-info">Edit</a>
-                <a th:href="@{/admin/articles/delete/{id}(id=${advertisement.getId()})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/admin/articles/edit/{id}(id=${article.getId()})}" class="btn btn-info">Edit</a>
+                <a th:href="@{/admin/articles/delete/{id}(id=${article.getId()})}" class="btn btn-danger">Delete</a>
             </div>
         </li>
     </ul>

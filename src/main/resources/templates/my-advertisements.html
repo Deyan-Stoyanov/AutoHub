@@ -11,7 +11,7 @@
     </th:block>
     <main class="site-content">
         <div class="site-main">
-            <h2>Pending</h2>
+            <h2>My Advertisements</h2>
             <th:block>
                 <div th:replace="fragments/marketplace-controls.html :: div"></div>
             </th:block>
@@ -24,7 +24,7 @@
                     <th scope="col">Status</th>
                     <th scope="col">Details</th>
                     <th scope="col">Actions</th>
-                    <th scope="col">Delete Advertisement</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody th:each="car, index : ${cars}">
@@ -32,22 +32,22 @@
                     <th scope="row" th:text="${index.count}"></th>
                     <td><span th:text="${car.getCar().getMake() + ' ' + car.getCar().getModel()}"></span></td>
                     <td>
-                        <span class="text-danger" th:if="car.getStatus() == 'DECLINED'"
-                              th:text="car.getStatus()"></span>
-                        <span class="text-success" th:if="car.getStatus() == 'APPROVED'"
-                              th:text="car.getStatus()"></span>
-                        <span class="text-info" th:if="car.getStatus() == 'PENDING'" th:text="car.getStatus()"></span>
+                        <span class="text-danger" th:if="${car.getStatus().name() == 'DECLINED'}"
+                              th:text="${car.getStatus()}"></span>
+                        <span class="text-success" th:if="${car.getStatus().name() == 'APPROVED'}"
+                              th:text="${car.getStatus()}"></span>
+                        <span class="text-info" th:if="${car.getStatus().name() == 'PENDING'}" th:text="${car.getStatus()}"></span>
                     </td>
                     <td>
                         <a class="btn btn-info"
-                           th:href="@{/marketplace/advertisements/cars/details/{id}(id=${car.getId()})}">Details</a>
+                           th:href="@{/marketplace/cars/details/{id}(id=${car.getId()})}">Details</a>
                     </td>
                     <td>
-                        <a th:if="car.getStatus() == 'APPROVED'" class="btn btn-info"
-                           th:href="@{/marketplace/advertisements/cars/edit/{id}(id=${car.getId()})}">Edit</a></td>
+                        <a th:if="${car.getStatus().name() == ('APPROVED')}" class="btn btn-info"
+                           th:href="@{/marketplace/cars/edit/{id}(id=${car.getId()})}">Edit</a></td>
                     <td>
                         <a class="btn btn-danger"
-                           th:href="@{/marketplace/advertisements/cars/delete/{id}(id=${car.getId()})}">Delete</a></td>
+                           th:href="@{/marketplace/cars/delete/{id}(id=${car.getId()})}">Delete</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -56,9 +56,7 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Car</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Location</th>
+                    <th scope="col">Part</th>
                     <th scope="col">Details</th>
                     <th scope="col">Actions</th>
                     <th scope="col"></th>
@@ -69,20 +67,20 @@
                     <th scope="row" th:text="${index.count}"></th>
                     <td><span th:text="${part.getPart().getName()}"></span></td>
                     <td>
-                        <span class="text-danger" th:if="car.getStatus() == 'DECLINED'"
-                              th:text="car.getStatus()"></span>
-                        <span class="text-success" th:if="car.getStatus() == 'APPROVED'"
-                              th:text="car.getStatus()"></span>
-                        <span class="text-info" th:if="car.getStatus() == 'PENDING'" th:text="car.getStatus()"></span>
+                        <span class="text-danger" th:if="${part.getStatus().name() == 'DECLINED'}"
+                              th:text="${part.getStatus()}"></span>
+                        <span class="text-success" th:if="${part.getStatus().name() == 'APPROVED'}"
+                              th:text="${part.getStatus()}"></span>
+                        <span class="text-info" th:if="${part.getStatus().name() == 'PENDING'}" th:text="${part.getStatus()}"></span>
                     </td>
                     <td><a class="btn btn-info"
-                           th:href="@{/marketplace/advertisements/parts/details/{id}(id=${part.getId()})}">Details</a>
+                           th:href="@{/marketplace/parts/details/{id}(id=${part.getId()})}">Details</a>
                     </td>
                     <td>
-                        <a th:if="part.getStatus() == 'APPROVED'" class="btn btn-info"
-                           th:href="@{/marketplace/advertisements/parts/edit/{id}(id=${part.getId()})}">Edit</a></td>
+                        <a th:if="${part.getStatus().name() == 'APPROVED'}" class="btn btn-info"
+                           th:href="@{/marketplace/parts/edit/{id}(id=${part.getId()})}">Edit</a></td>
                     <td><a class="btn btn-danger"
-                           th:href="@{/marketplace/advertisements/parts/delete/{id}(id=${part.getId()})}">Delete</a>
+                           th:href="@{/marketplace/parts/delete/{id}(id=${part.getId()})}">Delete</a>
                     </td>
                 </tr>
                 </tbody>

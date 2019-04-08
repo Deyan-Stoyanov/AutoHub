@@ -37,12 +37,12 @@
                               th:text="${car.getAddress().getCity() + ', ' + car.getAddress().getCountry()}"></span>
                     </td>
                     <td><a class="btn btn-info"
-                           th:href="@{/marketplace/advertisements/details/{id}(id=${car.getId()})}">Details</a>
+                           th:href="@{/marketplace/cars/details/{id}(id=${car.getId()})}">Details</a>
                     </td>
                     <td>
                         <a class="btn btn-success"
-                           th:href="@{/marketplace/advertisements/approve/{id}(id=${part.getId()})}">Approve</a></td>
-                    <td><a class="btn btn-danger" th:href="@{/marketplace/advertisements/decline/{id}(id=${part.getId()})}">Decline</a></td>
+                           th:href="@{/marketplace/cars/approve/{id}(id=${car.getId()})}">Approve</a></td>
+                    <td><a class="btn btn-danger" th:href="@{/marketplace/cars/decline/{id}(id=${car.getId()})}">Decline</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -63,17 +63,16 @@
                 <tr>
                     <th scope="row" th:text="${index.count}"></th>
                     <td><span th:text="${part.getPart().getName()}"></span></td>
-                    <td><span class="user-info" th:text="${car.getUser().getUsername()}"></span></td>
-                    <td><span class="user-email"
-                              th:text="${car.getAddress().getCity() + ', ' + car.getAddress().getCountry()}"></span>
+                    <td><span class="user-info" th:text="${part.getUser().getUsername()}"></span></td>
+                    <td><span th:text="${part.getAddress().getCity() + ', ' + part.getAddress().getCountry()}"></span>
                     </td>
                     <td><a class="btn btn-info"
-                           th:href="@{/marketplace/advertisements/details/{id}(id=${part.getId()})}">Details</a>
+                           th:href="@{/marketplace/parts/details/{id}(id=${part.getId()})}">Details</a>
                     </td>
                     <td>
                         <a class="btn btn-success"
-                           th:href="@{/marketplace/advertisements/approve/{id}(id=${part.getId()})}">Approve</a></td>
-                    <td><a class="btn btn-danger" th:href="@{/marketplace/advertisements/decline/{id}(id=${part.getId()})}">Decline</a></td>
+                           th:href="@{/marketplace/parts/approve/{id}(id=${part.getId()})}">Approve</a></td>
+                    <td><a class="btn btn-danger" th:href="@{/marketplace/parts/decline/{id}(id=${part.getId()})}">Decline</a></td>
                 </tr>
                 </tbody>
             </table>

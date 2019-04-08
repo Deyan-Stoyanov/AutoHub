@@ -15,12 +15,12 @@
 
             <div class="justify-content-center text-center">
                 <p class="mb-3">You are going to delete this advertisement.</p>
-                <p class="mb-3" th:text="${advertisement.getCar().getMake()} + ' ' + ${advertisement.getCar().getModel()}"></p>
+                <p class="mb-3" th:text="${advert.getCar().getMake()} + ' ' + ${advert.getCar().getModel()}"></p>
                 <p class="p-danger">This action cannot be undone later!</p>
                 <p>Are you sure?</p>
             </div>
             <div class="buttons-container">
-                <form method="post" th:action="@{/marketplace/advertisements/car/delete/{id}(id=${advertisement.getId()})}">
+                <form method="post" th:action="@{/marketplace/cars/delete/{id}(id=${advert.getId()})}">
                     <button type="submit" class="button button-danger">Delete advertisement</button>
                 </form>
                 <a th:href="@{/admin/users}" class="button">Cancel</a>

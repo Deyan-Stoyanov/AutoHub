@@ -46,30 +46,11 @@ public class AdvertisementsController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ModelAndView marketplace(ModelAndView modelAndView) {
         return initData(modelAndView, "marketplace");
     }
 
-    @GetMapping(value = "/fetch/cars", produces = "application/json")
-    @ResponseBody
-    public Object fetchCars() {
-        return carAdvertisementService.findAll()
-                .stream()
-                .filter(advert -> advert.getStatus().equals(AdvertisementStatus.APPROVED))
-                .map(advert -> this.modelMapper.map(advert, CarAdvertisementViewModel.class))
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping(value = "/fetch/parts", produces = "application/json")
-    @ResponseBody
-    public Object fetchParts() {
-        return partAdvertisementService.findAll()
-                .stream()
-                .filter(advert -> advert.getStatus().equals(AdvertisementStatus.APPROVED))
-                .map(advert -> this.modelMapper.map(advert, PartAdvertisementViewModel.class))
-                .collect(Collectors.toList());
-    }
 
     @GetMapping("/publish/car")
     public ModelAndView addCar(@ModelAttribute(name = "advert") CarAdvertisementBindingModel model,
@@ -211,7 +192,8 @@ public class AdvertisementsController {
                                 @ModelAttribute(name = "advert") CarAdvertisementBindingModel model,
                                 ModelAndView modelAndView) {
         modelAndView.setViewName("edit-car-advertisement");
-        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementBindingModel.class));
+        modelAndView.addObject("id", id);
         return modelAndView;
     }
 
@@ -240,7 +222,8 @@ public class AdvertisementsController {
                                         @ModelAttribute(name = "advert") PartAdvertisementBindingModel model,
                                         ModelAndView modelAndView) {
         modelAndView.setViewName("edit-part-advertisement");
-        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
+        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementBindingModel.class));
+        modelAndView.addObject("id", id);
         return modelAndView;
     }
 

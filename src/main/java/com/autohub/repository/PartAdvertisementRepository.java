@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PartAdvertisementRepository extends PagingAndSortingRepository<PartAdvertisement, String> {
+public interface PartAdvertisementRepository extends JpaRepository<PartAdvertisement, String> {
     List<PartAdvertisement> findAllByUserId(String id);
 }

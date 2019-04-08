@@ -8,6 +8,7 @@ import com.autohub.domain.enums.AdvertisementStatus;
 import com.autohub.domain.model.service.CarAdvertisementServiceModel;
 import com.autohub.domain.model.service.CarServiceModel;
 import com.autohub.domain.model.service.EngineServiceModel;
+import com.autohub.domain.model.view.CarAdvertisementViewModel;
 import com.autohub.repository.AddressRepository;
 import com.autohub.repository.CarAdvertisementRepository;
 import com.autohub.repository.CarRepository;
@@ -15,6 +16,7 @@ import com.autohub.repository.EngineRepository;
 import com.autohub.service.interfaces.CarAdvertisementService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -59,9 +61,9 @@ public class CarAdvertisementServiceImpl implements CarAdvertisementService {
 
     @Override
     public List<CarAdvertisementServiceModel> findAll() {
-        return this.carAdvertisementRepository.findAll(PageRequest.of(0, 2))
+        return this.carAdvertisementRepository.findAll()
                 .stream()
-                .map(advert -> this.modelMapper.map(advert, CarAdvertisementServiceModel.class))
+                .map(car -> this.modelMapper.map(car, CarAdvertisementServiceModel.class))
                 .collect(Collectors.toList());
     }
 

@@ -12,14 +12,9 @@
     <main class="site-content">
         <div class="site-main">
             <h2>Marketplace</h2>
-            <div class="buttons-container">
-                <a th:href="@{/marketplace/advertisements/publish/car}" class="button">Add Car Advertisement</a>
-                <a th:href="@{/marketplace/advertisements/publish/part}" class="button">Add Part Advertisement</a>
-                <a th:href="@{/marketplace/advertisements/{id}(id=${#authentication.getPrincipal().getId()})}"
-                   class="button">My
-                    Advertisements</a>
-                <a th:href="@{/marketplace/advertisements/pending}" class="button">Pending</a>
-            </div>
+            <th:block>
+                <div th:replace="fragments/marketplace-controls.html :: div"></div>
+            </th:block>
             <div class="radio-choice flex-row justify-content-center">
                 <fieldset class="flex-column">
                     <label for="chooseCars">View all Cars</label>
@@ -59,7 +54,7 @@
                         $("<p>").text(x.car.engine.volume + x.car.engine.modification + ', ' + x.car.engine.horsepower + 'HP').appendTo(info);
                         $("<p>").text(x.price + '$').appendTo(info);
                         $(info).appendTo(li);
-                        let button = $(`<a class="button" href="/marketplace/advertisements/details/${x.id}">`).text("Details");
+                        let button = $(`<a class="button" href="/marketplace/cars/details/${x.id}">`).text("Details");
                         $(button).appendTo(li);
                         $("#list-cars").append(li);
                     }));
@@ -81,7 +76,7 @@
                         $("<p>").text('Suitable for: ' + x.part.carSuitableFor).appendTo(info);
                         $("<p>").text(x.price + '$').appendTo(info);
                         $(info).appendTo(li);
-                        let button = $(`<a class="button" href="/marketplace/advertisements/details/${x.id}">`).text("Details");
+                        let button = $(`<a class="button" href="/marketplace/cars/details/${x.id}">`).text("Details");
                         $(button).appendTo(li);
                         $("#list-parts").append(li);
                     }));
