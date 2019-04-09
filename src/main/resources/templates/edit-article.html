@@ -12,11 +12,14 @@
     <main class="site-content">
         <h2>Edit Article</h2>
         <div class="site-main">
-            <form method="post" th:action="@{/admin/articles/edit/{id}(id=${article.getId()})}" enctype="multipart/form-data" th:object="${article}">
+            <form method="post" th:action="@{/admin/articles/edit/{id}(id=${article.getId()})}" th:object="${article}">
                 <div th:replace="fragments/article-form.html :: div"></div>
             </form>
         </div>
     </main>
+    <script>
+        $('.input-field').css('display', 'none');
+    </script>
     <th:block>
         <div th:replace="fragments/footer.html :: footer"></div>
     </th:block>

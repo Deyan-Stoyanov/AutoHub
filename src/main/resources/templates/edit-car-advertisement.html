@@ -12,11 +12,14 @@
     <main class="site-content">
         <h2>Edit Car Advertisement</h2>
         <div class="site-main">
-            <form method="post" th:action="@{/marketplace/cars/edit/{id}(id=${id})}" enctype="multipart/form-data" th:object="${advert}">
+            <form method="post" th:action="@{/marketplace/cars/edit/{id}(id=${id})}" th:object="${advert}">
                 <div th:replace="fragments/car-form.html :: div"></div>
             </form>
         </div>
     </main>
+    <script>
+        $('.input-field').css('display', 'none');
+    </script>
     <th:block>
         <div th:replace="fragments/footer.html :: footer"></div>
     </th:block>

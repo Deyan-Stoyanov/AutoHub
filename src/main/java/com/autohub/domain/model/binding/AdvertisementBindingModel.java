@@ -17,7 +17,6 @@ public abstract class AdvertisementBindingModel {
     public AdvertisementBindingModel() {
     }
 
-    @NotEmpty
     @DecimalMin(value = "0.01", message = "Price should be a positive decimal number")
     public BigDecimal getPrice() {
         return price;
@@ -67,7 +66,6 @@ public abstract class AdvertisementBindingModel {
         this.city = city;
     }
 
-    @NotNull
     public String getUser() {
         return user;
     }

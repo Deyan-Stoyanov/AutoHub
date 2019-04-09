@@ -16,7 +16,7 @@ public class CarAdvertisement extends Advertisement {
         this.car = car;
     }
 
-    @OneToOne(targetEntity = Car.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToOne(targetEntity = Car.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public Car getCar() {
         return car;
     }

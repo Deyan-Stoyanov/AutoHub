@@ -64,17 +64,20 @@ public class AdvertisementsController {
     public ModelAndView confirmAddCar(@RequestParam(value = "file", required = false) MultipartFile file,
                                       @Valid @ModelAttribute(name = "advert") CarAdvertisementBindingModel advert,
                                       BindingResult bindingResult, ModelAndView modelAndView, Authentication authentication) throws IOException {
+        advert.setUser(((User) authentication.getPrincipal()).getUsername());
         if (bindingResult.hasErrors()) {
+            modelAndView.addObject("carTypes", CarType.values());
+            modelAndView.addObject("fuelTypes", FuelType.values());
+            modelAndView.addObject("advert", advert);
             modelAndView.setViewName("add-car");
             return modelAndView;
         }
-        advert.setUser(((User) authentication.getPrincipal()).getUsername());
         CarServiceModel carServiceModel = initCarServiceModel(advert);
         AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
         CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel);
         CarAdvertisementServiceModel savedModel = this.carAdvertisementService.save(carAdvertisementServiceModel);
         if (savedModel == null) {
-            modelAndView.setViewName("redirect:/marketplace/advertisements/publish/car");
+            modelAndView.setViewName("redirect:/marketplace/publish/car");
             return modelAndView;
         } else if (file != null) {
             String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\car_images";
@@ -95,11 +98,14 @@ public class AdvertisementsController {
     public ModelAndView confirmAddPart(@RequestParam(value = "file", required = false) MultipartFile file,
                                        @Valid @ModelAttribute(name = "advert") PartAdvertisementBindingModel advert,
                                        BindingResult bindingResult, ModelAndView modelAndView, Authentication authentication) throws IOException {
+        advert.setUser(((User) authentication.getPrincipal()).getUsername());
         if (bindingResult.hasErrors()) {
+            modelAndView.addObject("carTypes", CarType.values());
+            modelAndView.addObject("fuelTypes", FuelType.values());
+            modelAndView.addObject("advert", advert);
             modelAndView.setViewName("add-part");
             return modelAndView;
         }
-        advert.setUser(((User) authentication.getPrincipal()).getUsername());
         PartServiceModel partServiceModel = initPartServiceModel(advert);
         AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
         PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel);
@@ -192,7 +198,8 @@ public class AdvertisementsController {
                                 @ModelAttribute(name = "advert") CarAdvertisementBindingModel model,
                                 ModelAndView modelAndView) {
         modelAndView.setViewName("edit-car-advertisement");
-        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementBindingModel.class));
+        CarAdvertisementBindingModel bindingModel = this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementBindingModel.class);
+        modelAndView.addObject("advert", bindingModel);
         modelAndView.addObject("id", id);
         return modelAndView;
     }
