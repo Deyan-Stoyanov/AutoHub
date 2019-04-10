@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+<input type="checkbox" id="chooseCars" name="nav-checkbox"/>
+<input type="checkbox" id="chooseParts" name="nav-checkbox"/>
 <th:block>
     <div th:replace="fragments/head.html :: head"></div>
 </th:block>
@@ -15,15 +17,9 @@
             <th:block>
                 <div th:replace="fragments/marketplace-controls.html :: div"></div>
             </th:block>
-            <div class="radio-choice flex-row justify-content-center">
-                <fieldset class="flex-column">
-                    <label for="chooseCars">View all Cars</label>
-                    <input type="radio" name="choose-category" id="chooseCars">
-                </fieldset>
-                <fieldset class="flex-column">
-                    <label for="chooseParts">View all Parts</label>
-                    <input type="radio" name="choose-category" id="chooseParts">
-                </fieldset>
+            <div class="radio-choice flex-row justify-content-center buttons-container">
+                <label for="chooseCars" class="button">View all Cars</label>
+                <label for="chooseParts" class="button">View all Parts</label>
             </div>
             <div class="marketplace">
                 <ul class="listing marketplace" id="list-cars">

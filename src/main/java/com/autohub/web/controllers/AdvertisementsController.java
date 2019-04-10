@@ -15,6 +15,7 @@ import com.autohub.service.interfaces.PartAdvertisementService;
 import com.autohub.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -46,12 +47,13 @@ public class AdvertisementsController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("")
     public ModelAndView marketplace(ModelAndView modelAndView) {
         return initData(modelAndView, "marketplace");
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/publish/car")
     public ModelAndView addCar(@ModelAttribute(name = "advert") CarAdvertisementBindingModel model,
                                ModelAndView modelAndView) {
@@ -60,6 +62,7 @@ public class AdvertisementsController {
         return initData(modelAndView, "add-car");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/publish/car")
     public ModelAndView confirmAddCar(@RequestParam(value = "file", required = false) MultipartFile file,
                                       @Valid @ModelAttribute(name = "advert") CarAdvertisementBindingModel advert,
@@ -87,6 +90,7 @@ public class AdvertisementsController {
         return initData(modelAndView, "marketplace");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/publish/part")
     public ModelAndView addPart(@ModelAttribute(name = "advert") PartAdvertisementBindingModel model, ModelAndView modelAndView) {
         modelAndView.addObject("carTypes", CarType.values());
@@ -94,6 +98,7 @@ public class AdvertisementsController {
         return initData(modelAndView, "add-part");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/publish/part")
     public ModelAndView confirmAddPart(@RequestParam(value = "file", required = false) MultipartFile file,
                                        @Valid @ModelAttribute(name = "advert") PartAdvertisementBindingModel advert,
@@ -121,6 +126,7 @@ public class AdvertisementsController {
         return initData(modelAndView, "marketplace");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ModelAndView myAdvertisement(@PathVariable("id") String id, ModelAndView modelAndView) {
         initData(modelAndView, "my-advertisements");
@@ -135,6 +141,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/pending")
     public ModelAndView pending(ModelAndView modelAndView) {
         initData(modelAndView, "pending");
@@ -151,6 +158,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/cars/approve/{id}")
     public ModelAndView approveCar(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.carAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.APPROVED);
@@ -158,6 +166,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/cars/decline/{id}")
     public ModelAndView declineCar(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.carAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.DECLINED);
@@ -165,6 +174,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/parts/approve/{id}")
     public ModelAndView approvePart(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.partAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.APPROVED);
@@ -172,6 +182,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/parts/decline/{id}")
     public ModelAndView declinePart(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.partAdvertisementService.changeAdvertisementStatus(id, AdvertisementStatus.DECLINED);
@@ -179,31 +190,50 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/cars/details/{id}")
     public ModelAndView detailsCar(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("car-advertisement-details");
-        modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
+        CarAdvertisementServiceModel car = this.carAdvertisementService.findById(id);
+        if (car == null) {
+            modelAndView.setViewName("redirect:/marketplace");
+        } else {
+            modelAndView.setViewName("car-advertisement-details");
+            modelAndView.addObject("advert", this.modelMapper.map(car, CarAdvertisementViewModel.class));
+        }
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/parts/details/{id}")
     public ModelAndView detailsPart(@PathVariable("id") String id, ModelAndView modelAndView) {
-        modelAndView.setViewName("part-advertisement-details");
-        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
+        PartAdvertisementServiceModel part = this.partAdvertisementService.findById(id);
+        if (part == null) {
+            modelAndView.setViewName("redirect:/marketplace");
+        } else {
+            modelAndView.setViewName("part-advertisement-details");
+            modelAndView.addObject("advert", this.modelMapper.map(part, PartAdvertisementViewModel.class));
+        }
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/cars/edit/{id}")
     public ModelAndView editCar(@PathVariable("id") String id,
                                 @ModelAttribute(name = "advert") CarAdvertisementBindingModel model,
                                 ModelAndView modelAndView) {
-        modelAndView.setViewName("edit-car-advertisement");
-        CarAdvertisementBindingModel bindingModel = this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementBindingModel.class);
-        modelAndView.addObject("advert", bindingModel);
-        modelAndView.addObject("id", id);
+        CarAdvertisementServiceModel car = this.carAdvertisementService.findById(id);
+        if (car == null) {
+            modelAndView.setViewName("redirect:/marketplace");
+        } else {
+            modelAndView.setViewName("edit-car-advertisement");
+            CarAdvertisementBindingModel bindingModel = this.modelMapper.map(car, CarAdvertisementBindingModel.class);
+            modelAndView.addObject("advert", bindingModel);
+            modelAndView.addObject("id", id);
+        }
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/cars/edit/{id}")
     public ModelAndView confirmEditCar(@PathVariable("id") String id,
                                        @Valid @ModelAttribute(name = "advert") CarAdvertisementBindingModel advert,
@@ -223,17 +253,23 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/parts/edit/{id}")
     public ModelAndView confirmEditPart(@PathVariable("id") String id,
                                         @ModelAttribute(name = "advert") PartAdvertisementBindingModel model,
                                         ModelAndView modelAndView) {
-        modelAndView.setViewName("edit-part-advertisement");
-        modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementBindingModel.class));
-        modelAndView.addObject("id", id);
+        PartAdvertisementServiceModel part = this.partAdvertisementService.findById(id);
+        if (part == null) {
+            modelAndView.setViewName("redirect:/marketplace");
+        } else {
+            modelAndView.setViewName("edit-part-advertisement");
+            modelAndView.addObject("advert", this.modelMapper.map(part, PartAdvertisementBindingModel.class));
+            modelAndView.addObject("id", id);
+        }
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/parts/edit/{id}")
     public ModelAndView editPart(@PathVariable("id") String id,
                                  @Valid @ModelAttribute(name = "advert") PartAdvertisementBindingModel advert,
@@ -251,7 +287,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/cars/delete/{id}")
     public ModelAndView deleteCar(@PathVariable("id") String id, ModelAndView modelAndView) {
         modelAndView.setViewName("delete-car-advertisement");
@@ -259,6 +295,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/cars/delete/{id}")
     public ModelAndView confirmDeleteCar(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.carAdvertisementService.deleteById(id);
@@ -266,6 +303,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/parts/delete/{id}")
     public ModelAndView deletePart(@PathVariable("id") String id, ModelAndView modelAndView) {
         modelAndView.setViewName("delete-part-advertisement");
@@ -273,6 +311,7 @@ public class AdvertisementsController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/parts/delete/{id}")
     public ModelAndView confirmDeletePart(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.partAdvertisementService.deleteById(id);

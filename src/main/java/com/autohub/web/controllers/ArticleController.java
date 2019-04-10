@@ -9,6 +9,7 @@ import com.autohub.service.interfaces.ArticleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +34,14 @@ public class ArticleController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @GetMapping("/admin/articles/create")
     public ModelAndView createArticle(@ModelAttribute(name = "article") ArticleCreateBindingModel model, ModelAndView modelAndView) {
         modelAndView.setViewName("create-article");
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @PostMapping("/admin/articles/create")
     public ModelAndView confirmCreateArticle(@RequestParam(value = "file", required = false) MultipartFile file,
                                              @Valid @ModelAttribute(name = "article") ArticleCreateBindingModel article,
@@ -57,24 +60,28 @@ public class ArticleController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/articles/news")
     public ModelAndView news(ModelAndView modelAndView) {
         initArticles(modelAndView, "news", ArticleType.NEWS);
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/articles/sports")
     public ModelAndView sports(ModelAndView modelAndView) {
         initArticles(modelAndView, "sports", ArticleType.SPORTS);
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/articles/tips-and-tricks")
     public ModelAndView tipsAndTricks(ModelAndView modelAndView) {
         initArticles(modelAndView, "tips-and-tricks", ArticleType.TIPS_AND_TRICKS);
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @GetMapping("/admin/articles/edit/{id}")
     public ModelAndView editArticle(@PathVariable("id") String id,
                                     @ModelAttribute(name = "article") ArticleCreateBindingModel article,
@@ -84,6 +91,7 @@ public class ArticleController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @PostMapping("/admin/articles/edit/{id}")
     public ModelAndView confirmEditArticle(@PathVariable("id") String id,
                                            @Valid @ModelAttribute(name = "article") ArticleCreateBindingModel article,
@@ -100,6 +108,7 @@ public class ArticleController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @GetMapping("/admin/articles/delete/{id}")
     public ModelAndView deleteArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
         modelAndView.addObject("article", this.articleService.findById(id));
@@ -107,6 +116,7 @@ public class ArticleController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @PostMapping("/admin/articles/delete/{id}")
     public ModelAndView confirmDeleteArticle(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.articleService.deleteById(id);

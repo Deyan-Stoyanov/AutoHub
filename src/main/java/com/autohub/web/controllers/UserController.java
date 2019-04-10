@@ -10,6 +10,7 @@ import com.autohub.domain.model.view.UserProfileViewModel;
 import com.autohub.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -35,12 +36,14 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public ModelAndView login(ModelAndView modelAndView) {
         modelAndView.setViewName("login");
         return modelAndView;
     }
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/register")
     public ModelAndView register(@ModelAttribute(name = "user") UserRegisterBindingModel model,
                                  ModelAndView modelAndView) {
@@ -48,6 +51,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/register")
     public ModelAndView confirmRegister(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @Valid @ModelAttribute(name = "user") UserRegisterBindingModel user,
@@ -66,6 +70,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile/{id}")
     public ModelAndView profile(@PathVariable("id") String id, ModelAndView modelAndView) {
         UserProfileViewModel user = this.findUser(id);
@@ -74,6 +79,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile/edit/{id}")
     public ModelAndView editProfile(@PathVariable("id") String id,
                                     @ModelAttribute(name = "user") UserEditBindingModel user,
@@ -84,6 +90,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile/edit/{id}")
     public ModelAndView confirmEditProfile(@PathVariable("id") String id,
                                            @Valid @ModelAttribute(name = "user") UserEditBindingModel user,
@@ -101,6 +108,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile/delete/{id}")
     public ModelAndView deleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
         UserProfileViewModel user = this.findUser(id);
@@ -109,6 +117,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile/delete/{id}")
     public ModelAndView confirmDeleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.userService.deleteById(id);
@@ -116,16 +125,19 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @GetMapping("/admin/users/switch/to-admin/{id}")
     public ModelAndView makeAdmin(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
         return changeRoleOfUser(modelAndView, id, Role.ROLE_ADMIN);
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @GetMapping("/admin/users/switch/to-user/{id}")
     public ModelAndView makeUser(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
         return changeRoleOfUser(modelAndView, id, Role.ROLE_USER);
     }
 
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('ROOT')")
     @GetMapping("/admin/users")
     public ModelAndView users(ModelAndView modelAndView, Authentication authentication) {
         modelAndView.setViewName("users");
@@ -145,6 +157,7 @@ public class UserController {
 
     private void addUserRoles(ModelAndView modelAndView) {
         modelAndView.addObject("rootrole", Role.ROLE_ROOT);
+        modelAndView.addObject("adminrole", Role.ROLE_ADMIN);
         modelAndView.addObject("adminrole", Role.ROLE_ADMIN);
         modelAndView.addObject("userrole", Role.ROLE_USER);
     }

@@ -10,17 +10,29 @@
         <div th:replace="fragments/header.html :: header"></div>
     </th:block>
     <main class="site-content">
-        <div class="profile">
-            <img th:src="'/images/part_images/' + ${advert.getId()} +  '.jpg'"
-                 width="350" height="350" alt="Product">
-            <h3 class="full-name" th:text="${advert.getPart().getName()}"></h3>
-            <h4 class="username" th:text="${advert.getPart().getManufacturer()}"></h4>
-            <p class="username" th:text="${advert.getUser().getEmail()}"></p>
-            <p class="username" th:text="${advert.getUser().getPhoneNumber()}"></p>
-            <div class="buttons-container" th:if="${advert.getUser().getUsername() == session.username}">
-                <a th:href="@{/marketplace/parts/edit/{id}(id=${advert.getId()})}" class="button">Edit advertisement</a>
-                <a th:href="@{/marketplace/parts/delete/{id}(id=${advert.getId()})}" class="button button-danger">Delete advertisement</a>
+        <div class="profile d-flex flex-row">
+            <div>
+                <img th:src="'/images/part_images/' + ${advert.getId()} +  '.jpg'"
+                     width="350" height="350" alt="Product">
             </div>
+            <div>
+                <h3 class="full-name" th:text="${advert.getPart().getName()}"></h3>
+                <p th:text="${'Manufacturer: ' + advert.getPart().getManufacturer()}"></p>
+                <p th:text="${'Cars suitable for: ' + advert.getPart().getCarSuitableFor()}"></p>
+                <p th:text="${advert.getDescription()}"></p>
+                <h3 th:text="${advert.getPrice()}"></h3>
+            </div>
+            <div>
+                <h4 class="username" th:text="${advert.getUser().getUsername()}"></h4>
+                <p class="username" th:text="${advert.getUser().getEmail()}"></p>
+                <p class="username" th:text="${advert.getUser().getPhoneNumber()}"></p>
+            </div>
+        </div>
+        <div class="buttons-container" th:if="${advert.getUser().getUsername() == #authentication.getName()}">
+            <a th:href="@{/marketplace/parts/edit/{id}(id=${advert.getId()})}" class="button">Edit
+                advertisement</a>
+            <a th:href="@{/marketplace/parts/delete/{id}(id=${advert.getId()})}" class="button button-danger">Delete
+                advertisement</a>
         </div>
     </main>
     <th:block>
