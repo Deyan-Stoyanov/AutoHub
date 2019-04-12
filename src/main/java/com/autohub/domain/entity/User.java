@@ -78,8 +78,7 @@ public class User extends BaseEntity implements UserDetails {
         this.username = username;
     }
 
-    @Size(min = 6, max = 20)
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(255)")
     public String getPassword() {
         return password;
     }

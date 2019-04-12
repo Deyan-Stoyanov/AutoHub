@@ -18,7 +18,7 @@ public class LoggerCleaner {
         this.logService = logService;
     }
 
-    @Scheduled(cron = "0 5 * * *")
+    @Scheduled(cron = "0 0 5 * * *")
     public void cleanUpLogs(){
         List<LogServiceModel> allLogs = this.logService.findAll();
         for (LogServiceModel log:allLogs) {

@@ -77,7 +77,6 @@ public class UserRegisterBindingModel {
         this.gender = gender;
     }
 
-    @NotEmpty(message = "Age shpuld not be empty")
     @Min(value = 13, message = "You should be 13 or older to register")
     @Max(130)
     public Integer getAge() {

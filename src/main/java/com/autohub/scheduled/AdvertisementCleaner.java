@@ -22,7 +22,7 @@ public class AdvertisementCleaner {
         this.partAdvertisementService = partAdvertisementService;
     }
 
-    @Scheduled(cron = "0 4 * * 2")
+    @Scheduled(cron = "0 4 * * * 2")
     public void cleanupAdvertisements() {
         List<CarAdvertisementServiceModel> allCars = this.carAdvertisementService.findAll();
         for (CarAdvertisementServiceModel car : allCars) {

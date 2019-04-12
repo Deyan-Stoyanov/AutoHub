@@ -28,25 +28,36 @@
                 </div>
             </div>
             <p>Or simply drop us a line here!</p>
-            <form method="post" action="/contacts">
+            <form method="post" action="mailto:autohub@abv.bg" id="contacts-form">
                 <fieldset>
                     <i class="fas fa-user"></i>
                     <input type="text" placeholder="Your Full Name..." name="name" id="name">
                 </fieldset>
                 <fieldset>
                     <i class="fas fa-at"></i>
-                    <input type="email" placeholder="Your Email..." name="email" id="email">
+                    <input type="email" placeholder="Your Email..." name="email" id="email" required>
                 </fieldset>
                 <fieldset>
-                    <i class="fas fa-phone"></i>
-                    <input type="number" placeholder="Your Phone Number..." name="phone" id="phone">
+                    <i class="fas fa-book"></i>
+                    <input type="text" placeholder="About..." name="about" id="about" required>
                 </fieldset>
                 <fieldset>
                     <i class="far fa-question-circle"></i>
                     <textarea name="message" id="message" cols="20" rows="10" placeholder="Your Question..."></textarea>
                 </fieldset>
-                <button type="submit" class="button">Submit</button>
+                <a type="submit" class="button" id="btn-contacts">Submit</a>
             </form>
+            <script>
+                $("#btn-contacts").on("click", () => {
+                    let about = $("#about").val();
+                    let message = $("#message").val();
+                    let name = 'Name: ' + $("#name").val() + '\r\n';
+                    let email = 'Email: ' + $("#email").val() + '\r\n';
+                    let fullMessage = name + email + "\r\n" +message;
+                    console.log(fullMessage);
+                    $("#contacts-form").attr("action", "mailto:autohub@abv.bg" + "?subject=" + about + "&body=" + fullMessage).submit();
+                });
+            </script>
         </div>
     </main>
     <th:block>
