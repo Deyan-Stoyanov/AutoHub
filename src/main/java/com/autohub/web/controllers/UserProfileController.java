@@ -40,9 +40,9 @@ public class UserProfileController {
     public ModelAndView editProfile(@PathVariable("id") String id,
                                     @ModelAttribute(name = "user") UserEditBindingModel user,
                                     ModelAndView modelAndView) {
-        UserProfileViewModel userProfileViewModel = this.findUser(id);
+        modelAndView.addObject("user", this.modelMapper.map(this.userService.findById(id), UserProfileViewModel.class));
         modelAndView.setViewName("edit-profile");
-        modelAndView.addObject("user", userProfileViewModel);
+        modelAndView.addObject("id", id);
         return modelAndView;
     }
 

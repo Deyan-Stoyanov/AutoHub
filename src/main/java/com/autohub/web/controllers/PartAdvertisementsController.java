@@ -76,10 +76,14 @@ public class PartAdvertisementsController {
             modelAndView.addObject("fuelTypes", FuelType.values());
             modelAndView.setViewName("add-part");
             return modelAndView;
-        } else if (file != null) {
-            String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\part_images";
-            File f1 = new File(filePath + "\\" + savedModel.getId() +  "." + file.getOriginalFilename().split("\\.")[1]);
+        }
+        if (file != null) {
+            String filePath = "C:\\Users\\Lenovo\\autohub\\images\\part_images";
+            String fullPath = filePath + "\\" + savedModel.getId() + "." + file.getOriginalFilename().split("\\.")[1];
+            File f1 = new File(fullPath);
             file.transferTo(f1);
+            savedModel.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
+            this.partAdvertisementService.save(savedModel);
         }
         modelAndView.setViewName("redirect:/marketplace");
         return modelAndView;

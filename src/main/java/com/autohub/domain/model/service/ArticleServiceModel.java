@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class ArticleServiceModel extends BaseServiceModel{
+public class ArticleServiceModel extends EntityContainingImageServiceModel{
     private String title;
     private String content;
     private ArticleType type;

@@ -21,6 +21,7 @@ public class User extends BaseEntity implements UserDetails {
     private String phoneNumber;
     private Gender gender;
     private Integer age;
+    private String imageFileName;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
@@ -182,5 +183,14 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = true;
+    }
+
+    @Column(name = "image_file_name")
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

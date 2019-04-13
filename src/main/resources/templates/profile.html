@@ -11,14 +11,28 @@
     </th:block>
     <main class="site-content">
         <div class="profile">
-            <img th:src="'/images/user_images/' + ${user.getId()} +  '.jpg'"
-                 width="350" height="350" alt="Product">
+            <div th:if="${user.getImageFileName() == null}">
+                <div th:if="${user.getGender() == 'MALE'}">
+                    <img th:src="'/images/male.png'" width="350" height="350" alt="Profile Image">
+                </div>
+                <div th:if="${user.getGender() == 'FEMALE'}">
+                    <img th:src="'/images/female.png'" width="350" height="350" alt="Profile Image">
+                </div>
+            </div>
+            <div th:if="${user.getImageFileName() != null}">
+                <img th:src="@{'/content/users/' + ${user.getImageFileName()}}"
+                     width="350" height="350" alt="Article Image">
+            </div>
             <h3 class="full-name" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h3>
             <h4 class="username" th:text="${user.getUsername()}"></h4>
-            <p class="username" th:text="${user.getEmail()}"></p>
-            <p class="username" th:text="${user.getPhoneNumber()}"></p>
+            <div class="username">
+                <a th:href="@{'mailto:' + ${user.getEmail()}}" th:text="${user.getEmail()}"/>
+            </div>
+            <div class="username">
+                <a th:href="@{'tel:' + ${user.getPhoneNumber()}}" th:text="${'Call ' + user.getPhoneNumber()}"/>
+            </div>
             <p class="username" th:text="${user.getAge()}"></p>
-            <div class="buttons-container" th:if="${user.getUsername() == session.username}">
+            <div class="buttons-container" th:if="${user.getUsername() == #authentication.getName()}">
                 <a th:href="@{/profile/edit/{id}(id=${user.getId()})}" class="button">Edit profile</a>
                 <a th:href="@{/profile/delete/{id}(id=${user.getId()})}" class="button button-danger">Delete profile</a>
             </div>

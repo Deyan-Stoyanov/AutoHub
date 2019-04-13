@@ -4,7 +4,7 @@ import com.autohub.domain.enums.AdvertisementStatus;
 
 import java.math.BigDecimal;
 
-public class CarAdvertisementServiceModel extends BaseServiceModel{
+public class CarAdvertisementServiceModel extends EntityContainingImageServiceModel{
     private BigDecimal price;
     private String description;
     private AddressServiceModel address;

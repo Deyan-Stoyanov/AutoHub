@@ -6,7 +6,7 @@ import com.autohub.domain.enums.Role;
 import java.util.List;
 import java.util.Set;
 
-public class UserServiceModel extends BaseServiceModel{
+public class UserServiceModel extends EntityContainingImageServiceModel{
     private String username;
     private String password;
     private String firstName;

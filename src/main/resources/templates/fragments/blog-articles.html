@@ -1,8 +1,13 @@
 <div xmlns:th="http://www.thymeleaf.org">
     <ul class="listing posts" th:each="article : ${articles}">
         <li>
-            <img th:src="'/images/blog_images/' + ${article.getId()} +  '.jpg'"
-                 width="350" height="350" alt="Article Image">
+            <div th:if="${article.getImageFileName() == null}">
+                <img th:src="'/images/blog.jpg'" width="350" height="350" alt="Article Image">
+            </div>
+            <div th:if="${article.getImageFileName() != null}">
+                <img th:src="@{'/content/blog/' + ${article.getImageFileName()}}"
+                     width="350" height="350" alt="Article Image">
+            </div>
             <h3 class="title" th:text="${article.getTitle()}"></h3>
             <span class="date" th:text="${#dates.format(article.getCreationDate(), 'dd-MMM-yyyy')}"></span>
             <div th:text="${article.getContent()}"></div>

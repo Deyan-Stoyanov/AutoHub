@@ -44,9 +44,9 @@
         <div class="input-field">
             <i class="fas fa-unlock-alt"></i>
             <input type="password" placeholder="Confirm Password..." name="confirmPassword"
-                   id="confirmPassword" th:styleappend="${#fields.hasErrors('password')} ? 'border-color: red'"
+                   id="confirmPassword" th:styleappend="${#fields.hasErrors('confirmPassword')} ? 'border-color: red'"
                    required>
-            <ul class="text-danger" th:each="error : ${#fields.errors('password')}">
+            <ul class="text-danger" th:each="error : ${#fields.errors('confirmPassword')}">
                 <li>
                     <small th:text="${error}"></small>
                 </li>
@@ -133,13 +133,13 @@
             </select>
         </div>
     </fieldset>
-    <fieldset>
+    <fieldset id="user-image-fieldset">
         <label for="file">Choose a profile picture:</label>
         <div class="input-field">
             <input type="file" id="file" name="file" accept="image/*">
         </div>
     </fieldset>
-    <button type="submit" class="button">Submit</button>
+    <button type="submit" class="button" id="button">Submit</button>
     <script>
         $("#firstName").on("input", function () {
             if (!($("#firstName").val().match(/[A-Z][a-z]{1,39}/g))) {

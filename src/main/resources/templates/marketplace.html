@@ -43,9 +43,12 @@
                 fetch('http://localhost:8000/fetch/cars')
                     .then((response) => response.json())
                     .then((json) => json.forEach((x) => {
-                        console.log("info")
                         let li = $("<li>");
-                        $(`<img src='/images/car_images/${x.id}.jpg' alt="advertisement picture"/>`).appendTo(li);
+                        if (x.imageFileName == null) {
+                            $(`<img src='/images/car.png' alt="advertisement picture"/>`).appendTo(li);
+                        } else {
+                            $(`<img src='/content/cars/${x.imageFileName}' alt="advertisement picture"/>`).appendTo(li);
+                        }
                         $("<h4>").addClass("title").text(x.car.make + ' ' + x.car.model).appendTo(li);
                         let info = $("<div class=\"car-info\">");
                         $("<p>").text(x.car.engine.volume + x.car.engine.modification + ', ' + x.car.engine.horsepower + 'HP').appendTo(info);
@@ -66,8 +69,11 @@
                     .then((response) => response.json())
                     .then((json) => json.forEach((x) => {
                         let li = $("<li>");
-                        $(`<img src='/images/part_images/${x.id}.jpg' alt="advertisement picture"/>`).appendTo(li);
-                        $("<h4>").addClass("title").text(x.part.name).appendTo(li);
+                        if (x.imageFileName == null) {
+                            $(`<img src='/images/car.png' alt="advertisement picture"/>`).appendTo(li);
+                        } else {
+                            $(`<img src='/content/cars/${x.imageFileName}' alt="advertisement picture"/>`).appendTo(li);
+                        }                        $("<h4>").addClass("title").text(x.part.name).appendTo(li);
                         let info = $("<div class=\"car-info\">");
                         $("<p>").text(x.part.manufacturer).appendTo(info);
                         $("<p>").text('Suitable for: ' + x.part.carSuitableFor).appendTo(info);

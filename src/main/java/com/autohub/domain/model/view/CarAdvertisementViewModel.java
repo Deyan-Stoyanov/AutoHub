@@ -12,6 +12,7 @@ public class CarAdvertisementViewModel {
     private UserProfileViewModel user;
     private CarViewModel car;
     private AdvertisementStatus status;
+    private String imageFileName;
 
     public CarAdvertisementViewModel() {
     }
@@ -70,5 +71,13 @@ public class CarAdvertisementViewModel {
 
     public void setStatus(AdvertisementStatus status) {
         this.status = status;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

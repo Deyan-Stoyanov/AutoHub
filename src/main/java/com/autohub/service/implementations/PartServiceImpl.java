@@ -1,8 +1,6 @@
 package com.autohub.service.implementations;
 
-import com.autohub.domain.entity.Engine;
 import com.autohub.domain.entity.Part;
-import com.autohub.domain.model.service.EngineServiceModel;
 import com.autohub.domain.model.service.PartServiceModel;
 import com.autohub.repository.PartRepository;
 import com.autohub.service.interfaces.PartService;
@@ -20,7 +18,6 @@ public class PartServiceImpl implements PartService {
         this.partRepository = partRepository;
         this.modelMapper = modelMapper;
     }
-
 
     @Override
     public PartServiceModel save(PartServiceModel partServiceModel) {

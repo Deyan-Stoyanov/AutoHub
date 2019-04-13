@@ -9,7 +9,6 @@ public class UserRoleServiceModel {
     public UserRoleServiceModel() {
     }
 
-
     public String getId() {
         return id;
     }

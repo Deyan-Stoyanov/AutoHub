@@ -14,6 +14,7 @@ public class UserProfileViewModel {
     private String email;
     private Gender gender;
     private Integer age;
+    private String imageFileName;
     private List<Role> authorities;
 
     public UserProfileViewModel() {
@@ -89,5 +90,13 @@ public class UserProfileViewModel {
 
     public void setAuthorities(List<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

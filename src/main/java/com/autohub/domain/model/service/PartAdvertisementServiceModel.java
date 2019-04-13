@@ -11,6 +11,7 @@ public class PartAdvertisementServiceModel extends BaseServiceModel{
     private UserServiceModel user;
     private PartServiceModel part;
     private AdvertisementStatus status;
+    private String imageFileName;
 
     public PartAdvertisementServiceModel() {
     }
@@ -61,5 +62,13 @@ public class PartAdvertisementServiceModel extends BaseServiceModel{
 
     public void setStatus(AdvertisementStatus status) {
         this.status = status;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

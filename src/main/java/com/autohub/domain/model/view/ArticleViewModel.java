@@ -9,6 +9,7 @@ public class ArticleViewModel {
     private String title;
     private String content;
     private Date creationDate;
+    private String imageFileName;
 
     public ArticleViewModel() {
     }
@@ -44,5 +45,13 @@ public class ArticleViewModel {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

@@ -15,6 +15,7 @@ public class Article extends BaseEntity {
     private String content;
     private ArticleType type;
     private Date creationDate;
+    private String imageFileName;
 
     public Article() {
     }
@@ -65,5 +66,14 @@ public class Article extends BaseEntity {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    @Column(name = "image_file_name")
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

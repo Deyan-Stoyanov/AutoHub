@@ -53,9 +53,11 @@ public class AuthenticationController {
         if (user.getConfirmPassword().equals(user.getPassword()) && !bindingResult.hasErrors()) {
             UserServiceModel registeredModel = this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
             if (registeredModel != null && file != null) {
-                String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\user_images";
-                File f1 = new File(filePath + "\\" + registeredModel.getId() + ".jpg");
+                String filePath = "C:\\Users\\Lenovo\\autohub\\images\\user_images";
+                String fullPath = filePath + "\\" + registeredModel.getId() + "." + file.getOriginalFilename().split("\\.")[1];
+                File f1 = new File(fullPath);
                 file.transferTo(f1);
+                this.userService.save(registeredModel);
             }
             modelAndView.setViewName("redirect:/login");
         } else {

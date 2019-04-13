@@ -74,10 +74,14 @@ public class CarAdvertisementController {
             modelAndView.addObject("advert", advert);
             modelAndView.setViewName("add-car");
             return modelAndView;
-        } else if (file != null) {
-            String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\car_images";
-            File f1 = new File(filePath + "\\" + savedModel.getId() +  "." + file.getOriginalFilename().split("\\.")[1]);
+        }
+        if (file != null) {
+            String filePath = "C:\\Users\\Lenovo\\autohub\\images\\car_images";
+            String fullPath = filePath + "\\" + savedModel.getId() + "." + file.getOriginalFilename().split("\\.")[1];
+            File f1 = new File(fullPath);
             file.transferTo(f1);
+            savedModel.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
+            this.carAdvertisementService.save(savedModel);
         }
         modelAndView.setViewName("redirect:/marketplace");
         return modelAndView;
@@ -123,7 +127,10 @@ public class CarAdvertisementController {
         } else {
             modelAndView.setViewName("edit-car-advertisement");
             CarAdvertisementBindingModel bindingModel = this.modelMapper.map(car, CarAdvertisementBindingModel.class);
+            this.setUpBindingModel(bindingModel, car);
             modelAndView.addObject("advert", bindingModel);
+            modelAndView.addObject("carTypes", CarType.values());
+            modelAndView.addObject("fuelTypes", FuelType.values());
             modelAndView.addObject("id", id);
         }
         return modelAndView;
@@ -199,4 +206,23 @@ public class CarAdvertisementController {
         carServiceModel.setType(model.getCarType());
         return carServiceModel;
     }
+
+    private void setUpBindingModel(CarAdvertisementBindingModel bindingModel, CarAdvertisementServiceModel car) {
+        bindingModel.setCarType(car.getCar().getType());
+        bindingModel.setMake(car.getCar().getMake());
+        bindingModel.setModel(car.getCar().getModel());
+        bindingModel.setColor(car.getCar().getColor());
+        bindingModel.setProductionDate(car.getCar().getProductionDate());
+        bindingModel.setMileage(car.getCar().getMileage());
+        bindingModel.setFuelType(car.getCar().getEngine().getFuelType());
+        bindingModel.setHorsepower(car.getCar().getEngine().getHorsepower());
+        bindingModel.setModification(car.getCar().getEngine().getModification());
+        bindingModel.setVolume(car.getCar().getEngine().getVolume());
+        bindingModel.setPrice(car.getPrice());
+        bindingModel.setDescription(car.getDescription());
+        bindingModel.setCountry(car.getAddress().getCountry());
+        bindingModel.setCity(car.getAddress().getCity());
+        bindingModel.setProvince(car.getAddress().getProvince());
+    }
+
 }

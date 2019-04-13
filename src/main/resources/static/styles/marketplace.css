@@ -2,6 +2,12 @@
     padding: 2rem 0
 }
 
+.marketplace img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
 .marketplace ul.listing.marketplace {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -46,6 +52,12 @@
 
 .marketplace ul.listing.marketplace li:nth-last-child(-n+3) {
     margin-bottom: 3rem
+}
+
+.marketplace .buttons-container{
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem auto;
 }
 
 @media screen and (max-width: 900px) {

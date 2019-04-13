@@ -29,8 +29,6 @@ public class UserEditBindingModel {
         this.username = username;
     }
 
-    @NotEmpty
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,}$", message = "Password should be between 6 and 20 characters long and should contain at least one uppercase and one lowercase letter and one number")
     public String getPassword() {
         return password;
     }
@@ -78,7 +76,6 @@ public class UserEditBindingModel {
         this.gender = gender;
     }
 
-    @NotEmpty(message = "Age shpuld not be empty")
     @Min(value = 13, message = "You should be 13 or older to register")
     @Max(130)
     public Integer getAge() {
@@ -89,7 +86,6 @@ public class UserEditBindingModel {
         this.age = age;
     }
 
-    @NotEmpty
     public String getConfirmPassword() {
         return confirmPassword;
     }

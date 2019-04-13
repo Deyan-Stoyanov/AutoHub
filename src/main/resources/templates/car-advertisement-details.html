@@ -11,13 +11,16 @@
     </th:block>
     <main class="site-content">
         <div class="profile d-flex flex-row">
-            <div>
-                <img th:src="'/images/car_images/' + ${advert.getId()} +  '.jpg'"
-                     width="350" height="350" alt="Product">
+            <div th:if="${advert.getImageFileName() == null}">
+                <img th:src="'/images/car.png'" width="350" height="350" alt="Article Image"/>
+            </div>
+            <div th:if="${advert.getImageFileName() != null}">
+                <img th:src="@{'/content/cars/' + ${advert.getImageFileName()}}"
+                     width="350" height="350" alt="Article Image"/>
             </div>
             <div>
                 <h3 class="full-name" th:text="${advert.getCar().getMake() + ' ' + advert.getCar().getModel()}"></h3>
-                <p th:text="${advert.getCar().getProductionDate() + ', ' + advert.getCar().getMileage() + ' miles'}"></p>
+                <p th:text="${#dates.format(advert.getCar().getProductionDate(), 'dd-MMM-yyyy') + ', ' + advert.getCar().getMileage() + ' miles'}"></p>
                 <p th:text="${'Engine: ' + advert.getCar().getEngine().getVolume() + '' + advert.getCar().getEngine().getModification() + ' ' + advert.getCar().getEngine().getHorsepower() + ' HP'}"></p>
                 <p th:text="${'Color: ' + advert.getCar().getColor()}"></p>
                 <p th:text="${advert.getDescription()}"></p>
@@ -25,8 +28,12 @@
             </div>
             <div>
                 <h4 class="username" th:text="${advert.getUser().getUsername()}"></h4>
-                <p class="username" th:text="${advert.getUser().getEmail()}"></p>
-                <p class="username" th:text="${advert.getUser().getPhoneNumber()}"></p>
+                <div class="username">
+                    <a th:href="@{'mailto:' + ${advert.getUser().getEmail()}}" th:text="${advert.getUser().getEmail()}"/>
+                </div>
+                <div class="username">
+                    <a th:href="@{'tel:' + ${advert.getUser().getPhoneNumber()}}" th:text="${'Call ' + advert.getUser().getPhoneNumber()}"/>
+                </div>
             </div>
         </div>
         <div class="buttons-container" th:if="${advert.getUser().getUsername() == #authentication.getName()}">

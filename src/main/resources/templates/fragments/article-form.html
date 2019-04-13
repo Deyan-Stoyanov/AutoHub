@@ -15,7 +15,6 @@
     <fieldset>
         <label for="content">Enter article content:</label>
         <div class="input-field">
-            <i class="far fa-newspaper"></i>
             <textarea rows="12" cols="60" type="text" placeholder="Content..." name="content"
                       id="content" th:field="*{content}"
                       th:styleappend="${#fields.hasErrors('content')} ? 'border-color: red'"  required>

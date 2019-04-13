@@ -11,6 +11,7 @@ public abstract class Advertisement extends BaseEntity {
     private BigDecimal price;
     private String description;
     private Address address;
+    private String imageFileName;
     private User user;
     private AdvertisementStatus status;
 
@@ -71,5 +72,14 @@ public abstract class Advertisement extends BaseEntity {
 
     public void setStatus(AdvertisementStatus status) {
         this.status = status;
+    }
+
+    @Column(name = "image_file_name")
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

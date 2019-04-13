@@ -82,13 +82,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserServiceModel update(UserServiceModel userServiceModel) {
         UserServiceModel oldModel = this.findById(userServiceModel.getId());
         if (encoder.matches(oldModel.getPassword(), userServiceModel.getPassword())) return null;
-        if (userServiceModel.getPassword() != null) {
+        if (userServiceModel.getPassword() != null && !userServiceModel.getPassword().isEmpty()) {
             userServiceModel.setPassword(this.encoder.encode(userServiceModel.getPassword()));
         } else {
             userServiceModel.setPassword(oldModel.getPassword());
         }
-        userServiceModel.setAuthorities(oldModel.getAuthorities());
-        User savedUser = this.userRepository.save(this.modelMapper.map(userServiceModel, User.class));
+        User user = this.modelMapper.map(userServiceModel, User.class);
+        user.setImageFileName(oldModel.getImageFileName());
+        user.setAuthorities(oldModel.getAuthorities().stream().map(x -> this.modelMapper.map(x, UserRole.class)).collect(Collectors.toList()));
+        User savedUser = this.userRepository.save(user);
         return this.modelMapper.map(savedUser, UserServiceModel.class);
     }
 
