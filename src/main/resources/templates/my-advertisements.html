@@ -16,6 +16,13 @@
                 <div th:replace="fragments/marketplace-controls.html :: div"></div>
             </th:block>
             <h3>Cars</h3>
+            <div th:if="${#lists.isEmpty(cars)}">
+                <h3 th:text="'You do not have uploaded any advertisements yet.'"></h3>
+                <div class="buttons-container">
+                    <a class="button" th:href="@{/marketplace/cars/publish}">Add Car Advertisement</a>
+                    <a class="button" th:href="@{/marketplace/parts/publish}">Add Part Advertisement</a>
+                </div>
+            </div>
             <table class="table mb-0">
                 <thead>
                 <tr>

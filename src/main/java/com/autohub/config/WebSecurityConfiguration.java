@@ -22,7 +22,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/styles/**", "/scripts/**", "/images/**", "/about", "/contacts", "mailto:**").permitAll()
                 .antMatchers("/login", "/register", "/").anonymous()
-                .antMatchers("/admin/**", "/marketplace/advertisements/pending").hasAnyRole("ADMIN", "ROOT")
+                .antMatchers("/articles/create/**", "/articles/delete/**", "/articles/edit/**", "/marketplace/pending", "/marketplace/cars/approve", "/marketplace/cars/decline", "/marketplace/parts/approve", "/marketplace/parts/decline").hasAnyRole("ADMIN", "ROOT")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

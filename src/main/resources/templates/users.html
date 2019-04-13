@@ -32,12 +32,12 @@
                           th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}"></span></td>
                 <td><span class="user-email" th:text="${user.getEmail()}"></span></td>
                 <td th:if="${!#lists.contains(user.getAuthorities(), adminrole)}">
-                    <a class="btn btn-success" th:href="@{/admin/users/switch/to-admin/{id}(id=${user.getId()})}">
+                    <a class="btn btn-success" th:href="@{/users/switch/to-admin/{id}(id=${user.getId()})}">
                         Promote to Admin
                     </a>
                 </td>
                 <td th:if="${!#lists.contains(user.getAuthorities(), userrole)}">
-                    <a class="btn btn-info" th:href="@{/admin/users/switch/to-user/{id}(id=${user.getId()})}">
+                    <a class="btn btn-info" th:href="@{/users/switch/to-user/{id}(id=${user.getId()})}">
                         Downgrade to User
                     </a>
                 </td>

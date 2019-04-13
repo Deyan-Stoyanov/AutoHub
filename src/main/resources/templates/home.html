@@ -16,20 +16,20 @@
                 <div class="articles-buttons">
                     <a th:href="@{/articles/news}" class="button">News</a>
                     <a th:href="@{/articles/sport}" class="button">Sport</a>
-                    <a th:href="@{/articles/tips-and-tricks}" class="button">Tips & Tricks</a>
+                    <a th:href="@{/articles/tips-and-tricks}" class="button">Tips &amp; Tricks</a>
                 </div>
-            </article>
-            <article class="index-gallery">
-                <p>You can also go through our new gallery section.</p>
-                <a th:href="@{/gallery}" class="button">Gallery</a>
             </article>
             <article class="index-marketplace">
                 <p>Looking for a new car? Or maybe want to sell your old one? Our new functionality allows you both!</p>
                 <a th:href="@{/marketplace}" class="button">Marketplace</a>
             </article>
+            <article class="index-gallery">
+                <p>Shortcut to your uploaded advertisements</p>
+                <a th:href="@{/marketplace/{id}(id=${#authentication.getPrincipal().getId()})}" class="button">My Advertisements</a>
+            </article>
             <article class="index-contacts-about">
                 <p>Have a question? Feel free to contact us!</p>
-                <a th:href="@{/about}" class="button">About</a>
+                <a th:href="@{/contacts}" class="button">Contacts</a>
             </article>
         </div>
     </main>

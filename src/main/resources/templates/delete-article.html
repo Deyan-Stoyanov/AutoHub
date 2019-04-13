@@ -20,10 +20,10 @@
                 <p>Are you sure?</p>
             </div>
             <div class="buttons-container">
-                <form method="post" th:action="@{/admin/articles/delete/{id}(id=${article.getId()})}">
+                <form method="post" th:action="@{/articles/delete/{id}(id=${article.getId()})}">
                     <button type="submit" class="button button-danger">Delete article</button>
                 </form>
-                <a th:href="@{/admin/users}" class="button">Cancel</a>
+                <a th:href="@{/home}" class="button">Cancel</a>
             </div>
         </div>
     </main>
