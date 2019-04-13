@@ -27,7 +27,7 @@ public class UserProfileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/profile/{id}")
+    @GetMapping("/{id}")
     public ModelAndView profile(@PathVariable("id") String id, ModelAndView modelAndView) {
         UserProfileViewModel user = this.findUser(id);
         modelAndView.setViewName("profile");
@@ -36,7 +36,7 @@ public class UserProfileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/profile/edit/{id}")
+    @GetMapping("/edit/{id}")
     public ModelAndView editProfile(@PathVariable("id") String id,
                                     @ModelAttribute(name = "user") UserEditBindingModel user,
                                     ModelAndView modelAndView) {
@@ -47,7 +47,7 @@ public class UserProfileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/profile/edit/{id}")
+    @PostMapping("/edit/{id}")
     public ModelAndView confirmEditProfile(@PathVariable("id") String id,
                                            @Valid @ModelAttribute(name = "user") UserEditBindingModel user,
                                            BindingResult bindingResult, ModelAndView modelAndView) {
@@ -65,7 +65,7 @@ public class UserProfileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/profile/delete/{id}")
+    @GetMapping("/delete/{id}")
     public ModelAndView deleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
         UserProfileViewModel user = this.findUser(id);
         modelAndView.setViewName("delete-profile");
@@ -74,7 +74,7 @@ public class UserProfileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/profile/delete/{id}")
+    @PostMapping("/delete/{id}")
     public ModelAndView confirmDeleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
         this.userService.deleteById(id);
         modelAndView.setViewName("redirect:/");

@@ -51,9 +51,9 @@
                 $("#btn-contacts").on("click", () => {
                     let about = $("#about").val();
                     let message = $("#message").val();
-                    let name = 'Name: ' + $("#name").val() + '\r\n';
-                    let email = 'Email: ' + $("#email").val() + '\r\n';
-                    let fullMessage = name + email + "\r\n" +message;
+                    let name = 'Name: ' + $("#name").val() + '<br/>';
+                    let email = 'Email: ' + $("#email").val() + '<br/>';
+                    let fullMessage = name + email + "<hr/>" + message;
                     console.log(fullMessage);
                     $("#contacts-form").attr("action", "mailto:autohub@abv.bg" + "?subject=" + about + "&body=" + fullMessage).submit();
                 });

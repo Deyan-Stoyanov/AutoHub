@@ -1,10 +1,11 @@
 <div xmlns:th="http://www.thymeleaf.org" lang="en">
     <fieldset>
         <label for="username">Choose your username*:</label>
-        <div class="input-field">
+        <div class="input-field" id="username-input">
             <i class="fas fa-user"></i>
             <input type="text" placeholder="Username..." name="username" id="username" th:field="*{username}"
                    th:styleappend="${#fields.hasErrors('username')} ? 'border-color: red'" required>
+            <p class="text-danger" id="username-taken">Username already taken!</p>
             <ul class="text-danger" th:each="error : ${#fields.errors('username')}">
                 <li>
                     <small th:text="${error}"></small>
@@ -69,7 +70,8 @@
         <label for="phoneNumber">Enter your phone number:</label>
         <div class="input-field">
             <i class="fas fa-at"></i>
-            <input type="number" placeholder="Phone number..." name="phoneNumber" id="phoneNumber" th:field="*{phoneNumber}"
+            <input type="number" placeholder="Phone number..." name="phoneNumber" id="phoneNumber"
+                   th:field="*{phoneNumber}"
                    th:styleappend="${#fields.hasErrors('phoneNumber')} ? 'border-color: red'" required>
             <ul class="text-danger" th:each="error : ${#fields.errors('phoneNumber')}">
                 <li>
@@ -82,7 +84,8 @@
         <label for="firstName">Enter your first name:</label>
         <div class="input-field">
             <i class="fas fa-users"></i>
-            <input type="text" placeholder="First Name..." name="firstName" id="firstName" th:field="*{firstName}"
+            <input type="text" minlength="3" placeholder="First Name..." name="firstName" id="firstName"
+                   th:field="*{firstName}"
                    th:styleappend="${#fields.hasErrors('firstName')} ? 'border-color: red'" required>
             <ul class="text-danger" th:each="error : ${#fields.errors('firstName')}">
                 <li>
@@ -95,7 +98,8 @@
         <label for="lastName">Enter your last name:</label>
         <div class="input-field">
             <i class="fas fa-users"></i>
-            <input type="text" placeholder="Last Name..." name="lastName" id="lastName"  th:field="*{lastName}"
+            <input type="text" minlength="1" placeholder="Last Name..." name="lastName" id="lastName"
+                   th:field="*{lastName}"
                    th:styleappend="${#fields.hasErrors('lastName')} ? 'border-color: red'" required>
             <ul class="text-danger" th:each="error : ${#fields.errors('lastName')}">
                 <li>
@@ -108,7 +112,7 @@
         <label for="age">Enter your age:</label>
         <div class="input-field">
             <i class="fas fa-sort-numeric-up"></i>
-            <input type="text" placeholder="Age..." name="age" id="age"  th:field="*{age}"
+            <input type="number" min="0" max="199" placeholder="Age..." name="age" id="age" th:field="*{age}"
                    th:styleappend="${#fields.hasErrors('age')} ? 'border-color: red'" required>
             <ul class="text-danger" th:each="error : ${#fields.errors('age')}">
                 <li>
@@ -136,4 +140,72 @@
         </div>
     </fieldset>
     <button type="submit" class="button">Submit</button>
+    <script>
+        $("#firstName").on("input", function () {
+            if (!($("#firstName").val().match(/[A-Z][a-z]{1,39}/g))) {
+                $("#firstName").css("border", "2px solid red");
+            } else {
+                $("#firstName").css("border", "none");
+            }
+        });
+        $("#lastName").on("input", function () {
+            if (!($("#firstName").val().match(/[A-Z][a-z]{1,39}/g))) {
+                $("#firstName").css("border", "2px solid red");
+            } else {
+                $("#firstName").css("border", "none");
+            }
+        });
+        $("#phoneNumber").on("input", function () {
+            if (!($("#phoneNumber").val().match(/[+]?[0-9]{3,19}/g))) {
+                $("#phoneNumber").css("border", "2px solid red");
+            } else {
+                $("#phoneNumber").css("border", "none");
+            }
+        });
+        $("#password").on("input", function () {
+            if (!($("#password").val().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/g))) {
+                $("#password").css("border", "2px solid red");
+            } else {
+                $("#password").css("border", "none");
+            }
+        });
+        $("#confirmPassword").on("input", function () {
+            if (($("#password").val() !== $("#confirmPassword").val())) {
+                $("#confirmPassword").css("border", "2px solid red");
+            } else {
+                $("#confirmPassword").css("border", "none");
+            }
+        });
+        $("#username-taken").css("display", "none");
+        let usernamesList = [];
+        $.getJSON("/fetch/cars", function (data) {
+            console.log("a");
+        }).done(function () {
+            console.log("success");
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log('getJSON request failed! ' + textStatus);
+        });
+        // fetch('http://localhost:8000/fetch/usernames')
+        //     .then((response) => {
+        //         response.json();
+        //         console.log(response);
+        //     })
+        //     .then((json) => json.forEach((x) => {
+        //         console.log(x);
+        //         usernamesList.push(x);
+        //     }));
+        $("#username").on("input", function () {
+            console.log(usernamesList);
+            if (usernamesList.includes($("#username").val())) {
+                $("#username").css("border", "2px solid red");
+                $("#username-taken").css("display", "inline");
+            } else if ($("#username").val().length >= 3 && $("#username").val().length <= 20) {
+                $("#username").css("border", "2px solid red");
+                $("#username-taken").css("display", "none");
+            } else {
+                $("#username").css("border", "none");
+                $("#username-taken").css("display", "none");
+            }
+        });
+    </script>
 </div>

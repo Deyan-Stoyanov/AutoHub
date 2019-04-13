@@ -69,11 +69,14 @@ public class CarAdvertisementController {
         CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel);
         CarAdvertisementServiceModel savedModel = this.carAdvertisementService.save(carAdvertisementServiceModel);
         if (savedModel == null) {
-            modelAndView.setViewName("redirect:/marketplace/publish/car");
+            modelAndView.addObject("carTypes", CarType.values());
+            modelAndView.addObject("fuelTypes", FuelType.values());
+            modelAndView.addObject("advert", advert);
+            modelAndView.setViewName("add-car");
             return modelAndView;
         } else if (file != null) {
             String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\car_images";
-            File f1 = new File(filePath + "\\" + savedModel.getId() + ".jpg");
+            File f1 = new File(filePath + "\\" + savedModel.getId() +  "." + file.getOriginalFilename().split("\\.")[1]);
             file.transferTo(f1);
         }
         modelAndView.setViewName("redirect:/marketplace");

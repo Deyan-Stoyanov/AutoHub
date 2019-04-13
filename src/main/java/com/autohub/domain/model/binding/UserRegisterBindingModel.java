@@ -39,6 +39,7 @@ public class UserRegisterBindingModel {
     }
 
     @NotEmpty
+    @Size(min = 2, max = 40)
     @Pattern(regexp = "[A-Z][a-z]+", message = "First name not valid")
     public String getFirstName() {
         return firstName;
@@ -49,6 +50,7 @@ public class UserRegisterBindingModel {
     }
 
     @NotEmpty
+    @Size(min = 2, max = 40)
     @Pattern(regexp = "[A-Z][a-z]+", message = "Last name not valid")
     public String getLastName() {
         return lastName;
@@ -59,6 +61,7 @@ public class UserRegisterBindingModel {
     }
 
     @NotEmpty
+    @Size(min = 2, max = 40)
     @Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", message = "Email invalid")
     public String getEmail() {
         return email;
@@ -78,7 +81,7 @@ public class UserRegisterBindingModel {
     }
 
     @Min(value = 13, message = "You should be 13 or older to register")
-    @Max(130)
+    @Max(199)
     public Integer getAge() {
         return age;
     }
@@ -97,7 +100,8 @@ public class UserRegisterBindingModel {
     }
 
     @NotEmpty
-    @Pattern(regexp = "[+]?[0-9]+", message = "Phone number invalid")
+    @Size(min = 4, max = 20)
+    @Pattern(regexp = "[+]?[0-9]{3,19}", message = "Phone number invalid")
     public String getPhoneNumber() {
         return phoneNumber;
     }

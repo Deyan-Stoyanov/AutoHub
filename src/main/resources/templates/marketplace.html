@@ -43,6 +43,7 @@
                 fetch('http://localhost:8000/fetch/cars')
                     .then((response) => response.json())
                     .then((json) => json.forEach((x) => {
+                        console.log("info")
                         let li = $("<li>");
                         $(`<img src='/images/car_images/${x.id}.jpg' alt="advertisement picture"/>`).appendTo(li);
                         $("<h4>").addClass("title").text(x.car.make + ' ' + x.car.model).appendTo(li);

@@ -8,6 +8,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "engines")
@@ -16,6 +17,7 @@ public class Engine extends BaseEntity{
     private Long horsepower;
     private FuelType fuelType;
     private String modification;
+    private List<Car> cars;
 
     public Engine() {
     }
@@ -66,5 +68,14 @@ public class Engine extends BaseEntity{
 
     public void setModification(String modification) {
         this.modification = modification;
+    }
+
+    @OneToMany(mappedBy = "engine", targetEntity = Car.class, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 }

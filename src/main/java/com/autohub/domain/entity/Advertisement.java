@@ -36,7 +36,7 @@ public abstract class Advertisement extends BaseEntity {
         this.price = price;
     }
 
-    @ManyToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Address.class, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     public Address getAddress() {
         return address;
     }

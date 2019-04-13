@@ -1,8 +1,6 @@
 package com.autohub.domain.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,6 +10,7 @@ public class Part extends BaseEntity {
     private String name;
     private String manufacturer;
     private String carSuitableFor;
+    private PartAdvertisement partAdvertisement;
 
     public Part() {
     }
@@ -50,5 +49,14 @@ public class Part extends BaseEntity {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    @OneToOne(mappedBy = "part", targetEntity = PartAdvertisement.class, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    public PartAdvertisement getPartAdvertisement() {
+        return partAdvertisement;
+    }
+
+    public void setPartAdvertisement(PartAdvertisement partAdvertisement) {
+        this.partAdvertisement = partAdvertisement;
     }
 }

@@ -6,10 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -88,6 +85,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Size(min = 2, max = 40)
+    @Pattern(regexp = "[A-Z][a-z]+", message = "First name not valid")
     @Column(name = "first_name", nullable = false)
     public String getFirstName() {
         return firstName;
@@ -98,6 +96,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Size(min = 2, max = 40)
+    @Pattern(regexp = "[A-Z][a-z]+", message = "Last name not valid")
     @Column(name = "last_name", nullable = false)
     public String getLastName() {
         return lastName;
@@ -130,6 +129,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Min(0)
+    @Max(199)
     @Column(name = "age")
     public Integer getAge() {
         return age;

@@ -54,7 +54,7 @@ public class ArticleController {
         ArticleServiceModel registeredArticle = this.articleService.save(this.modelMapper.map(article, ArticleServiceModel.class));
         if (file != null) {
             String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\blog_images";
-            File f1 = new File(filePath + "\\" + registeredArticle.getId() + ".jpg");
+            File f1 = new File(filePath + "\\" + registeredArticle.getId() + "." + file.getOriginalFilename().split("\\.")[1]);
             file.transferTo(f1);
         }
         modelAndView.setViewName("redirect:/home");

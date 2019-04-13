@@ -8,7 +8,6 @@
                 <li class="footer-articles-li" sec:authorize="isFullyAuthenticated()"><a th:href="@{/articles/news}">News</a></li>
                 <li class="footer-articles-li" sec:authorize="isFullyAuthenticated()"><a th:href="@{/articles/sports}">Sports</a></li>
                 <li class="footer-articles-li" sec:authorize="isFullyAuthenticated()"><a th:href="@{/articles/tips-and-tricks}">Tips &amp; Tricks</a></li>
-                <li sec:authorize="isFullyAuthenticated()"><a th:href="@{/gallery}">Gallery</a></li>
                 <li sec:authorize="isFullyAuthenticated()"><a th:href="@{/marketplace}">Marketplace</a></li>
                 <li><a th:href="@{/about}">About us</a></li>
                 <li sec:authorize="isFullyAuthenticated()"><a th:href="@{/profile/{id}(id=${session.userId})}">My Profile</a></li>

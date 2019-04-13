@@ -5,13 +5,13 @@ import com.autohub.domain.entity.Part;
 import com.autohub.domain.entity.PartAdvertisement;
 import com.autohub.domain.enums.AdvertisementStatus;
 import com.autohub.domain.model.service.PartAdvertisementServiceModel;
-import com.autohub.repository.AddressRepository;
+import com.autohub.domain.model.service.PartServiceModel;
 import com.autohub.repository.PartAdvertisementRepository;
-import com.autohub.repository.PartRepository;
+import com.autohub.service.interfaces.AddressService;
 import com.autohub.service.interfaces.PartAdvertisementService;
+import com.autohub.service.interfaces.PartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,23 +20,25 @@ import java.util.stream.Collectors;
 @Service
 public class PartAdvertisementServiceImpl implements PartAdvertisementService {
     private final PartAdvertisementRepository partAdvertisementRepository;
-    private final PartRepository partRepository;
-    private final AddressRepository addressRepository;
+    private final PartService partService;
+    private final AddressService addressService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public PartAdvertisementServiceImpl(PartAdvertisementRepository partAdvertisementRepository, PartRepository partRepository, AddressRepository addressRepository, ModelMapper modelMapper) {
+    public PartAdvertisementServiceImpl(PartAdvertisementRepository partAdvertisementRepository, PartService partService, AddressService addressService, ModelMapper modelMapper) {
         this.partAdvertisementRepository = partAdvertisementRepository;
-        this.partRepository = partRepository;
-        this.addressRepository = addressRepository;
+        this.partService = partService;
+        this.addressService = addressService;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public PartAdvertisementServiceModel save(PartAdvertisementServiceModel partAdvertisementServiceModel) {
         try {
-            Part part = this.partRepository.save(this.modelMapper.map(partAdvertisementServiceModel.getPart(), Part.class));
-            Address address = this.addressRepository.save(this.modelMapper.map(partAdvertisementServiceModel.getAddress(), Address.class));
+            Part part = this.modelMapper
+                    .map(this.partService.save(partAdvertisementServiceModel.getPart()), Part.class);
+            Address address = this.modelMapper
+                    .map(this.addressService.save(partAdvertisementServiceModel.getAddress()), Address.class);
             PartAdvertisement partAdvertisement = this.modelMapper.map(partAdvertisementServiceModel, PartAdvertisement.class);
             partAdvertisement.setPart(part);
             partAdvertisement.setAddress(address);

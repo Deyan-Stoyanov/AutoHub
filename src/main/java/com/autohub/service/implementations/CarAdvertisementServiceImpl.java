@@ -3,21 +3,18 @@ package com.autohub.service.implementations;
 import com.autohub.domain.entity.Address;
 import com.autohub.domain.entity.Car;
 import com.autohub.domain.entity.CarAdvertisement;
-import com.autohub.domain.entity.Engine;
 import com.autohub.domain.enums.AdvertisementStatus;
+import com.autohub.domain.model.service.AddressServiceModel;
 import com.autohub.domain.model.service.CarAdvertisementServiceModel;
 import com.autohub.domain.model.service.CarServiceModel;
 import com.autohub.domain.model.service.EngineServiceModel;
-import com.autohub.domain.model.view.CarAdvertisementViewModel;
-import com.autohub.repository.AddressRepository;
 import com.autohub.repository.CarAdvertisementRepository;
-import com.autohub.repository.CarRepository;
-import com.autohub.repository.EngineRepository;
+import com.autohub.service.interfaces.AddressService;
 import com.autohub.service.interfaces.CarAdvertisementService;
+import com.autohub.service.interfaces.CarService;
+import com.autohub.service.interfaces.EngineService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,33 +23,33 @@ import java.util.stream.Collectors;
 @Service
 public class CarAdvertisementServiceImpl implements CarAdvertisementService {
     private final CarAdvertisementRepository carAdvertisementRepository;
-    private final CarRepository carRepository;
-    private final EngineRepository engineRepository;
-    private final AddressRepository addressRepository;
+    private final CarService carService;
+    private final EngineService engineService;
+    private final AddressService addressService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CarAdvertisementServiceImpl(CarAdvertisementRepository carAdvertisementRepository, CarRepository carRepository, EngineRepository engineRepository, AddressRepository addressRepository, ModelMapper modelMapper) {
+    public CarAdvertisementServiceImpl(CarAdvertisementRepository carAdvertisementRepository, CarService carService, EngineService engineService, AddressService addressService, ModelMapper modelMapper) {
         this.carAdvertisementRepository = carAdvertisementRepository;
-        this.carRepository = carRepository;
-        this.engineRepository = engineRepository;
-        this.addressRepository = addressRepository;
+        this.carService = carService;
+        this.engineService = engineService;
+        this.addressService = addressService;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public CarAdvertisementServiceModel save(CarAdvertisementServiceModel carAdvertisementServiceModel) {
         try {
-            Engine engine = this.engineRepository.save(this.modelMapper.map(carAdvertisementServiceModel.getCar().getEngine(), Engine.class));
-            Address address = this.addressRepository.save(this.modelMapper.map(carAdvertisementServiceModel.getAddress(), Address.class));
-            CarServiceModel carServiceModel = carAdvertisementServiceModel.getCar();
-            carServiceModel.setEngine(this.modelMapper.map(engine, EngineServiceModel.class));
-            Car car = this.carRepository.save(this.modelMapper.map(carServiceModel, Car.class));
+            EngineServiceModel engine = this.engineService.save(carAdvertisementServiceModel.getCar().getEngine());
+            AddressServiceModel address = this.addressService.save(carAdvertisementServiceModel.getAddress());
+            CarServiceModel car = carAdvertisementServiceModel.getCar();
+            car.setEngine(engine);
+            car = this.carService.save(car);
             CarAdvertisement carAdvertisement = this.modelMapper.map(carAdvertisementServiceModel, CarAdvertisement.class);
             carAdvertisement.setStatus(AdvertisementStatus.PENDING);
-            carAdvertisement.setCar(car);
-            carAdvertisement.setAddress(address);
-            this.carAdvertisementRepository.save(carAdvertisement);
+            carAdvertisement.setCar(this.modelMapper.map(this.carService.findById(car.getId()), Car.class));
+            carAdvertisement.setAddress(this.modelMapper.map(this.addressService.findById(address.getId()), Address.class));
+            carAdvertisement = this.carAdvertisementRepository.save(carAdvertisement);
             return this.modelMapper.map(carAdvertisement, CarAdvertisementServiceModel.class);
         } catch (Exception e) {
             return null;

@@ -39,7 +39,7 @@ public class PartAdvertisementsController {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public PartAdvertisementsController(CarAdvertisementService carAdvertisementService, PartAdvertisementService partAdvertisementService, UserService userService, ModelMapper modelMapper) {
+    public PartAdvertisementsController(PartAdvertisementService partAdvertisementService, UserService userService, ModelMapper modelMapper) {
         this.partAdvertisementService = partAdvertisementService;
         this.userService = userService;
         this.modelMapper = modelMapper;
@@ -72,11 +72,13 @@ public class PartAdvertisementsController {
         PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel);
         PartAdvertisementServiceModel savedModel = this.partAdvertisementService.save(partAdvertisementServiceModel);
         if (savedModel == null) {
-            modelAndView.setViewName("redirect:/marketplace/advertisements/publish/part");
+            modelAndView.addObject("carTypes", CarType.values());
+            modelAndView.addObject("fuelTypes", FuelType.values());
+            modelAndView.setViewName("add-part");
             return modelAndView;
         } else if (file != null) {
             String filePath = "D:\\Програмиране\\СофтУни\\Java Web\\AutoHub\\src\\main\\resources\\static\\images\\part_images";
-            File f1 = new File(filePath + "\\" + savedModel.getId() + "jpg");
+            File f1 = new File(filePath + "\\" + savedModel.getId() +  "." + file.getOriginalFilename().split("\\.")[1]);
             file.transferTo(f1);
         }
         modelAndView.setViewName("redirect:/marketplace");

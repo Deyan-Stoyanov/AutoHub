@@ -12,7 +12,7 @@
     <main class="site-content">
         <h2>Create Part Advertisement</h2>
         <div class="site-main">
-            <form method="post" th:action="@{/marketplace/publish/part}" enctype="multipart/form-data" th:object="${advert}">
+            <form method="post" th:action="@{/marketplace/parts/publish}" enctype="multipart/form-data" th:object="${advert}">
                 <div th:replace="fragments/part-form.html :: div"></div>
             </form>
         </div>
