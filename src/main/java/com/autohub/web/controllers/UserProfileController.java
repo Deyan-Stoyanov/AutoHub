@@ -4,6 +4,7 @@ import com.autohub.domain.model.binding.UserEditBindingModel;
 import com.autohub.domain.model.service.UserServiceModel;
 import com.autohub.domain.model.view.UserProfileViewModel;
 import com.autohub.service.interfaces.UserService;
+import com.autohub.util.Util;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +30,7 @@ public class UserProfileController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ModelAndView profile(@PathVariable("id") String id, ModelAndView modelAndView) {
-        UserProfileViewModel user = this.findUser(id);
+        UserProfileViewModel user = Util.findUser(id, this.userService, this.modelMapper);
         modelAndView.setViewName("profile");
         modelAndView.addObject("user", user);
         return modelAndView;
@@ -67,7 +68,7 @@ public class UserProfileController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public ModelAndView deleteProfile(@PathVariable("id") String id, ModelAndView modelAndView) {
-        UserProfileViewModel user = this.findUser(id);
+        UserProfileViewModel user = Util.findUser(id, this.userService, this.modelMapper);
         modelAndView.setViewName("delete-profile");
         modelAndView.addObject("user", user);
         return modelAndView;
@@ -79,13 +80,5 @@ public class UserProfileController {
         this.userService.deleteById(id);
         modelAndView.setViewName("redirect:/");
         return modelAndView;
-    }
-
-    private UserProfileViewModel findUser(String id) {
-        UserServiceModel userServiceModel = this.userService.findById(id);
-        if (userServiceModel == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-        return this.modelMapper.map(userServiceModel, UserProfileViewModel.class);
     }
 }

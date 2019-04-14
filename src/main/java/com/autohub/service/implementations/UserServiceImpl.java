@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserServiceModel register(UserServiceModel userServiceModel) {
         userServiceModel.setPassword(encoder.encode(userServiceModel.getPassword()));
         userServiceModel.setAuthorities(this.generateUserRole());
-        return this.save(userServiceModel);
+         return this.save(userServiceModel);
     }
 
     @Override

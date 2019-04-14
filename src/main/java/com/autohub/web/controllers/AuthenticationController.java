@@ -50,13 +50,16 @@ public class AuthenticationController {
     public ModelAndView confirmRegister(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @Valid @ModelAttribute(name = "user") UserRegisterBindingModel user,
                                         BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
-        if (user.getConfirmPassword().equals(user.getPassword()) && !bindingResult.hasErrors()) {
+        if (this.userService.findAll().stream().anyMatch(x -> x.getUsername().equals(user.getUsername()))) {
+            modelAndView.setViewName("register");
+        } else if (user.getConfirmPassword().equals(user.getPassword()) && !bindingResult.hasErrors()) {
             UserServiceModel registeredModel = this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
             if (registeredModel != null && file != null) {
                 String filePath = "C:\\Users\\Lenovo\\autohub\\images\\user_images";
                 String fullPath = filePath + "\\" + registeredModel.getId() + "." + file.getOriginalFilename().split("\\.")[1];
                 File f1 = new File(fullPath);
                 file.transferTo(f1);
+                registeredModel.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
                 this.userService.save(registeredModel);
             }
             modelAndView.setViewName("redirect:/login");

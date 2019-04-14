@@ -66,7 +66,7 @@ public class Car extends BaseEntity{
         this.type = type;
     }
 
-    @ManyToOne(targetEntity = Engine.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToOne(targetEntity = Engine.class, fetch = FetchType.EAGER)
     public Engine getEngine() {
         return engine;
     }
@@ -106,7 +106,7 @@ public class Car extends BaseEntity{
         this.color = color;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "car", targetEntity = CarAdvertisement.class)
+    @OneToOne(mappedBy = "car", targetEntity = CarAdvertisement.class)
     public CarAdvertisement getCarAdvertisement() {
         return carAdvertisement;
     }

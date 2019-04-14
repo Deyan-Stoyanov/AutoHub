@@ -15,14 +15,14 @@
             <th:block>
                 <div th:replace="fragments/marketplace-controls.html :: div"></div>
             </th:block>
-            <h3>Cars</h3>
-            <div th:if="${#lists.isEmpty(cars)}">
+            <div th:if="${#lists.isEmpty(cars) && #lists.isEmpty(parts)}">
                 <h3 th:text="'You do not have uploaded any advertisements yet.'"></h3>
                 <div class="buttons-container">
                     <a class="button" th:href="@{/marketplace/cars/publish}">Add Car Advertisement</a>
                     <a class="button" th:href="@{/marketplace/parts/publish}">Add Part Advertisement</a>
                 </div>
             </div>
+            <h3>Cars</h3>
             <table class="table mb-0">
                 <thead>
                 <tr>
@@ -43,7 +43,8 @@
                               th:text="${car.getStatus()}"></span>
                         <span class="text-success" th:if="${car.getStatus().name() == 'APPROVED'}"
                               th:text="${car.getStatus()}"></span>
-                        <span class="text-info" th:if="${car.getStatus().name() == 'PENDING'}" th:text="${car.getStatus()}"></span>
+                        <span class="text-info" th:if="${car.getStatus().name() == 'PENDING'}"
+                              th:text="${car.getStatus()}"></span>
                     </td>
                     <td>
                         <a class="btn btn-info"
@@ -78,7 +79,8 @@
                               th:text="${part.getStatus()}"></span>
                         <span class="text-success" th:if="${part.getStatus().name() == 'APPROVED'}"
                               th:text="${part.getStatus()}"></span>
-                        <span class="text-info" th:if="${part.getStatus().name() == 'PENDING'}" th:text="${part.getStatus()}"></span>
+                        <span class="text-info" th:if="${part.getStatus().name() == 'PENDING'}"
+                              th:text="${part.getStatus()}"></span>
                     </td>
                     <td><a class="btn btn-info"
                            th:href="@{/marketplace/parts/details/{id}(id=${part.getId()})}">Details</a>

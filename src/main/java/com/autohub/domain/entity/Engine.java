@@ -70,7 +70,7 @@ public class Engine extends BaseEntity{
         this.modification = modification;
     }
 
-    @OneToMany(mappedBy = "engine", targetEntity = Car.class, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "engine", targetEntity = Car.class)
     public List<Car> getCars() {
         return cars;
     }

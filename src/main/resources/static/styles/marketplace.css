@@ -1,9 +1,12 @@
+.marketplace{
+    padding: 3rem;
+}
+
 .marketplace h2 {
     padding: 2rem 0
 }
 
 .marketplace img {
-    height: 100%;
     width: 100%;
     object-fit: contain;
 }

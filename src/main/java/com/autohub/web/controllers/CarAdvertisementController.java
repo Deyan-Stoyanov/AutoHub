@@ -13,6 +13,7 @@ import com.autohub.domain.model.service.EngineServiceModel;
 import com.autohub.domain.model.view.CarAdvertisementViewModel;
 import com.autohub.service.interfaces.CarAdvertisementService;
 import com.autohub.service.interfaces.UserService;
+import com.autohub.util.Util;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,9 +65,9 @@ public class CarAdvertisementController {
             modelAndView.setViewName("add-car");
             return modelAndView;
         }
-        CarServiceModel carServiceModel = initCarServiceModel(advert);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
-        CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel);
+        CarServiceModel carServiceModel = Util.initCarServiceModel(advert);
+        AddressServiceModel addressServiceModel = Util.initAddressServiceModel(advert);
+        CarAdvertisementServiceModel carAdvertisementServiceModel = Util.initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel, this.userService);
         CarAdvertisementServiceModel savedModel = this.carAdvertisementService.save(carAdvertisementServiceModel);
         if (savedModel == null) {
             modelAndView.addObject("carTypes", CarType.values());
@@ -127,7 +128,7 @@ public class CarAdvertisementController {
         } else {
             modelAndView.setViewName("edit-car-advertisement");
             CarAdvertisementBindingModel bindingModel = this.modelMapper.map(car, CarAdvertisementBindingModel.class);
-            this.setUpBindingModel(bindingModel, car);
+            Util.setUpBindingModel(bindingModel, car);
             modelAndView.addObject("advert", bindingModel);
             modelAndView.addObject("carTypes", CarType.values());
             modelAndView.addObject("fuelTypes", FuelType.values());
@@ -141,17 +142,19 @@ public class CarAdvertisementController {
     public ModelAndView confirmEditCar(@PathVariable("id") String id,
                                        @Valid @ModelAttribute(name = "advert") CarAdvertisementBindingModel advert,
                                        BindingResult bindingResult, ModelAndView modelAndView, Authentication authentication) {
+        advert.setUser(((User) authentication.getPrincipal()).getUsername());
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("edit-car-advertisement");
             modelAndView.addObject("advert", this.modelMapper.map(this.carAdvertisementService.findById(id), CarAdvertisementViewModel.class));
             return modelAndView;
         }
         advert.setUser(((User) authentication.getPrincipal()).getUsername());
-        CarServiceModel carServiceModel = initCarServiceModel(advert);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
-        CarAdvertisementServiceModel carAdvertisementServiceModel = initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel);
+        CarServiceModel carServiceModel = Util.initCarServiceModel(advert);
+        AddressServiceModel addressServiceModel = Util.initAddressServiceModel(advert);
+        CarAdvertisementServiceModel carAdvertisementServiceModel = Util.initCarAdvertisementServiceModel(advert, carServiceModel, addressServiceModel, this.userService);
         carAdvertisementServiceModel.setId(id);
-        this.carAdvertisementService.update(carAdvertisementServiceModel);
+        carAdvertisementServiceModel.setImageFileName(this.carAdvertisementService.findById(id).getImageFileName());
+        this.carAdvertisementService.save(carAdvertisementServiceModel);
         modelAndView.setViewName("redirect:/marketplace/cars/details/" + id);
         return modelAndView;
     }
@@ -171,58 +174,4 @@ public class CarAdvertisementController {
         modelAndView.setViewName("redirect:/marketplace");
         return modelAndView;
     }
-
-    private CarAdvertisementServiceModel initCarAdvertisementServiceModel(CarAdvertisementBindingModel model, CarServiceModel carServiceModel, AddressServiceModel addressServiceModel) {
-        CarAdvertisementServiceModel carAdvertisementServiceModel = new CarAdvertisementServiceModel();
-        carAdvertisementServiceModel.setAddress(addressServiceModel);
-        carAdvertisementServiceModel.setCar(carServiceModel);
-        carAdvertisementServiceModel.setDescription(model.getDescription());
-        carAdvertisementServiceModel.setPrice(model.getPrice());
-        carAdvertisementServiceModel.setUser(this.userService.findByUsername(model.getUser()));
-        return carAdvertisementServiceModel;
-    }
-
-    private AddressServiceModel initAddressServiceModel(AdvertisementBindingModel model) {
-        AddressServiceModel addressServiceModel = new AddressServiceModel();
-        addressServiceModel.setCity(model.getCity());
-        addressServiceModel.setCountry(model.getCountry());
-        addressServiceModel.setProvince(model.getProvince());
-        return addressServiceModel;
-    }
-
-    private CarServiceModel initCarServiceModel(CarAdvertisementBindingModel model) {
-        CarServiceModel carServiceModel = new CarServiceModel();
-        EngineServiceModel engineServiceModel = new EngineServiceModel();
-        engineServiceModel.setVolume(model.getVolume());
-        engineServiceModel.setFuelType(model.getFuelType());
-        engineServiceModel.setHorsepower(model.getHorsepower());
-        engineServiceModel.setModification(model.getModification());
-        carServiceModel.setEngine(engineServiceModel);
-        carServiceModel.setColor(model.getColor());
-        carServiceModel.setMake(model.getMake());
-        carServiceModel.setModel(model.getModel());
-        carServiceModel.setMileage(model.getMileage());
-        carServiceModel.setProductionDate(model.getProductionDate());
-        carServiceModel.setType(model.getCarType());
-        return carServiceModel;
-    }
-
-    private void setUpBindingModel(CarAdvertisementBindingModel bindingModel, CarAdvertisementServiceModel car) {
-        bindingModel.setCarType(car.getCar().getType());
-        bindingModel.setMake(car.getCar().getMake());
-        bindingModel.setModel(car.getCar().getModel());
-        bindingModel.setColor(car.getCar().getColor());
-        bindingModel.setProductionDate(car.getCar().getProductionDate());
-        bindingModel.setMileage(car.getCar().getMileage());
-        bindingModel.setFuelType(car.getCar().getEngine().getFuelType());
-        bindingModel.setHorsepower(car.getCar().getEngine().getHorsepower());
-        bindingModel.setModification(car.getCar().getEngine().getModification());
-        bindingModel.setVolume(car.getCar().getEngine().getVolume());
-        bindingModel.setPrice(car.getPrice());
-        bindingModel.setDescription(car.getDescription());
-        bindingModel.setCountry(car.getAddress().getCountry());
-        bindingModel.setCity(car.getAddress().getCity());
-        bindingModel.setProvince(car.getAddress().getProvince());
-    }
-
 }

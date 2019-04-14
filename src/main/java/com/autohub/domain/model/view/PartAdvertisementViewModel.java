@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public class PartAdvertisementViewModel {
 
     private String id;
+    private String name;
     private BigDecimal price;
     private String description;
     private AddressViewModel address;
@@ -80,5 +81,13 @@ public class PartAdvertisementViewModel {
 
     public void setImageFileName(String imageFileName) {
         this.imageFileName = imageFileName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

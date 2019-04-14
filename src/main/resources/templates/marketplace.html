@@ -38,8 +38,8 @@
 
         $("input[id='chooseCars']").change(() => {
             if ($("input[id='chooseCars']:checked")) {
-                $("#list-cars").empty().css("display", "block");
-                $("#list-parts").css("display", "none");
+                $("#list-cars").empty().show();
+                $("#list-parts").hide();
                 fetch('http://localhost:8000/fetch/cars')
                     .then((response) => response.json())
                     .then((json) => json.forEach((x) => {
@@ -63,23 +63,23 @@
 
         $("input[id='chooseParts']").change(() => {
             if ($("input[id='chooseParts']:checked")) {
-                $("#list-parts").empty().css("display", "block");
-                $("#list-cars").css("display", "none");
+                $("#list-parts").empty().show();
+                $("#list-cars").hide();
                 fetch('http://localhost:8000/fetch/parts')
                     .then((response) => response.json())
                     .then((json) => json.forEach((x) => {
                         let li = $("<li>");
                         if (x.imageFileName == null) {
-                            $(`<img src='/images/car.png' alt="advertisement picture"/>`).appendTo(li);
+                            $(`<img src='/images/part.png' alt="advertisement picture"/>`).appendTo(li);
                         } else {
-                            $(`<img src='/content/cars/${x.imageFileName}' alt="advertisement picture"/>`).appendTo(li);
+                            $(`<img src='/content/parts/${x.imageFileName}' alt="advertisement picture"/>`).appendTo(li);
                         }                        $("<h4>").addClass("title").text(x.part.name).appendTo(li);
                         let info = $("<div class=\"car-info\">");
                         $("<p>").text(x.part.manufacturer).appendTo(info);
                         $("<p>").text('Suitable for: ' + x.part.carSuitableFor).appendTo(info);
                         $("<p>").text(x.price + '$').appendTo(info);
                         $(info).appendTo(li);
-                        let button = $(`<a class="button" href="/marketplace/cars/details/${x.id}">`).text("Details");
+                        let button = $(`<a class="button" href="/marketplace/parts/details/${x.id}">`).text("Details");
                         $(button).appendTo(li);
                         $("#list-parts").append(li);
                     }));

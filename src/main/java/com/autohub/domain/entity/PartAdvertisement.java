@@ -16,7 +16,7 @@ public class PartAdvertisement extends Advertisement {
         this.part = part;
     }
 
-    @OneToOne(targetEntity = Part.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToOne(targetEntity = Part.class, fetch = FetchType.EAGER)
     public Part getPart() {
         return part;
     }

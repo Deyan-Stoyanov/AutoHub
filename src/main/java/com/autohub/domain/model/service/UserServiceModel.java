@@ -15,6 +15,7 @@ public class UserServiceModel extends EntityContainingImageServiceModel{
     private String email;
     private Gender gender;
     private Integer age;
+    private String imageFileName;
     private Set<UserRoleServiceModel> authorities;
     private List<CarAdvertisementServiceModel> carAdvertisements;
     private List<PartAdvertisementServiceModel> partAdvertisements;
@@ -108,5 +109,15 @@ public class UserServiceModel extends EntityContainingImageServiceModel{
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    @Override
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

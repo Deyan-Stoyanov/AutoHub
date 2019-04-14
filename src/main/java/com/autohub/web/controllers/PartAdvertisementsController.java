@@ -13,6 +13,7 @@ import com.autohub.domain.model.view.PartAdvertisementViewModel;
 import com.autohub.service.interfaces.CarAdvertisementService;
 import com.autohub.service.interfaces.PartAdvertisementService;
 import com.autohub.service.interfaces.UserService;
+import com.autohub.util.Util;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -67,9 +68,9 @@ public class PartAdvertisementsController {
             modelAndView.setViewName("add-part");
             return modelAndView;
         }
-        PartServiceModel partServiceModel = initPartServiceModel(advert);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
-        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel);
+        PartServiceModel partServiceModel = Util.initPartServiceModel(advert);
+        AddressServiceModel addressServiceModel = Util.initAddressServiceModel(advert);
+        PartAdvertisementServiceModel partAdvertisementServiceModel = Util.initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel, this.userService);
         PartAdvertisementServiceModel savedModel = this.partAdvertisementService.save(partAdvertisementServiceModel);
         if (savedModel == null) {
             modelAndView.addObject("carTypes", CarType.values());
@@ -83,7 +84,7 @@ public class PartAdvertisementsController {
             File f1 = new File(fullPath);
             file.transferTo(f1);
             savedModel.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
-            this.partAdvertisementService.save(savedModel);
+            savedModel = this.partAdvertisementService.save(savedModel);
         }
         modelAndView.setViewName("redirect:/marketplace");
         return modelAndView;
@@ -127,8 +128,10 @@ public class PartAdvertisementsController {
         if (part == null) {
             modelAndView.setViewName("redirect:/marketplace");
         } else {
+            PartAdvertisementBindingModel partAdvertisementBindingModel = this.modelMapper.map(part, PartAdvertisementBindingModel.class);
+            Util.setUpBindingModel(partAdvertisementBindingModel, part);
             modelAndView.setViewName("edit-part-advertisement");
-            modelAndView.addObject("advert", this.modelMapper.map(part, PartAdvertisementBindingModel.class));
+            modelAndView.addObject("advert", partAdvertisementBindingModel);
             modelAndView.addObject("id", id);
         }
         return modelAndView;
@@ -138,16 +141,19 @@ public class PartAdvertisementsController {
     @PostMapping("/edit/{id}")
     public ModelAndView editPart(@PathVariable("id") String id,
                                  @Valid @ModelAttribute(name = "advert") PartAdvertisementBindingModel advert,
-                                 BindingResult bindingResult, ModelAndView modelAndView) {
+                                 BindingResult bindingResult, Authentication authentication, ModelAndView modelAndView) {
+        advert.setUser(((User) authentication.getPrincipal()).getUsername());
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("edit-part-advertisement" + id);
             modelAndView.addObject("advert", this.modelMapper.map(this.partAdvertisementService.findById(id), PartAdvertisementViewModel.class));
             return modelAndView;
         }
-        PartServiceModel partServiceModel = initPartServiceModel(advert);
-        AddressServiceModel addressServiceModel = initAddressServiceModel(advert);
-        PartAdvertisementServiceModel partAdvertisementServiceModel = initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel);
+        PartServiceModel partServiceModel = Util.initPartServiceModel(advert);
+        AddressServiceModel addressServiceModel = Util.initAddressServiceModel(advert);
+        PartAdvertisementServiceModel partAdvertisementServiceModel = Util.initPartAdvertisementServiceModel(advert, partServiceModel, addressServiceModel, this.userService);
         partAdvertisementServiceModel.setId(id);
+        partAdvertisementServiceModel.setImageFileName(this.partAdvertisementService.findById(id).getImageFileName());
+        this.partAdvertisementService.save(partAdvertisementServiceModel);
         modelAndView.setViewName("redirect:/marketplace/parts/details/" + id);
         return modelAndView;
     }
@@ -166,31 +172,5 @@ public class PartAdvertisementsController {
         this.partAdvertisementService.deleteById(id);
         modelAndView.setViewName("redirect:/marketplace");
         return modelAndView;
-    }
-
-    private PartAdvertisementServiceModel initPartAdvertisementServiceModel(PartAdvertisementBindingModel model, PartServiceModel partServiceModel, AddressServiceModel addressServiceModel) {
-        PartAdvertisementServiceModel partAdvertisementServiceModel = new PartAdvertisementServiceModel();
-        partAdvertisementServiceModel.setAddress(addressServiceModel);
-        partAdvertisementServiceModel.setDescription(model.getDescription());
-        partAdvertisementServiceModel.setPart(partServiceModel);
-        partAdvertisementServiceModel.setPrice(model.getPrice());
-        partAdvertisementServiceModel.setUser(this.userService.findByUsername(model.getUser()));
-        return partAdvertisementServiceModel;
-    }
-
-    private PartServiceModel initPartServiceModel(PartAdvertisementBindingModel model) {
-        PartServiceModel partServiceModel = new PartServiceModel();
-        partServiceModel.setName(model.getName());
-        partServiceModel.setManufacturer(model.getManufacturer());
-        partServiceModel.setCarSuitableFor(model.getCarSuitableFor());
-        return partServiceModel;
-    }
-
-    private AddressServiceModel initAddressServiceModel(AdvertisementBindingModel model) {
-        AddressServiceModel addressServiceModel = new AddressServiceModel();
-        addressServiceModel.setCity(model.getCity());
-        addressServiceModel.setCountry(model.getCountry());
-        addressServiceModel.setProvince(model.getProvince());
-        return addressServiceModel;
     }
 }

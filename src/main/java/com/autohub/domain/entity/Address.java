@@ -56,7 +56,7 @@ public class Address extends BaseEntity{
         this.city = city;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address", targetEntity = CarAdvertisement.class)
+    @OneToMany(mappedBy = "address", targetEntity = CarAdvertisement.class)
     public List<CarAdvertisement> getCarAdvertisements() {
         return carAdvertisements;
     }
@@ -65,7 +65,7 @@ public class Address extends BaseEntity{
         this.carAdvertisements = carAdvertisements;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address", targetEntity = PartAdvertisement.class)
+    @OneToMany(mappedBy = "address", targetEntity = PartAdvertisement.class)
     public List<PartAdvertisement> getPartAdvertisements() {
         return partAdvertisements;
     }
