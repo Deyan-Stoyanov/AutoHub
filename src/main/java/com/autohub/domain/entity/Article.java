@@ -28,7 +28,7 @@ public class Article extends BaseEntity {
     }
 
     @NotNull
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 255)
     @Column(name = "title", nullable = false)
     public String getTitle() {
         return title;

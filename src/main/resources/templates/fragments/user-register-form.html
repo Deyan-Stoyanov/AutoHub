@@ -177,22 +177,9 @@
             }
         });
         $("#username-taken").css("display", "none");
-        let usernamesList = [];
-        fetch('http://localhost:8000/fetch/usernames')
-            .then((response) => {
-                response.json();
-                console.log(response);
-            })
-            .then((json) => json.forEach((x) => {
-                console.log(x);
-                usernamesList.push(x);
-            }));
         $("#username").on("input", function () {
             console.log(usernamesList);
-            if (usernamesList.includes($("#username").val())) {
-                $("#username").css("border", "2px solid red");
-                $("#username-taken").css("display", "inline");
-            } else if ($("#username").val().length >= 3 && $("#username").val().length <= 20) {
+             if ($("#username").val().length >= 3 && $("#username").val().length <= 20) {
                 $("#username").css("border", "none");
                 $("#username-taken").css("display", "none");
             } else {

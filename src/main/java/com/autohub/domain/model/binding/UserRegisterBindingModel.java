@@ -1,6 +1,7 @@
 package com.autohub.domain.model.binding;
 
 import com.autohub.domain.enums.Gender;
+import com.autohub.util.Const;
 
 import javax.validation.constraints.*;
 
@@ -19,7 +20,7 @@ public class UserRegisterBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 3, max = 20, message = "Username should be between 3 and 20 symbols long")
+    @Size(min = 3, max = 20, message = Const.USERNAME_VALIDATION_MESSAGE)
     public String getUsername() {
         return username;
     }
@@ -40,7 +41,7 @@ public class UserRegisterBindingModel {
 
     @NotEmpty
     @Size(min = 2, max = 40)
-    @Pattern(regexp = "[A-Z][a-z]+", message = "First name not valid")
+    @Pattern(regexp = "[A-Z][a-z]+", message = Const.FIRST_NAME_VALIDATION_MESSAGE)
     public String getFirstName() {
         return firstName;
     }
@@ -51,7 +52,7 @@ public class UserRegisterBindingModel {
 
     @NotEmpty
     @Size(min = 2, max = 40)
-    @Pattern(regexp = "[A-Z][a-z]+", message = "Last name not valid")
+    @Pattern(regexp = "[A-Z][a-z]+", message = Const.LAST_NAME_VALIDATION_MESSAGE)
     public String getLastName() {
         return lastName;
     }
@@ -71,7 +72,7 @@ public class UserRegisterBindingModel {
         this.email = email;
     }
 
-    @NotNull(message = "Gender should not be null")
+    @NotNull(message = Const.GENDER_VALIDATION_MESSAGE)
     public Gender getGender() {
         return gender;
     }
@@ -80,7 +81,7 @@ public class UserRegisterBindingModel {
         this.gender = gender;
     }
 
-    @Min(value = 13, message = "You should be 13 or older to register")
+    @Min(value = 13, message = Const.AGE_VALIDATION_MESSAGE)
     @Max(199)
     public Integer getAge() {
         return age;
@@ -101,7 +102,7 @@ public class UserRegisterBindingModel {
 
     @NotEmpty
     @Size(min = 4, max = 20)
-    @Pattern(regexp = "[+]?[0-9]{3,19}", message = "Phone number invalid")
+    @Pattern(regexp = "[+]?[0-9]{3,19}", message = Const.PHONE_NUMBER_VALIDATION_MESSAGE)
     public String getPhoneNumber() {
         return phoneNumber;
     }

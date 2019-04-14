@@ -1,6 +1,7 @@
 package com.autohub.domain.model.binding;
 
 import com.autohub.domain.enums.ArticleType;
+import com.autohub.util.Const;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ public class ArticleCreateBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 4, max = 30, message = "Title should not be empty")
+    @Size(min = 4, max = 255, message = Const.ARTICLE_TITLE_VALIDATION_MESSAGE)
     public String getTitle() {
         return title;
     }
@@ -28,7 +29,7 @@ public class ArticleCreateBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 4, message = "Content should be at least 3 symbols long")
+    @Size(min = 4, message = Const.ARTICLE_CONTENT_VALIDATION_MESSAGE)
     public String getContent() {
         return content;
     }
@@ -37,7 +38,7 @@ public class ArticleCreateBindingModel {
         this.content = content;
     }
 
-    @NotNull(message = "Type should not be empty")
+    @NotNull(message = Const.ARTICLE_TYPE_VALIDATION_MESSAGE)
     public ArticleType getType() {
         return type;
     }

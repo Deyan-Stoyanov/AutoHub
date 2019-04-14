@@ -15,7 +15,7 @@
             <th:block>
                 <div th:replace="fragments/marketplace-controls.html :: div"></div>
             </th:block>
-            <div th:if="${#lists.isEmpty(cars) && #lists.isEmpty(parts)}">
+            <div th:if="${#lists.isEmpty(cars) && #lists.isEmpty(parts)}" class="no-adverts">
                 <h3 th:text="'You do not have uploaded any advertisements yet.'"></h3>
                 <div class="buttons-container">
                     <a class="button" th:href="@{/marketplace/cars/publish}">Add Car Advertisement</a>
@@ -65,6 +65,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Part</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Details</th>
                     <th scope="col">Actions</th>
                     <th scope="col"></th>

@@ -1,5 +1,6 @@
 package com.autohub.web.controllers;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.autohub.domain.enums.ArticleType;
 import com.autohub.domain.model.binding.ArticleCreateBindingModel;
 import com.autohub.domain.model.binding.UserRegisterBindingModel;
@@ -53,12 +54,14 @@ public class ArticleController {
         }
         ArticleServiceModel registeredArticle = this.articleService.save(this.modelMapper.map(article, ArticleServiceModel.class));
         if (file != null) {
-            String filePath = "C:\\Users\\Lenovo\\autohub\\images\\blog_images";
-            String fullPath = filePath + "\\" + registeredArticle.getId() + "." + file.getOriginalFilename().split("\\.")[1];
-            File f1 = new File(fullPath);
-            file.transferTo(f1);
-            registeredArticle.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
-            this.articleService.save(registeredArticle);
+            try {
+                String filePath = "C:\\Users\\Lenovo\\autohub\\images\\blog_images";
+                String fullPath = filePath + "\\" + registeredArticle.getId() + "." + file.getOriginalFilename().split("\\.")[1];
+                File f1 = new File(fullPath);
+                file.transferTo(f1);
+                registeredArticle.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
+                this.articleService.save(registeredArticle);
+            } catch (Exception ignored){}
         }
         modelAndView.setViewName("redirect:/home");
         return modelAndView;

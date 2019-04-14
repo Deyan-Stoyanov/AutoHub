@@ -19,6 +19,10 @@
     grid-column-gap: inherit;
 }
 
+.no-adverts{
+    padding: 3rem;
+}
+
 .marketplace ul.listing.marketplace li {
     background-color: #ffe8bd;
     margin: 0 auto;

@@ -51,7 +51,7 @@ public class Part extends BaseEntity {
         this.manufacturer = manufacturer;
     }
 
-    @OneToOne(mappedBy = "part", targetEntity = PartAdvertisement.class, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "part", targetEntity = PartAdvertisement.class)
     public PartAdvertisement getPartAdvertisement() {
         return partAdvertisement;
     }

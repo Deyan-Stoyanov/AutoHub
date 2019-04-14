@@ -12,7 +12,7 @@
     <main class="site-content">
         <div class="profile d-flex flex-row">
             <div th:if="${advert.getImageFileName() == null}">
-                <img th:src="'/images/car.png'" width="350" height="350" alt="Article Image"/>
+                <img th:src="'/images/car.png'" width="350" height="auto" alt="Article Image"/>
             </div>
             <div th:if="${advert.getImageFileName() != null}">
                 <img th:src="@{'/content/cars/' + ${advert.getImageFileName()}}"

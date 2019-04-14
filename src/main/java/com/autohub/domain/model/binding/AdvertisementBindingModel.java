@@ -1,5 +1,7 @@
 package com.autohub.domain.model.binding;
 
+import com.autohub.util.Const;
+
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -17,7 +19,7 @@ public abstract class AdvertisementBindingModel {
     public AdvertisementBindingModel() {
     }
 
-    @DecimalMin(value = "0.01", message = "Price should be a positive decimal number")
+    @DecimalMin(value = "0.01", message = Const.PRICE_VALIDATION_MESSAGE)
     public BigDecimal getPrice() {
         return price;
     }
@@ -27,7 +29,7 @@ public abstract class AdvertisementBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 3, message = "Description should be at least 3 symbols long")
+    @Size(min = 3, message = Const.DESCRIPTION_VALIDATION_MESSAGE)
     public String getDescription() {
         return description;
     }
@@ -37,7 +39,7 @@ public abstract class AdvertisementBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 3, max = 50, message = "Country should be between 3 and 50 characters long")
+    @Size(min = 3, max = 50, message = Const.COUNTRY_VALIDATION_MESSAGE)
     public String getCountry() {
         return country;
     }
@@ -47,7 +49,7 @@ public abstract class AdvertisementBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 3, max = 50, message = "Province should be between 3 and 50 characters long")
+    @Size(min = 3, max = 50, message = Const.PROVINCE_VALIDATION_MESSAGE)
     public String getProvince() {
         return province;
     }
@@ -57,7 +59,7 @@ public abstract class AdvertisementBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 3, max = 50, message = "City should be between 3 and 50 characters long")
+    @Size(min = 3, max = 50, message = Const.CITY_VALIDATION_MESSAGE)
     public String getCity() {
         return city;
     }

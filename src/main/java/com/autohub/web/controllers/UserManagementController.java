@@ -57,7 +57,7 @@ public class UserManagementController {
         this.userService.switchRoleById(id, new UserRoleServiceModel() {{
             setRole(role);
         }});
-        modelAndView.setViewName("redirect:/admin/users");
+        modelAndView.setViewName("redirect:/users");
         return modelAndView;
     }
 

@@ -1,4 +1,4 @@
-<div xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <ul class="listing posts" th:each="article : ${articles}">
         <li>
             <div th:if="${article.getImageFileName() == null}">
@@ -6,12 +6,12 @@
             </div>
             <div th:if="${article.getImageFileName() != null}">
                 <img th:src="@{'/content/blog/' + ${article.getImageFileName()}}"
-                     width="350" height="350" alt="Article Image">
+                     width="auto" height="auto" alt="Article Image">
             </div>
             <h3 class="title" th:text="${article.getTitle()}"></h3>
             <span class="date" th:text="${#dates.format(article.getCreationDate(), 'dd-MMM-yyyy')}"></span>
             <div th:text="${article.getContent()}"></div>
-            <div class="buttons-container">
+            <div class="buttons-container" sec:authorize="hasAnyRole('ADMIN', 'ROOT')">
                 <a th:href="@{/articles/edit/{id}(id=${article.getId()})}" class="btn btn-info">Edit</a>
                 <a th:href="@{/articles/delete/{id}(id=${article.getId()})}" class="btn btn-danger">Delete</a>
             </div>

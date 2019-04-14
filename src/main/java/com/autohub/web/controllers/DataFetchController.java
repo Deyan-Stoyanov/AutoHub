@@ -53,13 +53,4 @@ public class DataFetchController {
                 .map(advert -> this.modelMapper.map(advert, PartAdvertisementViewModel.class))
                 .collect(Collectors.toList());
     }
-
-    @RequestMapping(value = "/usernames", produces = "application/json")
-    @ResponseBody
-    public List<String> fetchUserNames() {
-        return userService.findAll()
-                .stream()
-                .map(UserServiceModel::getUsername)
-                .collect(Collectors.toList());
-    }
 }

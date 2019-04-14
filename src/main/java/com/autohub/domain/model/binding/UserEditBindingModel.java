@@ -1,6 +1,7 @@
 package com.autohub.domain.model.binding;
 
 import com.autohub.domain.enums.Gender;
+import com.autohub.util.Const;
 
 import javax.validation.constraints.*;
 
@@ -20,7 +21,7 @@ public class UserEditBindingModel {
     }
 
     @NotEmpty
-    @Size(min = 3, max = 20, message = "Username should be between 3 and 20 symbols long")
+    @Size(min = 3, max = 20, message = Const.USERNAME_VALIDATION_MESSAGE)
     public String getUsername() {
         return username;
     }
@@ -38,7 +39,7 @@ public class UserEditBindingModel {
     }
 
     @NotEmpty
-    @Pattern(regexp = "[A-Z][a-z]+", message = "First name not valid")
+    @Pattern(regexp = "[A-Z][a-z]+", message = Const.FIRST_NAME_VALIDATION_MESSAGE)
     public String getFirstName() {
         return firstName;
     }
@@ -48,7 +49,7 @@ public class UserEditBindingModel {
     }
 
     @NotEmpty
-    @Pattern(regexp = "[A-Z][a-z]+", message = "Last name not valid")
+    @Pattern(regexp = "[A-Z][a-z]+", message = Const.LAST_NAME_VALIDATION_MESSAGE)
     public String getLastName() {
         return lastName;
     }
@@ -67,7 +68,7 @@ public class UserEditBindingModel {
         this.email = email;
     }
 
-    @NotNull(message = "Gender should not be null")
+    @NotNull(message = Const.GENDER_VALIDATION_MESSAGE)
     public Gender getGender() {
         return gender;
     }
@@ -76,7 +77,7 @@ public class UserEditBindingModel {
         this.gender = gender;
     }
 
-    @Min(value = 13, message = "You should be 13 or older to register")
+    @Min(value = 13, message = Const.AGE_VALIDATION_MESSAGE)
     @Max(130)
     public Integer getAge() {
         return age;
@@ -104,7 +105,7 @@ public class UserEditBindingModel {
     }
 
     @NotEmpty
-    @Pattern(regexp = "[+]?[0-9]+", message = "Phone number invalid")
+    @Pattern(regexp = "[+]?[0-9]+", message = Const.PHONE_NUMBER_VALIDATION_MESSAGE)
     public String getPhoneNumber() {
         return phoneNumber;
     }

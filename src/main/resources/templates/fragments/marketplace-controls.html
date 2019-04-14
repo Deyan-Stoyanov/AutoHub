@@ -1,6 +1,8 @@
-<div class="buttons-container" xmlns:th="http://www.thymeleaf.org">
+<div class="buttons-container" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <a th:href="@{/marketplace/cars/publish}" class="button">Add Car Advertisement</a>
     <a th:href="@{/marketplace/parts/publish}" class="button">Add Part Advertisement</a>
     <a th:href="@{/marketplace/{id}(id=${#authentication.getPrincipal().getId()})}" class="button">My Advertisements</a>
-    <a th:href="@{/marketplace/pending}" class="button">Pending</a>
+    <div sec:authorize="hasAnyRole('ADMIN', 'ROOT')">
+        <a th:href="@{/marketplace/pending}" class="button">Pending</a>
+    </div>
 </div>

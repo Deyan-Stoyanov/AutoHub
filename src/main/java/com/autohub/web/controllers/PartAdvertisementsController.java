@@ -79,12 +79,15 @@ public class PartAdvertisementsController {
             return modelAndView;
         }
         if (file != null) {
-            String filePath = "C:\\Users\\Lenovo\\autohub\\images\\part_images";
-            String fullPath = filePath + "\\" + savedModel.getId() + "." + file.getOriginalFilename().split("\\.")[1];
-            File f1 = new File(fullPath);
-            file.transferTo(f1);
-            savedModel.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
-            savedModel = this.partAdvertisementService.save(savedModel);
+            try {
+                String filePath = "C:\\Users\\Lenovo\\autohub\\images\\part_images";
+                String fullPath = filePath + "\\" + savedModel.getId() + "." + file.getOriginalFilename().split("\\.")[1];
+                File f1 = new File(fullPath);
+                file.transferTo(f1);
+                savedModel.setImageFileName(fullPath.substring(fullPath.lastIndexOf("\\") + 1));
+                savedModel = this.partAdvertisementService.save(savedModel);
+            } catch (Exception ignored) {
+            }
         }
         modelAndView.setViewName("redirect:/marketplace");
         return modelAndView;

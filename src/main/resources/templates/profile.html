@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" lang="en">
+      xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block>
     <div th:replace="fragments/head.html :: head"></div>
 </th:block>
@@ -13,10 +14,10 @@
         <div class="profile">
             <div th:if="${user.getImageFileName() == null}">
                 <div th:if="${user.getGender() == 'MALE'}">
-                    <img th:src="'/images/male.png'" width="350" height="350" alt="Profile Image">
+                    <img th:src="@{'/images/male.png'}" width="350" height="350" alt="Profile Image">
                 </div>
                 <div th:if="${user.getGender() == 'FEMALE'}">
-                    <img th:src="'/images/female.png'" width="350" height="350" alt="Profile Image">
+                    <img th:src="@{'/images/female.png'}" width="350" height="350" alt="Profile Image">
                 </div>
             </div>
             <div th:if="${user.getImageFileName() != null}">
@@ -34,7 +35,10 @@
             <p class="username" th:text="${user.getAge()}"></p>
             <div class="buttons-container" th:if="${user.getUsername() == #authentication.getName()}">
                 <a th:href="@{/profile/edit/{id}(id=${user.getId()})}" class="button">Edit profile</a>
-                <a th:href="@{/profile/delete/{id}(id=${user.getId()})}" class="button button-danger">Delete profile</a>
+                <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
+                    <a th:href="@{/profile/delete/{id}(id=${user.getId()})}" class="button button-danger">Delete
+                        profile</a>
+                </div>
             </div>
         </div>
     </main>
